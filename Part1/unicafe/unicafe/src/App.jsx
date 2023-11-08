@@ -1,15 +1,48 @@
 import { useState } from 'react'
 
+const StatisticLine = (props)=>{
+  return <p>good {props.value}</p>
+}
+
+const StatisticLine2 = props =>{
+  return <p>neutral {props.value}</p>
+}
+
+const StatisticLine3 = props =>{
+  return <p>bad {props.value}</p>
+}
+
+const StatisticLine4 = props =>{
+  return <p>total {props.value}</p>
+}
+
+const StatisticLine5 = props =>{
+  return <p>average {props.value}</p>
+}
+
+const StatisticLine6 = props =>{
+  return <p>positive {props.value}</p>
+}
+const Button = (props) =>{
+  return <>
+  <button onClick={props.onGoodincrement}>good</button>
+   <button onClick={props.onNeutralIncrement}>neutral</button>
+   <button onClick={props.onBadIncrement}>bad</button>
+  </>
+
+}
+
+
 const Statistics = props =>{
  return <>
  <div>
   <h2>Statistics</h2>
-    <p>good {props.good}</p> 
-    <p>neutral {props.neutral}</p>
-    <p>bad {props.bad}</p> 
-    <p>all {props.total}</p>
-    <p>average {props.average || ""}</p>
-    <p>positive {props.positive || ""}%</p>
+   <StatisticLine value={props.good} text="good"/>
+   <StatisticLine2 value={props.neutral} text="neutral"/>
+   <StatisticLine3 value={props.bad} text="bad"/>
+   <StatisticLine4 value={props.total} text="total"/>
+   <StatisticLine5 value={props.average} text="average"/>
+   <StatisticLine6 value={props.positive} text="positive"/>
     </div>
     </>
 }
@@ -47,9 +80,10 @@ if(total === 0){
 <div>
 <div>
       <h2>give feedback</h2>
-   <button onClick={handleGoodincrement}>good</button>
-   <button onClick={handleNeutralIncrement}>neutral</button>
-   <button onClick={handleBadIncrement}>bad</button>
+      <Button onGoodincrement={handleGoodincrement} 
+      onNeutralIncrement={handleNeutralIncrement}
+      onBadIncrement={handleBadIncrement} 
+      />
     </div> 
 <h2>Statistics</h2>
 <p>No feedback given</p>
@@ -58,9 +92,10 @@ if(total === 0){
    return (<>
     <div>
       <h2>give feedback</h2>
-   <button onClick={handleGoodincrement}>good</button>
-   <button onClick={handleNeutralIncrement}>neutral</button>
-   <button onClick={handleBadIncrement}>bad</button>
+      <Button onGoodincrement={handleGoodincrement} 
+      onNeutralIncrement={handleNeutralIncrement}
+      onBadIncrement={handleBadIncrement} 
+      />
     </div> 
 
   <Statistics good={good} neutral={neutral} bad={bad} total={total} 
