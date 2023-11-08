@@ -42,7 +42,6 @@ const positive = good / total * 100;
     <p>neutral {neutral}</p>
     <p>bad {bad}</p> 
     <p>all {total}</p>
-    <p>sum {sum}</p>
     <p>average {average || ""}</p>
     <p>positive {positive || ""}%</p>
     </div>
