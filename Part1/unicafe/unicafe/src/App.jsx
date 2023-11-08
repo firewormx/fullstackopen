@@ -1,28 +1,59 @@
 import { useState } from 'react'
 
 const StatisticLine = (props)=>{
-  return <p>good {props.value}</p>
+  return <>
+    <tr>
+          <th>{props.text}</th>
+          <td>{props.value}</td>
+    </tr>
+  </>
 }
 
 const StatisticLine2 = props =>{
-  return <p>neutral {props.value}</p>
+ return <>
+    <tr>
+          <th>{props.text}</th>
+          <td>{props.value}</td>
+    </tr>
+  </>
 }
 
 const StatisticLine3 = props =>{
-  return <p>bad {props.value}</p>
+  return <>
+    <tr>
+          <th>{props.text}</th>
+          <td>{props.value}</td>
+    </tr>
+  </>
 }
 
 const StatisticLine4 = props =>{
-  return <p>total {props.value}</p>
+  return <>
+    <tr>
+          <th>{props.text}</th>
+          <td>{props.value}</td>
+    </tr>
+  </>
 }
 
 const StatisticLine5 = props =>{
-  return <p>average {props.value}</p>
+  return <>
+    <tr>
+          <th>{props.text}</th>
+          <td>{props.value}</td>
+    </tr>
+  </>
 }
 
 const StatisticLine6 = props =>{
-  return <p>positive {props.value}</p>
+  return <>
+    <tr>
+          <th>{props.text}</th>
+          <td>{props.value}%</td>
+    </tr>
+  </>
 }
+
 const Button = (props) =>{
   return <>
   <button onClick={props.onGoodincrement}>good</button>
@@ -35,15 +66,17 @@ const Button = (props) =>{
 
 const Statistics = props =>{
  return <>
- <div>
-  <h2>Statistics</h2>
+ <h2>Statistics</h2>
+ <table>
+  <tbody>
    <StatisticLine value={props.good} text="good"/>
    <StatisticLine2 value={props.neutral} text="neutral"/>
    <StatisticLine3 value={props.bad} text="bad"/>
-   <StatisticLine4 value={props.total} text="total"/>
+   <StatisticLine4 value={props.all} text="total"/>
    <StatisticLine5 value={props.average} text="average"/>
    <StatisticLine6 value={props.positive} text="positive"/>
-    </div>
+   </tbody>
+    </table>
     </>
 }
 
@@ -98,7 +131,7 @@ if(total === 0){
       />
     </div> 
 
-  <Statistics good={good} neutral={neutral} bad={bad} total={total} 
+  <Statistics good={good} neutral={neutral} bad={bad} all={total} 
   average={average} positive={positive}/>
     </>)
   }
