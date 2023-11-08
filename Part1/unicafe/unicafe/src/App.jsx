@@ -3,7 +3,7 @@ import { useState } from 'react'
 const Statistics = props =>{
  return <>
  <div>
-     <h2>statistics</h2>
+  <h2>Statistics</h2>
     <p>good {props.good}</p> 
     <p>neutral {props.neutral}</p>
     <p>bad {props.bad}</p> 
@@ -42,16 +42,32 @@ const sum = good *1 +neutral * 0 + bad *(-1);
 const average = sum / total;
 const positive = good / total * 100;
 
-  return (<>
+if(total === 0){
+  return (
+<div>
+<div>
+      <h2>give feedback</h2>
+   <button onClick={handleGoodincrement}>good</button>
+   <button onClick={handleNeutralIncrement}>neutral</button>
+   <button onClick={handleBadIncrement}>bad</button>
+    </div> 
+<h2>Statistics</h2>
+<p>No feedback given</p>
+</div>
+  )}else{
+   return (<>
     <div>
       <h2>give feedback</h2>
    <button onClick={handleGoodincrement}>good</button>
    <button onClick={handleNeutralIncrement}>neutral</button>
    <button onClick={handleBadIncrement}>bad</button>
     </div> 
+
   <Statistics good={good} neutral={neutral} bad={bad} total={total} 
   average={average} positive={positive}/>
-    </> )
+    </>)
+  }
+
 }
 
 export default App
