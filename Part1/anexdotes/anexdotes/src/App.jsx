@@ -9,7 +9,7 @@ import { useState } from 'react'
  }
 
  const Title = (props) => {
-  return   <h2>{props.text}</h2>
+  return <h2>{props.text}</h2>
  }
 
  const Anecdotes = (props) =>{
@@ -27,7 +27,6 @@ import { useState } from 'react'
   </>
  }
 const App = () => {
-
   const anecdotes = [
     'If it hurts, do it more often.',
     'Adding manpower to a late software project makes it later!',
@@ -59,7 +58,6 @@ const App = () => {
   <Anecdotes  anecdote={anecdotes[selected]} vote={voted[selected]}/>
   <Button handleClick={handleVoteAnecdote} text="vote" />
 <Button handleClick={handleNextAnecdote} text="next anecdote"/>
-
 <Title text="Anecdote with most votes"/>
 <MostVotes most={anecdotes[index]} max={max}/>
 </>
