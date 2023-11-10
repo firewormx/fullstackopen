@@ -1,55 +1,10 @@
 import { useState } from 'react'
 
 const StatisticLine = (props)=>{
-  return <>
+    return <>
     <tr>
-          <th>{props.text}</th>
-          <td>{props.value}</td>
-    </tr>
-  </>
-}
-
-const StatisticLine2 = props =>{
- return <>
-    <tr>
-          <th>{props.text}</th>
-          <td>{props.value}</td>
-    </tr>
-  </>
-}
-
-const StatisticLine3 = props =>{
-  return <>
-    <tr>
-          <th>{props.text}</th>
-          <td>{props.value}</td>
-    </tr>
-  </>
-}
-
-const StatisticLine4 = props =>{
-  return <>
-    <tr>
-          <th>{props.text}</th>
-          <td>{props.value}</td>
-    </tr>
-  </>
-}
-
-const StatisticLine5 = props =>{
-  return <>
-    <tr>
-          <th>{props.text}</th>
-          <td>{props.value}</td>
-    </tr>
-  </>
-}
-
-const StatisticLine6 = props =>{
-  return <>
-    <tr>
-          <th>{props.text}</th>
-          <td>{props.value}%</td>
+    <th>{props.text}</th>
+    <td>{props.value}</td>
     </tr>
   </>
 }
@@ -70,11 +25,11 @@ const Statistics = props =>{
  <table>
   <tbody>
    <StatisticLine value={props.good} text="good"/>
-   <StatisticLine2 value={props.neutral} text="neutral"/>
-   <StatisticLine3 value={props.bad} text="bad"/>
-   <StatisticLine4 value={props.all} text="total"/>
-   <StatisticLine5 value={props.average} text="average"/>
-   <StatisticLine6 value={props.positive} text="positive"/>
+   <StatisticLine value={props.neutral} text="neutral"/>
+   <StatisticLine value={props.bad} text="bad"/>
+   <StatisticLine value={props.all} text="total"/>
+   <StatisticLine value={props.average} text="average"/>
+   <StatisticLine value={props.positive} text="positive"/>
    </tbody>
     </table>
     </>
