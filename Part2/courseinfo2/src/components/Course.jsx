@@ -2,9 +2,9 @@ import Header from "./Header";
 import Content from "./Content";
 import Total from "./Total";
 
-const Course = ({course}) =>{
-const name = course.name;
-const parts = course.parts;
+const Course = ({details}) =>{
+const name = details.name;
+const parts = details.parts;
 
 return (
 <>
