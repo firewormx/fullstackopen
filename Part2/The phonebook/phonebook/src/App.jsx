@@ -4,6 +4,29 @@ const Person = ({name, number}) =>{
   return <div>{name} {number}</div>
 }
 
+const Filter = ({value, onChange}) =>{
+  return (<>
+  <div>filter shown with
+        <input value={value} onChange={onChange}/>
+         </div>
+         </>)
+}
+
+const AddNewInfo = ({onSubmit, nameValue, onNameChange, numberValue,
+onNumberChange, onClick}) =>{
+  return (<>
+      <form onSubmit={onSubmit} id="newName">
+        <h2>Add a new</h2>
+        <div>
+          name: <input value={nameValue} onChange={onNameChange}/>
+        </div>
+        <div>number: <input value={numberValue} onChange={onNumberChange}/></div>
+        <div>
+          <button type="submit"  onClick={()=>onClick}>add</button>
+        </div>
+      </form>
+      </>)
+}
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -52,28 +75,20 @@ const filterToShow = (search === "")
 ? persons
 : persons.filter(person=> person.name.toLowerCase().includes(search.toLowerCase()));
 
+
 const show_names =() => filterToShow.map(person =>
   <Person name={person.name} number={person.number} key={person.id}/>);
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>filter shown with
-        <input value={search} onChange={handleSearchChange}/>
-         </div>
-      <form onSubmit={handleSubmit} id="newName">
-        <h2>Add a new</h2>
-        <div>
-          name: <input value={newName} onChange={handleNameChange}/>
-        </div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
-        <div>
-          <button type="submit"  onClick={()=>setShowName(!showName)}>add</button>
-        </div>
-      </form>
+     <Filter  value={search} onChange ={handleSearchChange}/>
+     <AddNewInfo onSubmit={handleSubmit} nameValue={newName}
+     onNameChange={handleNameChange} numberValue={newNumber}
+     onNumberChange={handleNumberChange} onClick={()=>setShowName(!showName)}/>
       <h2>Numbers</h2>
 <div>
-  {show_names()}
+{show_names()}
 </div> 
 
     </div>
