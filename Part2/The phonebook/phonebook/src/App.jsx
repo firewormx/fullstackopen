@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
+import axios from "axios";
 
 const Person = ({name, number}) =>{
   return <div>{name} {number}</div>
@@ -29,12 +30,15 @@ onNumberChange, onClick}) =>{
 }
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ]) 
+
+  useEffect(()=>{
+ axios.get("http://localhost:30021/persons")
+.then(response => {
+  setPersons(response.data);
+  })
+},[]);
+
+  const [persons, setPersons] = useState([ ]) 
   const [newName, setNewName] = useState('');
   const [showName, setShowName] = useState(true);
   const [newNumber, setNewNumber] = useState(``);
@@ -44,7 +48,7 @@ const App = () => {
   event.preventDefault();
 const newNameObject ={
   name: newName,
-  number: newNumber
+  number: newNumber,
 }
 
 const existingPerson = persons.find(person => person.name === newName);
@@ -76,8 +80,8 @@ const filterToShow = (search === "")
 : persons.filter(person=> person.name.toLowerCase().includes(search.toLowerCase()));
 
 
-const show_names =() => filterToShow.map(person =>
-  <Person name={person.name} number={person.number} key={person.id}/>);
+const show_names =() => filterToShow.map((person, index) =>
+  <Person name={person.name} number={person.number} key={index}/>);
 
   return (
     <div>
