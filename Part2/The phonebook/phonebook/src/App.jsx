@@ -1,8 +1,12 @@
 import { useState, useEffect} from 'react'
-import axios from "axios";
+import personService from "./service/person";
 
-const Person = ({name, number}) =>{
-  return <div>{name} {number}</div>
+const Person = ({name, number, deleteEffect}) =>{
+  return (<>
+  <div>{name} {number}
+  <button onClick={deleteEffect}>delete</button>
+  </div>
+  </> )
 }
 
 const Filter = ({value, onChange}) =>{
@@ -31,21 +35,22 @@ onNumberChange, onClick}) =>{
 
 const App = () => {
 
-  useEffect(()=>{
- axios.get("http://localhost:30021/persons")
-.then(response => {
-  setPersons(response.data);
-  })
-},[]);
-
   const [persons, setPersons] = useState([ ]) 
   const [newName, setNewName] = useState('');
   const [showName, setShowName] = useState(true);
   const [newNumber, setNewNumber] = useState(``);
   const [search, setSearch] = useState(``);
 
+  useEffect(()=>{
+    personService.getAll()
+    .then(data => {
+      setPersons(data);
+      }).catch(error => console.log(error));
+    },[]);
+
  const handleSubmit = (event) =>{
   event.preventDefault();
+
 const newNameObject ={
   name: newName,
   number: newNumber,
@@ -54,6 +59,12 @@ const newNameObject ={
 const existingPerson = persons.find(person => person.name === newName);
 existingPerson ? alert(`${newName} is already added to phonebook`)
   :setPersons(persons.concat(newNameObject));
+
+personService.create(newNameObject)
+  .then(data=>{
+    console.log(data);
+    setPersons(persons.concat(data))
+  }).catch(error => console.error(error));
 
 setNewName("");
 setNewNumber("");
@@ -80,8 +91,21 @@ const filterToShow = (search === "")
 : persons.filter(person=> person.name.toLowerCase().includes(search.toLowerCase()));
 
 
-const show_names =() => filterToShow.map((person, index) =>
-  <Person name={person.name} number={person.number} key={index}/>);
+const show_names =() => filterToShow.map((person, index) =>{
+
+  const handleDeleteButton =() => {
+window.confirm(`Delete ${person.name}?`);
+      personService.clear(person.id)
+    .then(()=> {
+      setPersons(persons.filter(pers => pers.id !== person.id ));
+    })
+    .catch(error => console.log(error));
+     }
+    
+return <Person name={person.name} number={person.number} key={index} deleteEffect={handleDeleteButton}/>
+})
+
+
 
   return (
     <div>
