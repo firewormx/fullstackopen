@@ -48,7 +48,7 @@ const App = () => {
       }).catch(error => console.log(error));
     },[]);
 
- const handleSubmit = (event) =>{
+const handleSubmit = (event) =>{
   event.preventDefault();
 
 const newNameObject ={
@@ -56,19 +56,33 @@ const newNameObject ={
   number: newNumber,
 }
 
-const existingPerson = persons.find(person => person.name === newName);
-existingPerson ? alert(`${newName} is already added to phonebook`)
-  :setPersons(persons.concat(newNameObject));
+const existingPerson = persons.some(person => person.name === newName);
 
-personService.create(newNameObject)
+if (existingPerson){
+const person = persons.find(per=> per.name === newName);
+const changedPerson ={...person, number:newNumber};
+
+  alert(`${newName} is already added to phonebook, replace the old number with a new one?`);
+
+    personService.update(person.id, changedPerson)
+    .then(returnedPerson => {
+      console.log(returnedPerson);
+    setPersons(persons.map(per =>per.id !== returnedPerson.id ? per : returnedPerson));
+    })
+    .catch(error => console.log(error));
+  
+}else{
+  personService.create(newNameObject)
   .then(data=>{
     console.log(data);
     setPersons(persons.concat(data))
   }).catch(error => console.error(error));
-
-setNewName("");
+}
+  setNewName("");
 setNewNumber("");
- }
+  }
+
+
 
  const handleNameChange = (event)=>{
   console.log(event.target.value);
@@ -94,15 +108,19 @@ const filterToShow = (search === "")
 const show_names =() => filterToShow.map((person, index) =>{
 
   const handleDeleteButton =() => {
-window.confirm(`Delete ${person.name}?`);
-      personService.clear(person.id)
+    const removeid = window.confirm(`Delete ${person.name}?`);
+    if(removeid){
+    personService.clear(person.id)
     .then(()=> {
-      setPersons(persons.filter(pers => pers.id !== person.id ));
-    })
-    .catch(error => console.log(error));
-     }
-    
-return <Person name={person.name} number={person.number} key={index} deleteEffect={handleDeleteButton}/>
+          setPersons(persons.filter(pers => pers.id !== person.id ));
+        })
+        .catch(error => console.log(error));
+         }
+        return ;
+      }
+
+return <Person name={person.name} number={person.number} key={index} 
+deleteEffect={handleDeleteButton} />
 })
 
 
