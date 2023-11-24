@@ -33,6 +33,31 @@ onNumberChange, onClick}) =>{
       </>)
 }
 
+const Notifications = ({message}) =>{
+  const notificationStyle ={
+    color: "green",
+    border:"6px solid green",
+    fontSize: 16
+  }
+  const notificationStyle2 ={
+    color:"red",
+    border: "6px solid red",
+    fontSize: 16
+  }
+if( message=== null){
+  return null;
+}
+return (message.length > 40 ?(
+  <div style={notificationStyle2}>
+ {message}
+  </div>
+):
+<div style={notificationStyle}>
+{message}
+ </div>
+)
+}
+
 const App = () => {
 
   const [persons, setPersons] = useState([ ]) 
@@ -40,6 +65,8 @@ const App = () => {
   const [showName, setShowName] = useState(true);
   const [newNumber, setNewNumber] = useState(``);
   const [search, setSearch] = useState(``);
+  const [notifications, setNotifications] = useState(`Added ${newName}`);
+
 
   useEffect(()=>{
     personService.getAll()
@@ -69,14 +96,29 @@ const changedPerson ={...person, number:newNumber};
       console.log(returnedPerson);
     setPersons(persons.map(per =>per.id !== returnedPerson.id ? per : returnedPerson));
     })
-    .catch(error => console.log(error));
+    .catch(error => {
+      console.log(error);
+  setNotifications(`Information of "${person.name}"has already been removed from server`);
+  setTimeout(()=>{
+    setNotifications(null);
+  }, 2000)
+     setPersons(persons.filter(per.id !== person.id));
+    }
+      
+      );
   
 }else{
   personService.create(newNameObject)
   .then(data=>{
     console.log(data);
-    setPersons(persons.concat(data))
-  }).catch(error => console.error(error));
+    setPersons(persons.concat(data));
+    setNotifications(`Added ${data.name} ${data.number}`);
+    setTimeout(()=>{
+     setNotifications(null);
+    },2000)
+  }).catch(error => {
+    console.error(error);
+  });
 }
   setNewName("");
 setNewNumber("");
@@ -128,6 +170,7 @@ deleteEffect={handleDeleteButton} />
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notifications message={notifications}/>
      <Filter  value={search} onChange ={handleSearchChange}/>
      <AddNewInfo onSubmit={handleSubmit} nameValue={newName}
      onNameChange={handleNameChange} numberValue={newNumber}
