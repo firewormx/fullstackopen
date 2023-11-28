@@ -37,12 +37,15 @@ const Notifications = ({message}) =>{
   const notificationStyle ={
     color: "green",
     border:"6px solid green",
-    fontSize: 16
+    fontSize: 16,
+    padding: 5
   }
   const notificationStyle2 ={
     color:"red",
     border: "6px solid red",
-    fontSize: 16
+    fontSize: 16,
+    background: "lightgrey",
+    padding: 5
   }
 if( message=== null){
   return null;
