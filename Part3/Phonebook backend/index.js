@@ -46,6 +46,13 @@ response.send( `
 <p>${date}</p>
 `)
 })
+
+app.get(`/api/persons/:id`, (request, response)=>{
+const id = Number(request.params.id);
+const matchednote = notes.find(note => note.id === id);
+matchednote ? response.json(notes[id-1]) : response.status(400).end()
+})
+
 const PORT = 3005
 app.listen((PORT), () =>{
     console.log(`Server running on port ${PORT}`)
