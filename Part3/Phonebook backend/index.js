@@ -74,13 +74,20 @@ const generatedNewId = () =>{
 
 app.post(`/api/persons`, (request, response)=>{
     const body = request.body;
-if(!body.name){
-    return response.status(400).json({error: `name missing`})
-}
 const newNote ={
 id: generatedNewId(),
 name: body.name,
 number: body.number
+}
+const exsitingName = notes.find(note => note.name === body.name)
+if(exsitingName){
+    return response.status(400).json({error: `name must be unique`})
+}
+if(!body.number){
+    return response.status(400).json({error: `number missing`})
+}
+if(!body.name){
+    return response.status(400).json({error: `name missing`})
 }
   notes.concat(newNote);
   response.json(newNote);
