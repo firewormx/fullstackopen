@@ -53,6 +53,40 @@ const matchednote = notes.find(note => note.id === id);
 matchednote ? response.json(notes[id-1]) : response.status(400).end()
 })
 
+app.delete(`/api/persons/:id`, (request,response)=>{
+const id = Number(request.params.id);
+notes = notes.filter(note => note.id !== id);
+response.status(204).end();
+})
+
+const getRandomInt = (min, max) =>{
+    min = Math.ceil(min),
+    max = Math.floor(max);
+    return Math.floor(Math.random() *(max - min) + min)
+}
+
+const generatedNewId = () =>{
+    const maxId = notes.length > 0
+    ? getRandomInt(0, Math.max(...notes.map(note => note.id)))
+    : 0;
+    return maxId + 1
+    }
+
+app.post(`/api/persons`, (request, response)=>{
+    const body = request.body;
+if(!body.name){
+    return response.status(400).json({error: `name missing`})
+}
+const newNote ={
+id: generatedNewId(),
+name: body.name,
+number: body.number
+}
+  notes.concat(newNote);
+  response.json(newNote);
+  }
+)
+
 const PORT = 3005
 app.listen((PORT), () =>{
     console.log(`Server running on port ${PORT}`)
