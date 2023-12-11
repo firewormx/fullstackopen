@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import noteService from "./services/notes";
 import Notification from "./components/Notification";
 
-
 const Footer = () =>{
   const footerStyle ={
     color:`green`,
@@ -36,6 +35,7 @@ console.log(`render`, notes.length, `notes`);
 
   const addNotes =(event) =>{
     event.preventDefault();
+
  const noteObject ={
   content: newNote,
   important: Math.random()< 0.5,

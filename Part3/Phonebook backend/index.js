@@ -2,6 +2,7 @@ const express= require(`express`);
 const app = express();
 app.use(express.json());
 
+
 let notes=[
     { 
       "id": 1,
@@ -29,6 +30,7 @@ let notes=[
         "number": "00-00-1112223"
     }
 ]
+    
 
 app.get("/",(request, response)=>{
 response.send(`<h1>Phonebook</h1>`)
@@ -51,12 +53,6 @@ app.get(`/api/persons/:id`, (request, response)=>{
 const id = Number(request.params.id);
 const matchednote = notes.find(note => note.id === id);
 matchednote ? response.json(notes[id-1]) : response.status(400).end()
-})
-
-app.delete(`/api/persons/:id`, (request,response)=>{
-const id = Number(request.params.id);
-notes = notes.filter(note => note.id !== id);
-response.status(204).end();
 })
 
 const getRandomInt = (min, max) =>{
@@ -93,6 +89,14 @@ if(!body.name){
   response.json(newNote);
   }
 )
+
+  
+app.delete(`/api/persons/:id`, (request,response)=>{
+    const id = Number(request.params.id);
+    notes = notes.filter(note => note.id !== id);
+    response.status(204).end();
+    })
+ 
 
 const PORT = 3005
 app.listen((PORT), () =>{

@@ -1,12 +1,24 @@
 const express = require('express')
 const app = express();
-app.use(express.json());
+const cors= require(`cors`);
 
+
+const requestLogger = (request, response, next) =>{
+  console.log(`Method:`, request.method);
+  console.log(`Path: `, request.path);
+  console.log(`Body: `, request.body);
+  console.log(`--`);
+  next()
+  }
+
+app.use(express.json());
+app.use(requestLogger);
+app.use(cors());
 
 let notes = [
   {
     id: 1,
-    content: "HTML is easy",
+    content: "HTML is hard",
     important: true
   },
   {
@@ -26,13 +38,13 @@ important: false
 },
 {
     id: 5,
-    content: "ready for nodemon",
+    content: "ready for render",
     important: true
 }
 ]
 
 app.get("/", (request, response)=>{
-    response.send(`<h1>Hello World!</h1>`)
+    response.send(`<h1>Hello World!! Have fun!</h1>`)
 })
 
 app.get("/api/notes", (request, response)=>{
@@ -53,7 +65,7 @@ return maxId + 1;
    const note={
     content: body.content,
     important: body.important || false,
-    date: newDate(),
+    // date: newDate(),
     id: generatedId()
    }
  notes = notes.concat(note);
@@ -66,8 +78,8 @@ return maxId + 1;
     console.log(id);
     const note = notes.find(note => {
         return note.id === id});
-      note? response.json(notes) : response.status(404).end()
-
+      note? response.json(note) : response.status(404).end()
+response.json(note);
 });
 
 app.delete('/api/notes/:id', (request, response) => {
@@ -78,9 +90,13 @@ app.delete('/api/notes/:id', (request, response) => {
     response.status(204).end()
   })
 
+  const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+  }
+  
+app.use(unknownEndpoint);
  
-
-const PORT = 3004
+const PORT = process.env.PORT || 3004
 app.listen((PORT), () =>{
     console.log(`Server running on port ${PORT}`)
 })

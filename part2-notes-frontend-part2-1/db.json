@@ -2,13 +2,13 @@
   "notes": [
     {
       "id": 1,
-      "content": "HTML is easy",
-      "important": false
+      "content": "HTML is so easy!",
+      "important": true
     },
     {
       "id": 2,
       "content": "Browser can execute only JavaScript",
-      "important": false
+      "important": true
     },
     {
       "id": 3,
@@ -34,6 +34,11 @@
       "content": "nov 21",
       "important": true,
       "id": 7
+    },
+    {
+      "content": "klll;",
+      "important": true,
+      "id": 8
     }
   ]
 }
