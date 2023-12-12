@@ -1,8 +1,8 @@
-POST http://localhost:3004/api/notes
+POST https://render-test-final-z7f8.onrender.com/api/notes
 Content-Type: application/json 
 
 {
     "id" : "6",
-    "content": "sth",
+    "content": "test for render",
     "important": true
 }
