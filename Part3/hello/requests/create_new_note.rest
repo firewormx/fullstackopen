@@ -3,6 +3,6 @@ Content-Type: application/json
 
 {
     "id" : "6",
-    "content": "test for render",
+    "content": "test for render2",
     "important": true
 }
