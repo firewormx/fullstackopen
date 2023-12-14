@@ -11,9 +11,9 @@ const requestLogger = (request, response, next) =>{
   next()
   }
 
+app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
-app.use(cors());
 app.use(express.static(`dist`));
 
 let notes = [
@@ -66,7 +66,7 @@ return maxId + 1;
    const note={
     content: body.content,
     important: body.important || false,
-    // date: newDate(),
+    date: newDate(),
     id: generatedId()
    }
  notes = notes.concat(note);
