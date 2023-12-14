@@ -1,6 +1,7 @@
 const express = require(`express`);
 const app = express();
 const cors = require(`cors`);
+const { default: person, default: person } = require("../phonebook/src/service/person");
 
 
 const requestLogger = (request, response, next) =>{
@@ -16,8 +17,7 @@ const requestLogger = (request, response, next) =>{
     app.use(requestLogger);
     app.use(express.static(`dist`));
 
-let persons = {
-    "persons": [
+let persons =  [
       {
         "name": "Aiko sander",
         "number": "4567-0987",
@@ -49,12 +49,12 @@ let persons = {
         "id": 33
       },
       {
-        "name": "botman-test",
+        "name": "botman-backend data",
         "number": "",
         "id": 34
       }
     ]
-  }
+  
 app.get(`/`, (request, response)=>{
 response.send(`<h1>Hello World!</h1>`)
 })
@@ -62,6 +62,51 @@ response.send(`<h1>Hello World!</h1>`)
 app.get(`/api/persons`, (request, response)=>{
 response.json(persons);
 })
+const generatedId = () =>{
+    const maxId= persons.length > 0
+    ? Math.max(...persons.map(person =>person.id))
+    :0
+return maxId + 1;
+}
+
+  app.post(`/api/persons`, (request,response)=>{
+    const body = request.body;
+   if(!body.name || !body.number){
+    return response.status(400).json({error: `name or number missing`})
+   }
+   const newPerson={
+    name: body.name,
+    number: body.number || "",
+    id: generatedId()
+   }
+ persons = notes.concat(newPerson);
+
+ response.json(newPerson);
+  });
+
+  app.get(`/api/persons/:id`, (request, response)=>{
+    const id = Number(request.params.id);
+    console.log(id);
+    const person = persons.find(person => {
+        return person.id === id});
+      person ? response.json(person) : response.status(404).end()
+response.json(person);
+});
+
+app.delete('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id);
+    console.log(id)
+    persons = persons.filter(person => person.id !== id)
+  
+    response.status(204).end()
+  })
+
+  const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+  }
+  
+app.use(unknownEndpoint);
+ 
 
 const PORT = process.env.PORT || 3007
 app.listen(PORT, ()=>{
