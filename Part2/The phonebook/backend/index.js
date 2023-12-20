@@ -1,7 +1,7 @@
 const express = require(`express`);
 const app = express();
 const cors = require(`cors`);
-const { default: person, default: person } = require("../phonebook/src/service/person");
+// const { default: person, default: person } = require("../phonebook/src/service/person");
 
 
 const requestLogger = (request, response, next) =>{
@@ -19,7 +19,7 @@ const requestLogger = (request, response, next) =>{
 
 let persons =  [
       {
-        "name": "Aiko sander",
+        "name": "Aiko sander-backend",
         "number": "4567-0987",
         "id": 27
       },

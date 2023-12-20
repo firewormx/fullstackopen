@@ -2,27 +2,27 @@
   "notes": [
     {
       "id": 1,
-      "content": "HTML is so easy!",
-      "important": false
+      "content": "HTML is so easy! port3001-frontend",
+      "important": true
     },
     {
       "id": 2,
       "content": "Browser can execute only JavaScript",
-      "important": false
+      "important": true
     },
     {
       "id": 3,
       "content": "GET and POST are the most important methods of HTTP protocol",
-      "important": false
+      "important": true
     },
     {
       "content": "Great lesson!",
-      "important": true,
+      "important": false,
       "id": 4
     },
     {
       "content": "Cool lesson!",
-      "important": true,
+      "important": false,
       "id": 5
     },
     {
@@ -32,7 +32,7 @@
     },
     {
       "content": "nov 21",
-      "important": true,
+      "important": false,
       "id": 7
     },
     {

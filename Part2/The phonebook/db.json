@@ -1,6 +1,11 @@
 {
   "persons": [
     {
+      "name": "Aiko sander",
+      "number": "4567-0987",
+      "id": 27
+    },
+    {
       "name": "Alice Wong",
       "number": "909090",
       "id": 29
@@ -12,7 +17,7 @@
     },
     {
       "name": "Botman daniel",
-      "number": "093093200",
+      "number": "0930932\\",
       "id": 31
     },
     {
@@ -24,11 +29,6 @@
       "name": "hiloe",
       "number": "db.json data from frontend node server",
       "id": 33
-    },
-    {
-      "name": "heyjune",
-      "number": "23894567",
-      "id": 34
     }
   ]
 }

@@ -19,7 +19,7 @@ app.use(express.static(`dist`));
 let notes = [
   {
     id: 1,
-    content: "HTML is hard",
+    content: "HTML is hard,port 3004 of backend server",
     important: true
   },
   {
@@ -66,7 +66,7 @@ return maxId + 1;
    const note={
     content: body.content,
     important: body.important || false,
-    date: newDate(),
+    // date: newDate(), 
     id: generatedId()
    }
  notes = notes.concat(note);
