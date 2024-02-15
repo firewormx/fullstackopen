@@ -23,7 +23,7 @@ const Note = mongoose.model('Note', noteSchema)
 
 const note = new Note(
  {
-  content: 'React is great!',
+  content: 'MongoDB database is awsome!!',
   important: true
 }
 )
