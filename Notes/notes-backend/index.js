@@ -3,7 +3,6 @@ require(`dotenv`).config();
 const express = require('express')
 const app = express();
 const cors= require(`cors`);
-// const mongoose = require('mongoose')
 const Note = require(`./models/note`);
 
 const requestLogger = (request, response, next) =>{
@@ -25,34 +24,6 @@ app.use(express.static(`dist`));
 
 
 const password = process.argv[2]
-
-// DO NOT SAVE YOUR PASSWORD TO GITHUB!!
-// const url =
-// `mongodb+srv://fullstackopen:CK.jY84BUTkJQtq@cluster0.i1viykx.mongodb.net/noteApp?retryWrites=true&w=majority`
-
-// mongoose.set('strictQuery',false)
-// mongoose.connect(url)
-
-// const noteSchema = new mongoose.Schema({
-//   content: String,
-//   important: Boolean,
-// })
-
-// noteSchema.set(`toJSON`, {
-//   transform: (document, returnedObject)=>{
-//   returnedObject.id = returnedObject._id.toString();
-//   delete returnedObject._id;
-//   delete returnedObject.__v;
-//   }
-// })
-
-// const Note = mongoose.model('Note', noteSchema)
-
-app.get('/api/notes', (request, response) => {
-    Note.find({}).then(notes => {
-      response.json(notes)
-    })
-  })
 
 let notes = [
   {
@@ -86,9 +57,12 @@ app.get("/", (request, response)=>{
     response.send(`<h1>Hello World!! Have fun!</h1>`)
 })
 
-// app.get("/api/notes", (request, response)=>{
-//     response.json(notes)
-// })
+app.get('/api/notes', (request, response) => {
+  Note.find({}).then(notes => {
+    response.json(notes)
+  })
+})
+
 const generatedId = () =>{
     const maxId= notes.length > 0
     ? Math.max(...notes.map(note =>note.id))
