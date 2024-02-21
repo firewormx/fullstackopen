@@ -68,7 +68,7 @@ const App = () => {
   const [showName, setShowName] = useState(true);
   const [newNumber, setNewNumber] = useState(``);
   const [search, setSearch] = useState(``);
-  const [notifications, setNotifications] = useState(`Added ${newName}`);
+  const [notifications, setNotifications] = useState(`Add ${newName}`);
 
 
   useEffect(()=>{
@@ -86,7 +86,23 @@ const newNameObject ={
   number: newNumber,
 }
 
-const existingPerson = persons.some(person => person.name === newName);
+// const note = notes.find(n => n.id === id);
+//   const changedNote = { ...note, important: !note.important };
+
+//   noteService.update(id, changedNote)
+//   .then(returnedNote => {
+//     setNotes(notes.map(note => note.id !== id ? note : returnedNote));
+
+//   }).catch(error =>{
+//     setErrorMessage(`Note "${note.content}" was already removed from server`);
+
+//     setTimeout(()=>{
+//     setErrorMessage(null);
+//     }, 5000);
+//   })
+//   }
+
+const existingPerson = persons.find(person => person.name === newName);
 
 if (existingPerson){
 const person = persons.find(per=> per.name === newName);
@@ -97,17 +113,20 @@ const changedPerson ={...person, number:newNumber};
     personService.update(person.id, changedPerson)
     .then(returnedPerson => {
       console.log(returnedPerson);
-    setPersons(persons.map(per =>per.id !== returnedPerson.id ? per : returnedPerson));
+      
+    setPersons(persons.map(per =>per.id !== person.id ? per : returnedPerson));
+    setNotifications(`Information of ${newName} has already been changed successful from server`);
+    setTimeout(()=>{
+      setNotifications(null);
+    }, 2000)
     })
     .catch(error => {
       console.log(error);
-  setNotifications(`Information of "${person.name}"has already been removed from server`);
   setTimeout(()=>{
     setNotifications(null);
   }, 2000)
-     setPersons(persons.filter(per => per.id !== person.id));
+    //  setPersons(persons.filter(per => per.id !== person.id));
     }
-      
       );
   
 }else{
@@ -117,10 +136,15 @@ const changedPerson ={...person, number:newNumber};
     setPersons(persons.concat(data));
     setNotifications(`Added ${data.name} ${data.number}`);
     setTimeout(()=>{
-     setNotifications(null);
+     setNotifications(null)
     },2000)
   }).catch(error => {
     console.error(error);
+    console.log(error.response.data.error);
+    setNotifications(error.response.data.error);
+    setTimeout(()=>{
+    setNotifications(null)
+    }, 2000)
   });
 }
   setNewName("");
