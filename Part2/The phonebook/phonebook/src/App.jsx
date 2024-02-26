@@ -144,7 +144,7 @@ const changedPerson ={...person, number:newNumber};
     setNotifications(error.response.data.error);
     setTimeout(()=>{
     setNotifications(null)
-    }, 2000)
+    }, 5000)
   });
 }
   setNewName("");

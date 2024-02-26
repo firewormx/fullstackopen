@@ -14,6 +14,15 @@ mongoose.connect(url)
     console.log('error connecting to MongoDB:', error.message)
   })
 
+const validator = number =>{
+  return /^\d{2,3}-\d+$/.test(number)
+}
+
+const validatorError =[
+  validator,
+"Error, please enter the phone number with the format `xx-xxxxx...`"
+]
+
 const phoneSchema = new mongoose.Schema({
    name: {
     type: String,
@@ -23,12 +32,7 @@ const phoneSchema = new mongoose.Schema({
    number: {
     type: String,
     minLength: 8,
-    validate:  {
-      validator: function(v){
-      return /\d{3}-\d{4}/.test(v);
-    },
-    message: props => `${props.path} must have length 5, got ${props.value}!`
-}, 
+    validate:  validatorError,
    required: true
 }
    })
