@@ -1,5 +1,5 @@
 {
-  "name": "hello",
+  "name": "notes",
   "version": "1.0.0",
   "description": "notes",
   "main": "index.js",
@@ -8,6 +8,7 @@
     "dev": "nodemon index.js",
     "test": "echo\"Error: no test specified\" && exit 1 ",
     "build:ui": "rm -rf dist && cd ../part2-notes-frontend-part2-1 && npm run build && cp -r dist ../notes-backend",
+    "lint": "eslint .",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "repository": {
@@ -25,6 +26,8 @@
     "n": "^9.2.0"
   },
   "devDependencies": {
+    "@stylistic/eslint-plugin-js": "^1.6.2",
+    "eslint": "^8.56.0",
     "nodemon": "^3.0.1"
   }
 }

@@ -20,12 +20,12 @@ mongoose.connect(url).then(()=>{
   
   const Note = mongoose.model('Note', noteSchema)
   
-  const note = new Note(
-   {
-    content: 'MongoDB database is awsome!!',
-    important: true
-  }
-  )
+  // const note = new Note(
+  //  {
+  //   content: 'MongoDB database is awsome!!',
+  //   important: true
+  // }
+  // )
 
 // note.save().then(result => {
 //   console.log('note saved!')
