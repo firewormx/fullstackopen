@@ -27,8 +27,8 @@ const phonebook = new Phonebook({
 })
 //if password, name and number are given as command-line arguments, add the person to the phonebook
 if(process.argv.length === 5){
-(() => {
-        console.log('new phone item saved!');
+    phonebook.save().then(() => {
+        console.log('new phone item saved!')
         console.log(`added ${process.argv[3]} number ${process.argv[4]} to phonebook`)
         mongoose.connection.close()
     })
