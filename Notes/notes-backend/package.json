@@ -4,9 +4,9 @@
   "description": "notes",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "echo\"Error: no test specified\" && exit 1 ",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "test": "cross-env NODE_ENV=test node --test",
     "build:ui": "rm -rf dist && cd ../part2-notes-frontend-part2-1 && npm run build && cp -r dist ../notes-backend",
     "lint": "eslint .",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
@@ -18,16 +18,20 @@
   "author": "hotaru",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.4",
     "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
     "latest": "^0.2.0",
-    "mongoose": "^8.1.2",
-    "n": "^9.2.0"
+    "mongoose": "^8.1.2"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin-js": "^1.6.2",
+    "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.4"
   }
 }

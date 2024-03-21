@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json 
 
 {
-    "title" :"British News",
-    "author" :"Benjamin",
-    "url": "https://britishnews.uk",
-    "likes" : 102
+    "title" :" Shibuya News",
+    "author" :"Hachiko",
+    "url": "https://shibuyanews.com",
+    "likes" : 180
 }

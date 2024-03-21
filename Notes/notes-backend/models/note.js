@@ -8,8 +8,13 @@ const noteSchema = new mongoose.Schema({
         required: true // build-in validators of mongoose
     },
     important: Boolean,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 })
-
+// function tranform(doc, ret, options){...} transform the resulting objs based on some criteria.
+//doc means mongoose docs which is being converted.ret means the plain obj representation has been converted.
 noteSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString()

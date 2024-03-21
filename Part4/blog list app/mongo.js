@@ -22,10 +22,10 @@ mongoose.connect(url).then(() => {
     const Blog = mongoose.model('Blog', blogSchema)
     
     const blog = new Blog({
-        title: 'Tokyo News',
-        author: 'Akita Mie',
-        url: 'http://newsTokyo.com',
-        likes: 101
+        title: 'China News',
+        author: 'Lili Wang',
+        url: 'http://newsChina.com',
+        likes: 103
     })
 
     // blog.save().then(() => {
