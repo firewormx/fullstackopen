@@ -1,9 +1,13 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtha2EiLCJpZCI6IjY2MDBlNWI1ODBkNjg3MDhlMDlhMmM5ZCIsImlhdCI6MTcxMTM2MTUzOH0.IzTEAWjf0TnBSsyVzM15hK0lkwCp3HSv3yK5XnNR8gU
+
 
 {
-    "title" :" Shibuya News",
-    "author" :"Hachiko",
-    "url": "https://shibuyanews.com",
-    "likes" : 180
+    "title" :" redball News",
+    "author" :"redball",
+    "url": "https://village5.com",
+    "likes" : 206,
+    "userId": "6600e64680d68708e09a2ca3"
 }
+

@@ -23,7 +23,7 @@ usersRouter.post('/', async (request, response) => {
 usersRouter.get('/', async(request, response) => {
     //Mongoose join is done with populate method, returns an array of note documents
     //instead of ids referencing note objs in the nots field of the user document.
-    // use the populate parameter for choosing the fields we want to inculde from documents.
+    // use the populate parameter for choosing the fields we want to include from documents.
     const users = await User.find({}).populate('notes', { content: 1, important: 1 } )
     response.json(users)
 })
