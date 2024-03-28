@@ -1,11 +1,11 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNvc28iLCJpZCI6IjY2MDUyNjJmZWRkNWZjNDY0Zjk4Mjc3NCIsImlhdCI6MTcxMTYxNjgzOX0.7sOUmq2fBKs24sPwJ6U3BIYhetOj-VJCk8xw1fbRzDw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNvc28iLCJpZCI6IjY2MDUyNjJmZWRkNWZjNDY0Zjk4Mjc3NCIsImlhdCI6MTcxMTYyMTUwMCwiZXhwIjoxNzExNjI1MTAwfQ.pGzKzDX9eB4V_caROrE4U2M-03gEIRIJ7zvH5lwNENk
 
 {
-    "author":"Someone",
-    "title" :"Flower News Finally!",
-    "url": "https://village9.com",
-    "likes" : 212,
-    "user": "6605262fedd5fc464f982774"
+    "author":"JJlin",
+    "title" :"added middleware so that can call request.token!",
+    "url": "https://village11.com",
+    "likes" : 213,
+    "userId": "6605262fedd5fc464f982774"
 }
