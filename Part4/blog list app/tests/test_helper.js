@@ -1,5 +1,6 @@
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const bcrypt = require('bcrypt')
 
 const initialBlogs = [
     {
@@ -15,6 +16,41 @@ const initialBlogs = [
         likes: 120,
     }
 ]
+
+const malformedBlogs = [
+    {
+        title: 'Test without likes count',
+        author: 'Mario',
+        url: 'http://test.com/',
+    },
+    {
+        author: 'Mario',
+        url: 'http://testWithoutTitle.com/',
+        likes: 30
+    },
+    {
+        title: 'Test without url',
+        author: 'Dario',
+        likes: 10,
+    }
+]
+
+
+const initializeDb = async () => {
+    await Blog.deleteMany({})
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('testpass', 10)
+    const user = new User({ name: 'Nuria', username: 'nlin4575', password: passwordHash })
+    const savedUser = await user.save()
+
+    const blogsObjects = initialBlogs.map(blog => {
+        blog.user = savedUser.id
+        return new Blog(blog)//array of mongoose obj
+    })
+
+    await Promise.all(blogsObjects.map(blogObject => blogObject.save()))
+}
 
 const nonExistingId = async () => {
     const blog = new Blog({ content: 'willremovethissoon' })
@@ -34,6 +70,11 @@ const usersInDb = async() => {
     return users.map(user => user.toJSON())
 }
 
+const userForTests = async() => {
+    const user = await User.findOne({ username: 'nlin4575' })
+    return user
+}
+
 module.exports = {
-    initialBlogs, nonExistingId, blogsInDb, usersInDb
+    initialBlogs, nonExistingId, blogsInDb, usersInDb, initializeDb, userForTests, malformedBlogs
 }

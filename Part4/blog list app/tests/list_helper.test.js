@@ -3,13 +3,7 @@ const { test, describe } = require('node:test')
 const assert = require('node:assert')// assert.strictEqual/deepStrictEqual(actual, expected[,message])
 const listHelper = require('../utils/list_helper')
 
-test('dummy returns one', () => {
-    const blogs = []
-
-    const result = listHelper.dummy(blogs)
-    assert.strictEqual(result, 1)
-})
-
+const dummy = listHelper.dummy
 const totalLikes = listHelper.totalLikes
 const favoriteBlog = listHelper.favoriteBlog
 const mostBlogs = listHelper.mostBlogs
@@ -66,16 +60,25 @@ const blogs = [
     }
 ]
 
-describe('total likes', () => {
+const listOneBlog = [{
+    _id: '5a422aa71b54a676234d17f8',
+    title: 'Go To Statement Considered Harmful',
+    author: 'Edsger W. Dijkstra',
+    url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+    likes: 5,
+    __v: 0
+}]
 
-    const listOneBlog = [{
-        _id: '5a422aa71b54a676234d17f8',
-        title: 'Go To Statement Considered Harmful',
-        author: 'Edsger W. Dijkstra',
-        url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
-        likes: 5,
-        __v: 0
-    }]
+describe('Dummy function', () => {
+    test('dummy returns one', () => {
+        const blogs = []
+        const result = dummy(blogs)
+
+        assert.strictEqual(result, 1)
+    })
+})
+
+describe('total likes', () => {
 
     test('of empty list is zero', () => {
         const emptyblog = []
@@ -108,7 +111,12 @@ describe('the most author', () => {
     })
 })
 
-describe('the most likes author', () => {
+describe('the author with the most likes', () => {
+    test('of empty list is undefined', () => {
+        assert.strictEqual(mostLikes([]), undefined)
+    })
+
+
     test('Edsger W. Dijkstra', () => {
         assert.deepStrictEqual(mostLikes(blogs), {
             author: "Edsger W. Dijkstra",
