@@ -12,28 +12,36 @@ const totalLikes = (blogs) => {
     return blogs.length === 0 ? 0 : sum
 }
 
-const favoriteBlog = (blogs) => {
-    const likesArray= blogs.map(blog => blog.likes)
-    const largestIndex = likesArray.indexOf(Math.max(...likesArray))
-    const largestinfo= blogs[largestIndex]
+// const favoriteBlog = (blogs) => {
 
-    return {
-        title: largestinfo.title,
-        author: largestinfo.author,
-        likes:  largestinfo.likes
-    }
+//     if(blogs.length === 0) return undefined
+
+//     const likesArray= blogs.map(blog => blog.likes)
+//     const largestIndex = likesArray.indexOf(Math.max(...likesArray))
+//     const largestinfo= blogs[largestIndex]
+
+//     return {
+//         title: largestinfo.title,
+//         author: largestinfo.author,
+//         likes:  largestinfo.likes
+//     }
+// }
+const favoriteBlog = blogs => {
+    if (blogs.length === 0) return undefined
+
+    const blogsSortedByLikes = blogs.sort((a, b) => b.likes - a.likes)
+    return blogsSortedByLikes[0]
 }
 
 const mostBlogs = (blogs) => {
-    if(blogs.length === 0) return { author:'', blogs: 0 }
-    //_.groupBy(collection, [iteratee=_.identity]). {'a':[{}], 'b':[{},{}], 'c':[{},{},{}]}
+    if(blogs.length === 0) return undefined
+    //_.groupBy(collection, [iteratee=_.identity])
     const groupedBlogs =_.groupBy(blogs, 'author')
     //_.mapValues(object, [iteratee=_.identity]). the 2nd params is the func invoked per iteration.
-    //{'3':[{}x3], '2':[{}x2], '1':[{}]}
     const blogsAuthor =_.mapValues(groupedBlogs, 'length')
 
     const toArrayAuthor = Object.entries(blogsAuthor)
-    const mayorPair = toArrayAuthor.reduce((a,b) => (a[1] > b[1] ? a : b)) //??
+    const mayorPair = toArrayAuthor.reduce((a,b) => (a[1] > b[1] ? a : b))
     return {
         author: mayorPair[0],
         blogs: mayorPair[1]
@@ -41,7 +49,7 @@ const mostBlogs = (blogs) => {
 }
 
 const mostLikes = blogs => {
-    if(blogs.length === 0) return { author: '', likes: 0 }
+    if(blogs.length === 0) return undefined
 
     const likes = blogs => {
         return blogs.reduce((sum, blog) => sum + blog.likes, 0)

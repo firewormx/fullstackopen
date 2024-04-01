@@ -1,11 +1,11 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNvc28iLCJpZCI6IjY2MDUyNjJmZWRkNWZjNDY0Zjk4Mjc3NCIsImlhdCI6MTcxMTYyMTUwMCwiZXhwIjoxNzExNjI1MTAwfQ.pGzKzDX9eB4V_caROrE4U2M-03gEIRIJ7zvH5lwNENk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkVtbXkiLCJpZCI6IjY2MDYyNTJlYWM5OWE4NjU5NzNlYWQyNyIsImlhdCI6MTcxMTY3ODg0OCwiZXhwIjoxNzExNjgyNDQ4fQ.nWpk4NcwwUqXDNDtVsFoa_aAdd6sla53KDEUOBXUNr4
 
 {
-    "author":"JJlin",
-    "title" :"added middleware so that can call request.token!",
-    "url": "https://village11.com",
-    "likes" : 213,
-    "userId": "6605262fedd5fc464f982774"
+    "author":"Emmy",
+    "title" :"listen to the sea again!",
+    "url": "https://village14.com",
+    "likes" : 216,
+    "userId": "6606252eac99a865973ead27"
 }

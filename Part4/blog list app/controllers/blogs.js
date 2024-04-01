@@ -1,8 +1,6 @@
 // define routers. create blogsRouter as a middleware with .Router() method of express.
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-const User = require('../models/user')
-const jwt = require('jsonwebtoken')
 
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
@@ -17,22 +15,10 @@ blogsRouter.get('/:id', async(request, response) => {
         response.status(400).end()
     }
 })
-// const getTokenFrom = request => {
-//     const authorization = request.get('authorization')
-//     if (authorization && authorization.startsWith('Bearer ')) {
-//         return authorization.replace('Bearer ', '')
-//     }
-//     return null
-// }
 
 blogsRouter.post('/', async(request, response) => {
     const body = request.body
-
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if (!decodedToken.id) {
-        return response.status(401).json({ error: 'token invalid' })
-    }
-    const user = await User.findById(decodedToken.id)
+    const user= request.user
 
     const { title, url, author, likes } = body
 
@@ -59,7 +45,7 @@ blogsRouter.delete('/:id', async(request, response) => {
     const blog = await Blog.findById(id)
 
     if(!blog) return response.status(400).json({ error: `Blog by Id ${id} does not exist` })
-    if(!request.token) return response.status(401).json({ error: 'token needed for deleting entries' })
+    if(!request.token) return response.status(401).json({ error: 'token is needed for deleting entries' })
 
     if(blog.user.toString() !== user._id.toString()){
         return response.status(401).json({ error: 'the blogs can only be deleted by the creator' })

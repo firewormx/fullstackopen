@@ -7,13 +7,28 @@ const initialBlogs = [
         title: 'Taiwan News',
         author:'Kelly Tsai',
         url:'http://taiwan.com',
-        likes: 110
+        likes: 110,
     },
     {
         title: 'Wuhan News',
         author: ' Fang Fang',
         url: 'http://wuhan.com',
         likes: 120,
+    }
+]
+
+const testBlogs = [
+    {
+        title: 'Saginuma News',
+        author: 'Mochida',
+        url: 'http://kanagawa.com',
+        likes: 130
+    },
+    {
+        title: 'Aoba News',
+        author: 'Aoba',
+        url: 'http://aoba.com',
+        likes: 140
     }
 ]
 
@@ -29,10 +44,11 @@ const malformedBlogs = [
         likes: 30
     },
     {
-        title: 'Test without url',
-        author: 'Dario',
+        title: 'Test without author',
+        url: 'http://testWithoutAuthor.com/',
         likes: 10,
-    }
+    },
+
 ]
 
 
@@ -60,7 +76,7 @@ const nonExistingId = async () => {
     return blog._id.toString()
 }
 
-const blogsInDb = async () => {
+const blogsInDb = async() => {
     const blogs = await Blog.find({})
     return blogs.map(blog => blog.toJSON())
 }
@@ -76,5 +92,5 @@ const userForTests = async() => {
 }
 
 module.exports = {
-    initialBlogs, nonExistingId, blogsInDb, usersInDb, initializeDb, userForTests, malformedBlogs
+    initialBlogs, nonExistingId, blogsInDb, usersInDb, initializeDb, userForTests, malformedBlogs, testBlogs
 }

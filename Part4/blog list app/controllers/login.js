@@ -6,9 +6,7 @@ const loginRouter = require('express').Router()
 loginRouter.post('/', async(request, response) => {
     const { username, password } = request.body
     const user = await User.findOne({ username })
-    const passwordCorrect = user === null
-        ? false
-        : await bcrypt.compare(password, user.passwordHash)
+    const passwordCorrect = user ? bcrypt.compare(password, user.password) : false
 
     if(!(username && passwordCorrect)){
         return response.status(401).json({
@@ -25,7 +23,7 @@ loginRouter.post('/', async(request, response) => {
         process.env.SECRET,
         { expiresIn: 60 * 60 }
     ) // token expires in 1h
-    response.status(200).send({ token, username: user.username, name: user.name, id: user._id })
+    response.status(200).send({ token, username: user.username, name: user.name })
 })
 
 module.exports = loginRouter
