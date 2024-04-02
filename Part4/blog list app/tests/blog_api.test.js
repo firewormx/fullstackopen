@@ -29,7 +29,6 @@ describe('Obtention of blogs from the database', () => {
     test('returns them in JSON format', async() => {
         const blogs = await api
             .get('/api/blogs')
-            .set({ Authorization: authorization })
             .expect(200)
             .expect('Content-Type', /application\/json/)
 
@@ -91,7 +90,6 @@ test('fails if the blog has no title', async() => {
 
     const blogs = await helper.blogsInDb()
     assert.strictEqual(blogs.length, blogsAtStart.length)
-
 })
 
 

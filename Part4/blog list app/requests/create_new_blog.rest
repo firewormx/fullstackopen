@@ -1,11 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkVtbXkiLCJpZCI6IjY2MDYyNTJlYWM5OWE4NjU5NzNlYWQyNyIsImlhdCI6MTcxMTY3ODg0OCwiZXhwIjoxNzExNjgyNDQ4fQ.nWpk4NcwwUqXDNDtVsFoa_aAdd6sla53KDEUOBXUNr4
-
-{
-    "author":"Emmy",
-    "title" :"listen to the sea again!",
-    "url": "https://village14.com",
-    "likes" : 216,
-    "userId": "6606252eac99a865973ead27"
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkZlbGl4IiwiaWQiOiI2NjBiNWYzOTJkZjI2OTI2ODE1NzcwZTMiLCJpYXQiOjE3MTIwMjE5NjQsImV4cCI6MTcxMjAyNTU2NH0.b0npNAR8Ojb2Sii5uwO6IcjRUJdE0Mw0CurSCa2mGUk
+   
+   {
+    "author":"Sofie",
+    "title" :"Welcome!",
+    "url": "https://yuqiao.com",
+    "likes" : 219
 }
