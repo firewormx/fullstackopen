@@ -3,6 +3,6 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRva2VuIiwiaWQiOiI2NWY5NGQ1ZTViZTA0OTg2ODNhZDliNzIiLCJpYXQiOjE3MTA5MDMyNjh9.tMPWyHOsfqt-dQY9VgN1HHxAqPsD9nhqppyAsRt0sFQ
   
   {
-    "content": "add new notes to existed user by providing user's login token ",
+    "content": "test adding new note with exist token  ",
     "important": true
 }

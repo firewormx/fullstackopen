@@ -1,28 +1,39 @@
-import Note from './components/Note'
 import { useState, useEffect } from 'react';
-import noteService from "./services/notes";
+import Note from './components/Note'
 import Notification from "./components/Notification";
 import Footer from "./components/Footer";
+import noteService from "./services/notes";
+import loginService from './services/login';
 
 const App = () => {
   const [notes, setNotes] = useState([]);
-  const [newNote, setNewNote] = useState("");
+  const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
 
-  useEffect(()=>{
-    // console.log("effect");
-   noteService.getAll()
-   .then(initialNotes =>{
-    setNotes(initialNotes)
-   })
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      noteService.setToken(user.token)
+    }
   }, [])
 
-console.log(`render`, notes.length, `notes`);
 
-  const addNotes =(event) =>{
+  useEffect(() =>{
+    noteService.getAll()
+    .then(initialNotes =>{
+     setNotes(initialNotes)
+    })
+   }, [])
+
+  const addNote =(event) =>{
     event.preventDefault();
-
  const noteObject ={
   content: newNote,
   important: Math.random() > 0.5,
@@ -32,39 +43,96 @@ console.log(`render`, notes.length, `notes`);
  .create(noteObject)
  .then(returnedNote => {
    setNotes(notes.concat(returnedNote));
-   setNewNote("")
+   setNewNote('')
  });
   }
-  
+
   const toggleImportanceOf= (id) =>{
     console.log(`importance of ${id} nedds to be toggled`);
 
   const note = notes.find(n => n.id === id);
   const changedNote = { ...note, important: !note.important };
 
-  noteService.update(id, changedNote)
+  noteService
+  .update(id, changedNote)
   .then(returnedNote => {
-    setNotes(notes.map(note => note.id !== id ? note : changedNote));
-
-  }).catch(error =>{
-    setErrorMessage(`Note "${note.content}" was already removed from server`);
+    setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+  })
+  .catch(error =>{
+    setErrorMessage(`Note '${note.content}' was already removed from server`)
 
     setTimeout(()=>{
     setErrorMessage(null);
     }, 5000);
   })
   }
+
   const handleNoteChange = (event) =>{
-    console.log(event.target.value);
-    setNewNote(event.target.value);
+    console.log(event.target.value)
+    setNewNote(event.target.value)
     }
 
-    const notesToShow = showAll ? notes : notes.filter(note=> note.important);
+  const handleLogin = async (event)=>{
+    event.preventDefault()
+    console.log('logging in with', username, password)
+
+   try{
+  const user = await loginService.login({username, password})
+  
+   window.localStorage.setItem(
+    'loggedNoteappUser', JSON.stringify(user)
+   )
+  
+    noteService.setToken(user.token)
+    setUser(user)
+    setUsername('')
+    setPassword('')
+   }catch(exception){
+    setErrorMessage('Wrong credentials')
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+   }
+  }
+
+    const notesToShow = showAll 
+    ? notes
+    : notes.filter(note => note.important);
+
+    const loginForm = () => {
+      <form onSubmit ={handleLogin}>
+      <div>username 
+        <input type="text" value={username} name="Username" onChange={({target})=> setUsername(target.value)}/>
+       
+    </div>
+    <div>password
+      <input type="text" value={password} name='Password' onChange={({target}) => setPassword(target.value)}/>
+    </div>
+    <button type="submit">login</button>
+          </form>
+    }
+
+    const noteForm = () => {
+      <form onSubmit={ addNote} id="newnote">
+      <input value={newNote} 
+      onChange={handleNoteChange}
+      name="newnote"/>
+      <button type="submit">save</button>
+      </form>
+    }
 
   return (
     <div>
       <h1>Notes</h1>
       <Notification message={errorMessage} />
+
+      {!user && loginForm()}
+      {user && <div> 
+        <p>{user.name} logged in</p>
+          {noteForm()}
+          </div>
+          }
+
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all' }
@@ -76,12 +144,6 @@ console.log(`render`, notes.length, `notes`);
           toggleImportance={()=>toggleImportanceOf(note.id)}/>
         )}
       </ul>
-      <form onSubmit={addNotes} id="newnote">
-      <input value={newNote} 
-      onChange={handleNoteChange}
-      name="newnote"/>
-      <button type="submit">save</button>
-      </form>
       <Footer />
     </div>
   )
