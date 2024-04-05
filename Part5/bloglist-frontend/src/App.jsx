@@ -3,7 +3,6 @@ import Blog from './components/Blog'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import "./app.css"
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -36,22 +35,24 @@ const App = () => {
     event.preventDefault()
   try{
     const user = await loginService.login({username, password})
+    setUser(user)
     window.localStorage.setItem(
       'loggedInUser', JSON.stringify(user)
     ) 
-   blogService.setToken(user.token)
-    setUser(user)
-    setNotification([`${user.name} logged in successfully!`, true])
     setUsername('')
     setPassword('')
+   blogService.setToken(user.token)
+
+    setNotification([`${user.name} logged in successfully!`, true])
+
     setTimeout(()=> {
       setNotification(["", true])
     },5000)
   }catch(exception){
   setErrorMessage('invalid credentials')
+  console.error('Wrong credentials', exception)
   setNotification(['wrong username or password', false])
-  setTimeout(()=>{
-  setErrorMessage(null)
+  setTimeout(()=>{ 
   setNotification(["", true])
   }, 5000)
   }
@@ -66,41 +67,32 @@ setTimeout(()=> {
 }, 2000)
 }
 
-const createBlog = async() => {
-  const blog = {title, author, url}
-try{
-   await blogService.create(blog)
-  //  setBlogs(response.data)
-  setTimeout(() => {
-    setNotification(["", true])
-  }, 3000)
-}catch(exception){
-  setNotification(['blog cannot be created', false])
-  setTimeout(()=>{
-    setNotification(["", true])
-    }, 3000)
-    }
-}
-
-const addBlog = (event) => {
+const addBlog = async (event) => {
   event.preventDefault()
   const newBlog= {
-    title,
+  title,
   author,
   url
   }
-  blogService
-    .create(newBlog)
-      .then(returnedBlog => {
-      setBlogs(blogs.concat(returnedBlog))
-      setNotification([`${returnedBlog.title} is added by ${user.name}!`, true])
-      setTimeout(()=> {
-      setNotification(['', true])
-      }, 3000)
-      setAuthor('')
-      setTitle('')
-      setUrl('')
-    })
+  try{
+    const returnedBlog = await blogService.create(newBlog)
+    setBlogs(blogs.concat(returnedBlog))
+    setNotification([`${returnedBlog.title} is added by ${user.name}!`, true])
+
+    setTimeout(()=> {
+    setNotification(['', true])
+    }, 3000)
+  }catch(error){
+    setBlogs(blogs.concat(returnedBlog))
+    setNotification([`${returnedBlog.title} is added by ${user.name}!`, true])
+    setTimeout(()=> {
+    setNotification(['', true])
+    }, 3000)
+  }
+
+    setAuthor('')
+    setTitle('')
+    setUrl('')
 }
 
 const CreateNewForm = () => {
@@ -132,7 +124,7 @@ return (
     <input  type ='text' value={password} name="password" onChange = {({target}) => setPassword(target.value)}/>
   </div>
   </div>  
-  <button type="submit" onClick = {handleLogOut}>login</button>
+  <button type="submit">login</button>
   </form>
 )
 }
@@ -144,7 +136,7 @@ return (
       <p>{user.name} logged in</p>       
       <button type="submit" onClick= {handleLogOut}>logout</button>
       <hr></hr>
-      <CreateNewForm createBlog= {createBlog} />
+      <CreateNewForm />
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} user={user} />
       )}
