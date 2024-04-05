@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import LoginForm from "./components/LoginForm"
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -108,26 +109,20 @@ return (
 </div>
 )
 }
-
-if(user === null){
-return (
-  <form onSubmit = {handleLogin}>
-  <div>
-    <h2>Log in to application</h2>
-    <Notification notification= {notification}/>
-  <div>
-    username
-    <input type ='text' value={username} name ="username" onChange = {({target}) => setUsername(target.value)}/>
-  </div>
-  <div>
-    password
-    <input  type ='text' value={password} name="password" onChange = {({target}) => setPassword(target.value)}/>
-  </div>
-  </div>  
-  <button type="submit">login</button>
-  </form>
-)
+const handleUsernameChange = ({target}) => {
+setUsername(target.value)
 }
+
+const handlePasswordChange = ({target}) => {
+setPassword(target.value)
+}
+
+if(user === null) return <LoginForm handleUsernameChange = {handleUsernameChange}
+handlePasswordChange = {handlePasswordChange}
+username = {username}
+password= {password}
+handleLogin ={handleLogin}
+/>
 
   return (
     <div>
