@@ -1,16 +1,8 @@
 const LoginForm = (props)=> {
-
-    const hideWhenVisible = {display: props.loginVisible ? 'none' : ''}
-    const showWhenVisible = {display: props.loginVisible ? ''  : 'none'}
-
 return (
     <div>
-    <div style ={hideWhenVisible}>
-        <button type="submit" onClick= {props.onLoginButton}>login</button>
-    </div>
-    <div style={showWhenVisible}>
+    <h2>Login</h2>
 <form onSubmit={props.onLogin}>
-        <h2>Login</h2>
       <div>
         username
           <input
@@ -29,11 +21,9 @@ return (
           onChange={props.onPasswordChange}
         />
       </div>
-     <div><button type="submit" onClick={props.onLogin}>login</button></div> 
+    <button type="submit">login</button>
     </form>  
-    <button type="submit" onClick ={props.onCancelButton}>cancel</button> 
     </div>  
-    </div>
 )
      }
 

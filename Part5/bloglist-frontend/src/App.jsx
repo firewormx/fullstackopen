@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from "./components/LoginForm"
+import Togglable from './components/Togglable'
+import CreateNewForm from './components/CreateNewForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -11,10 +13,10 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [notification, setNotification] = useState(['', true])
+  const [updateBlogs, setUpdateBlogs]= useState(false)
+
+  const newBlogRef = useRef()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInUser')
@@ -27,10 +29,26 @@ const App = () => {
 
   
   useEffect(() => {
-    blogService.getAll().then(blogs =>
+    blogService.getAll().then(blogs =>{
+      blogs.sort((a,b)=> b.likes - a.likes)
       setBlogs( blogs )
-    )  
-  }, [])
+    } )  
+  }, [updateBlogs])
+
+  const toggleLikesOf = async(id) => {
+    const blog = blogs.find(blog => blog.id === id)
+    const changedBlog = {...blog, likes: blog.likes +1}
+    try{
+    const returnedBlog = await blogService.update(id, changedBlog)
+     setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+     setUpdateBlogs(!updateBlogs)
+    }catch(error){
+      setErrorMessage(`Note ${blog.likes} was already removed from server`)
+      setTimeout(()=>{
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -68,16 +86,14 @@ setTimeout(()=> {
 }, 2000)
 }
 
-const addBlog = async (event) => {
-  event.preventDefault()
-  const newBlog= {
-  title,
-  author,
-  url
-  }
+const addBlog = async (newBlog) => {
+
+newBlogRef.current.handleVisibleButton()
+
   try{
     const returnedBlog = await blogService.create(newBlog)
     setBlogs(blogs.concat(returnedBlog))
+    setUpdateBlogs(!updateBlogs)
     setNotification([`${returnedBlog.title} is added by ${user.name}!`, true])
 
     setTimeout(()=> {
@@ -90,25 +106,8 @@ const addBlog = async (event) => {
     setNotification(['', true])
     }, 3000)
   }
-
-    setAuthor('')
-    setTitle('')
-    setUrl('')
 }
 
-const CreateNewForm = () => {
-return (
-  <div>
-  <h2>Create new </h2>
-<form onSubmit={addBlog}>
-  <div>title:<input type="text" value ={title} name="title" onChange = {({target}) => setTitle(target.value)}/></div>
-  <div>author:<input type="text" value ={author} name="author" onChange = {({target}) => setAuthor(target.value)}/></div>
-  <div>url: <input  type="text" value ={url} name="url" onChange = {({target}) => setUrl(target.value)}/></div>
-  <button type="submit">create</button>
-</form>
-</div>
-)
-}
 const handleUsernameChange = ({target}) => {
 setUsername(target.value)
 }
@@ -116,6 +115,27 @@ setUsername(target.value)
 const handlePasswordChange = ({target}) => {
 setPassword(target.value)
 }
+
+
+const deleteBlog = async(id) => {
+  try{
+    await blogService.remove(id)
+    setUpdateBlogs(!updateBlogs)
+setNotification([`Blog successfully removed`, true])
+
+setTimeout(() => {
+  setNotification(["", true])
+}, 3000)
+
+  }catch(error){
+    console.log('error happens when deleting the blog', error)
+    setNotification([`Blog by Id ${id} does not exist`, false] )
+    setTimeout(() => {
+      setNotification(["", true])
+    }, 3000)
+  }
+  }
+
 
 if(user === null) return <LoginForm handleUsernameChange = {handleUsernameChange}
 handlePasswordChange = {handlePasswordChange}
@@ -131,10 +151,19 @@ handleLogin ={handleLogin}
       <p>{user.name} logged in</p>       
       <button type="submit" onClick= {handleLogOut}>logout</button>
       <hr></hr>
-      <CreateNewForm />
+      <Togglable buttonLabel= 'create new note' ref={newBlogRef}>
+      <CreateNewForm addBlog={addBlog}/>
+      </Togglable>
+      <br></br>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} user={user} />
+      <Blog key={blog.id}
+         blog={blog} 
+         user={user}
+         toggleLikes={()=> toggleLikesOf(blog.id)} 
+         deleteBlog ={()=> deleteBlog(blog.id)}
+         />
       )}
+
     </div>
   )
       }
