@@ -18,9 +18,6 @@ const Blog = ({ blog, user, toggleLikes, deleteBlog}) => {
     marginBottom:5
   }
 
-// const label = () =>{
-//  blog ? 'view ' : 'hide'
-// }
 const handleRemoveButton = () => {
   if(window.confirm(`Removing blog ${blog.title} by ${user.name}`)){
    deleteBlog(blog.id)

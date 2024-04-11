@@ -41,7 +41,9 @@ const App = () => {
     try{
     const returnedBlog = await blogService.update(id, changedBlog)
      setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+
      setUpdateBlogs(!updateBlogs)
+
     }catch(error){
       setErrorMessage(`Note ${blog.likes} was already removed from server`)
       setTimeout(()=>{
@@ -93,7 +95,9 @@ newBlogRef.current.handleVisibleButton()
   try{
     const returnedBlog = await blogService.create(newBlog)
     setBlogs(blogs.concat(returnedBlog))
+
     setUpdateBlogs(!updateBlogs)
+    
     setNotification([`${returnedBlog.title} is added by ${user.name}!`, true])
 
     setTimeout(()=> {
