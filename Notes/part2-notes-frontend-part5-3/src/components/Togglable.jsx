@@ -1,5 +1,6 @@
-import { useState, forwardRef, useImperativeHandle} from 'react'
+import { useState, forwardRef, useImperativeHandle } from 'react'
 // forwardRef lets your component expose a DOM node to parent component with a ref.
+import PropTypes from 'prop-types'
 
 const Togglable = forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false)
@@ -11,11 +12,11 @@ const Togglable = forwardRef((props, ref) => {
     setVisible(!visible)
   }
 
-// useImperativeHandle(ref, createHandle, dependencies?), React hook to customize the handle exposed as a ref.
+  // useImperativeHandle(ref, createHandle, dependencies?), React hook to customize the handle exposed as a ref.
   useImperativeHandle(ref,() => {
-return {
-    toggleVisibility
-}
+    return {
+      toggleVisibility
+    }
   })
 
   return (
@@ -29,6 +30,11 @@ return {
       </div>
     </div>
   )
+})
+
+Togglable.propTypes = {
+  buttonLabel: PropTypes.string.isRequired
 }
-)
+Togglable.displayName = 'Togglable'
+
 export default Togglable
