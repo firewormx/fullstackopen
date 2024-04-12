@@ -1,13 +1,13 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-const Blog = ({ blog, user, toggleLikes, deleteBlog}) => {
+const Blog = ({ blog, user, toggleLikes, deleteBlog }) => {
 
   const [visible, setVisible] = useState(false)
-  const hideWhenVisible = {display: visible ? 'none' : ''}
-  const showWhenVisible = {display: visible ? '' : 'none'}
-  
+  const hideWhenVisible = { display: visible ? 'none' : '' }
+  const showWhenVisible = { display: visible ? '' : 'none' }
+
   const handleVisibleButton = () => {
-  setVisible(!visible)
+    setVisible(!visible)
   }
 
   const blogStyle = {
@@ -18,36 +18,36 @@ const Blog = ({ blog, user, toggleLikes, deleteBlog}) => {
     marginBottom:5
   }
 
-const handleRemoveButton = () => {
-  if(window.confirm(`Removing blog ${blog.title} by ${user.name}`)){
-   deleteBlog(blog.id)
+  const handleRemoveButton = () => {
+    if(window.confirm(`Removing blog ${blog.title} by ${user.name}`)){
+      deleteBlog(blog.id)
+    }
   }
-}
 
 
   return (
     <div style={blogStyle}>
-  <div style={hideWhenVisible} >
-    {blog.title} {blog.author} 
-    <button onClick={handleVisibleButton}>view</button>
-    </div> 
+      <div style={hideWhenVisible} >
+        {blog.title} {blog.author}
+        <button onClick={handleVisibleButton}>view</button>
+      </div>
 
-    <div style={showWhenVisible}>
-    {blog.title} {blog.author} 
-    <button onClick={handleVisibleButton}>hide</button>
-    <br/>
-<div>{blog.url}</div>
-<div>
-  {blog.likes}
-<button onClick={toggleLikes}>like</button>
-</div>
-<div>{blog.author}</div>
-</div>
+      <div style={showWhenVisible}>
+        {blog.title} {blog.author}
+        <button onClick={handleVisibleButton}>hide</button>
+        <br/>
+        <div>{blog.url}</div>
+        <div>
+          {blog.likes}
+          <button onClick={toggleLikes}>like</button>
+        </div>
+        <div>{blog.author}</div>
+      </div>
 
-    <button onClick={handleRemoveButton}>remove</button>
-  </div>
+      <button onClick={handleRemoveButton}>remove</button>
+    </div>
 
-)
-  }
+  )
+}
 
 export default Blog
