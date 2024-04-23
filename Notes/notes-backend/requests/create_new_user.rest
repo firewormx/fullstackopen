@@ -7,3 +7,12 @@ Content-Type: application/json
     "password": "haha",
     "userId": "65f154e1597f60679a82bcad"
 }
+
+#   {
+#     "username": "test rainny",
+#     "name": "rainny",
+#     "password": "rainny",
+#     "userId": "65f154e1597f60679a82bcad"
+#     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QgcmFpbm55IiwiaWQiOiI2NjI3NzdiYzE3MTEyMTAzZjEyMWI1ZmIiLCJpYXQiOjE3MTM4NjI3MDYsImV4cCI6MTcxMzg2NjMwNn0.a41_mQlysKS5lS1cHogvuu0XGppSXUF-WoXoenTtbeY",
+
+# }
