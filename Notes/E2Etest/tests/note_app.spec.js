@@ -1,12 +1,13 @@
 //npx playwright test
-//npx palywright test --ui
+//npx playwright test --ui
+// for debug : npx playwright test note_app.spec.js:66 --debug
 const { test, describe, expect, beforeEach } = require('@playwright/test')
 const {loginWith, createNote} = require('./helper')
 
 describe('Note app', () => {
   beforeEach(async({page, request}) => {
     // post request to the /api/testing/reset empties the database
-    ////same as await request.post('http://localhost:5173')
+    //same as await request.post('http://localhost:5173')
     await request.post('/api/testing/reset')
 
     //add a new user to backend from beforeEach block
@@ -52,20 +53,22 @@ describe('Note app', () => {
       })
 
       test('a new note can be created', async ({ page }) => {
-        await createNote(page, 'a note created by playwright 11', true)
-        await expect(page.getByText('a note created by playwright 11')).toBeVisible()
+        await createNote(page, 'a note created by playwright', true)
+        await expect(page.getByText('a note created by playwright')).toBeVisible()
       })
 
       describe('and a note exsits', () => {
         beforeEach(async({page}) => {
           await createNote(page, 'first note', true)
           await createNote(page, 'second note', true)
-          await createNote(page, 'thrid note', true)
+          await createNote(page, 'third note', true)
         })
   
         test('importance can be changed', async({page}) => {
+          await page.pause()
         const otherNoteText = await page.getByText('second note')
         const otherNoteElement = otherNoteText.locator('..')
+
         await otherNoteElement.getByRole('button', {name: 'make not important'}).click()
         await expect(otherNoteElement.getByText('make important')).toBeVisible()
         })
