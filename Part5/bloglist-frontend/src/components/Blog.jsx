@@ -18,18 +18,11 @@ const Blog = ({ blog, user, toggleLikes, deleteBlog }) => {
     marginBottom:5
   }
 
-  const handleRemoveButton = () => {
-    if(window.confirm(`Removing blog ${blog.title} by ${user.name}`)){
-      deleteBlog(blog.id)
-    }
-  }
-
-
   return (
     <div style={blogStyle}>
       <div style={hideWhenVisible} >
       {blog.title}  {blog.author}
-        <button onClick={handleVisibleButton}>view</button>
+        <button onClick={handleVisibleButton} id='view-button'>view</button>
       </div>
 
       <div style={showWhenVisible} className='togglableContent'>
@@ -44,8 +37,8 @@ const Blog = ({ blog, user, toggleLikes, deleteBlog }) => {
         </div>
         <div data-testid='blog-author'>{blog.author}</div>
       </div>
-
-      <button onClick={handleRemoveButton}>remove</button>
+  
+    {user.name === blog.author &&  <button onClick={() => deleteBlog(blog.id)}>remove</button>}
     </div>
 
   )
