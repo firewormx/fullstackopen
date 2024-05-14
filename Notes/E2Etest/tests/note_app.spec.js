@@ -1,6 +1,8 @@
 //npx playwright test
 //npx playwright test --ui
-// for debug : npx playwright test note_app.spec.js:66 --debug
+// for debug : npx playwright test note_app.spec.js:67 --debug
+// trace on: npx playwright test --trace on 
+//show report: npx playwright show-report OR npm run test:report
 const { test, describe, expect, beforeEach } = require('@playwright/test')
 const {loginWith, createNote} = require('./helper')
 
@@ -27,7 +29,7 @@ describe('Note app', () => {
   })
 
     test('front page can be opened', async ({ page }) => {
-        const locator = await page.getByText('Notes')
+        const locator = await page.getByText('Notes').first()
         await expect(locator).toBeVisible()
         await expect(page.getByText('Note app, Department of Computer Science, University of Helsinki 2024')).toBeVisible()
       })
@@ -38,7 +40,7 @@ describe('Note app', () => {
     })
 
     test('login fails with wrong password', async ({ page }) => {
-      await loginWith(page, 'test rainny', 'rainny')
+      await loginWith(page, 'test rainny', 'rain')
       const errorDiv = await page.locator('.error')
       await expect(errorDiv).toContainText('wrong credentials')
       await expect(errorDiv).toHaveCSS('border-style', 'solid')
