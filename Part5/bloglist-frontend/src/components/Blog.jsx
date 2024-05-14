@@ -28,20 +28,21 @@ const Blog = ({ blog, user, toggleLikes, deleteBlog }) => {
   return (
     <div style={blogStyle}>
       <div style={hideWhenVisible} >
-        {blog.title} {blog.author}
+      {blog.title}  {blog.author}
         <button onClick={handleVisibleButton}>view</button>
       </div>
 
       <div style={showWhenVisible} className='togglableContent'>
-        {blog.title} {blog.author}
-        <button onClick={handleVisibleButton}>hide</button>
+        <div data-testid='title'>{blog.title}</div>
+         <div data-testid='author'>{blog.author}</div>
+        <button onClick={handleVisibleButton} id='hide-button'>hide</button>
         <br/>
-        <div>{blog.url}</div>
-        <div>
+        <a href={blog.url}>{blog.url}</a>
+        <div id='likes'>
           {blog.likes}
-          <button onClick={toggleLikes} id="like">like</button>
+          <button onClick={toggleLikes} data-testid="like">like</button>
         </div>
-        <div>{blog.author}</div>
+        <div data-testid='blog-author'>{blog.author}</div>
       </div>
 
       <button onClick={handleRemoveButton}>remove</button>

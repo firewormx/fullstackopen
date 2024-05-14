@@ -4,7 +4,7 @@ const Notification = ({ notification }) => {
     return null
   }
   const type = notification[1] ? 'success' : 'error'
-  return <div className={type}>{notification[0]}</div>
+  return <div className={type} data-testid='error'>{notification[0]}</div>
 
 }
 

@@ -35,6 +35,11 @@ app.use('/api/login', loginRouter)
 //use the middleware only in /api/blogs routers
 app.use('/api/blogs', middleware.userExtractor, blogsRouter)
 
+if(process.env.NODE_ENV === 'test'){
+    const testingRouter = require('./controllers/testing')
+    app.use('/api/testing',testingRouter)
+}
+
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 

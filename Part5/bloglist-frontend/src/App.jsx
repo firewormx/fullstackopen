@@ -121,16 +121,19 @@ const App = () => {
 
   const deleteBlog = async(id) => {
     try{
-      await blogService.remove(id)
-      setUpdateBlogs(!updateBlogs)
-      setNotification(['Blog successfully removed', true])
-
-      setTimeout(() => {
-        setNotification(['', true])
-      }, 3000)
+      const returnedBlog = await blogService.getId(id)
+      if(window.confirm(`Remove blog ${returnedBlog.title} by ${returnedBlog.author}?`)){
+        await blogService.remove(id)
+        setUpdateBlogs(!updateBlogs)
+        setNotification(['Blog successfully removed', true])
+  
+        setTimeout(() => {
+          setNotification(['', true])
+        }, 3000)
+      }
 
     }catch(error){
-      console.log('error happens when deleting the blog', error)
+      console.error('error happens when deleting the blog', error)
       setNotification([`Blog by Id ${id} does not exist`, false] )
       setTimeout(() => {
         setNotification(['', true])
@@ -144,6 +147,7 @@ const App = () => {
     username = {username}
     password= {password}
     handleLogin ={handleLogin}
+    notification = {notification}
   />
 
   return (
@@ -153,7 +157,7 @@ const App = () => {
       <p>{user.name} logged in</p>
       <button type="submit" onClick= {handleLogOut}>logout</button>
       <hr></hr>
-      <Togglable buttonLabel= 'create new note' ref={newBlogRef}>
+      <Togglable buttonLabel= 'create new blog' ref={newBlogRef}>
         <CreateNewForm addBlog={addBlog}/>
       </Togglable>
       <br></br>
