@@ -1,5 +1,6 @@
 import noteReducer from './noteReducer'
 import deepFreeze from 'deep-freeze'
+//deepFreeze ensure that the reducer has been correctly defined as an immutable function. 
 
 describe('noteReducer', () => {
   test('returns new state with action NEW_NOTE', () => {
@@ -13,7 +14,7 @@ describe('noteReducer', () => {
       }
     }
 
-    deepFreeze(state)
+    deepFreeze(state)//ensure the reducer does not change the state of the store given to it as a parameter.
     const newState = noteReducer(state, action)
 
     expect(newState).toHaveLength(1)
