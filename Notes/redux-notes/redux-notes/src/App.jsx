@@ -1,11 +1,16 @@
-import Notes from './Notes'
-import NewNote from './newNote'
+import Notes from './components/Notes'
+import NewNote from './components/newNote'
+import VisibilityFilter from './components/VisibilityFilter'
 
 const App = () => {
+  const filterSelected = (value) =>{
+    console.log(value)
+  }
 
   return( 
   <div>
    <NewNote />
+   <VisibilityFilter />
      <Notes />
      </div>
   )
