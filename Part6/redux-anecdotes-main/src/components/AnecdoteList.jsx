@@ -1,9 +1,18 @@
 import { useSelector, useDispatch } from "react-redux";
-import  {handleVoteButton} from './reducers/anecdoteReducer'
+import  {handleVoteButton} from '../reducers/anecdoteReducer'
 
 const Anecdotes = () => {
     const dispatch = useDispatch()
-    const anecdotes = useSelector(state => state)
+    // const anecdotes = useSelector(state => state.anecdotes)
+    const anecdotes = useSelector(({filter, anecdotes}) => {
+     if (filter === '') return anecdotes
+     
+return anecdotes.filter(a => a.content.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
+}
+     
+    )
+
+
     const copy = [...anecdotes]
     const sortedAnecdotes = copy.sort((a, b) => b.votes - a.votes)
 
