@@ -5,17 +5,16 @@ const Anecdotes = () => {
     const dispatch = useDispatch()
     // const anecdotes = useSelector(state => state.anecdotes)
     const anecdotes = useSelector(({filter, anecdotes}) => {
-     if (filter === '') return anecdotes
-     
-return anecdotes.filter(a => a.content.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
-}
-     
-    )
+     if (filter === '') {
+      return anecdotes
+     }else {
+      return anecdotes.filter(a => a.content.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
+     }
+})
 
 
     const copy = [...anecdotes]
     const sortedAnecdotes = copy.sort((a, b) => b.votes - a.votes)
-
 
 return (
   <div>
