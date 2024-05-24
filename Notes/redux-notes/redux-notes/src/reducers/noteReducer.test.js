@@ -6,22 +6,18 @@ describe('noteReducer', () => {
   test('returns new state with action NEW_NOTE', () => {
     const state = []
     const action = {
-      type: 'NEW_NOTE',
-      payload: {
-        content: 'the app state is in redux store',
-        important: true,
-        id: 1
-      }
+      type: 'notes/createNote',
+      payload: 'the app state is in redux store',
     }
 
     deepFreeze(state)//ensure the reducer does not change the state of the store given to it as a parameter.
     const newState = noteReducer(state, action)
 
     expect(newState).toHaveLength(1)
-    expect(newState).toContainEqual(action.payload)
+    expect(newState.map(state => state.content)).toContainEqual(action.payload)
   })
 
-  test('returns new state with action TOGGLE_IMPORTANCE', () => {
+  test('returns new state with action notes/toggleImportanceOf', () => {
     const state = [
       {
         content: 'the app state is in redux store',
@@ -35,7 +31,7 @@ describe('noteReducer', () => {
       }]
   
     const action = {
-      type: 'TOGGLE_IMPORTANCE',
+      type: 'notes/toggleImportanceOf',
       payload: {
         id: 2
       }

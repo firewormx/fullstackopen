@@ -1,12 +1,8 @@
 import Notes from './components/Notes'
-import NewNote from './components/newNote'
+import NewNote from './components/NewNote'
 import VisibilityFilter from './components/VisibilityFilter'
 
-const App = () => {
-  const filterSelected = (value) =>{
-    console.log(value)
-  }
-
+const App = () =>{
   return( 
   <div>
    <NewNote />
