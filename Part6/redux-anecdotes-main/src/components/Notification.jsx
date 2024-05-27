@@ -1,9 +1,8 @@
 import { useSelector } from "react-redux"
-import { showNotification, removeNotification } from "../reducers/notificationReducer"
 
 const Notification = () => {
   const notification = useSelector(({notification}) => {
-    
+
 return notification
   })
   
