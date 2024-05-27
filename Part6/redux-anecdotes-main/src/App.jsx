@@ -8,6 +8,7 @@ const App = () => {
     <div>
       <h2>Anecdotes</h2>
       <Notification />
+    <br></br>
       <Filter />
       <AnecdotesList />
    <AnecdoteForm />

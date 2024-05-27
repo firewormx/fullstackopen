@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit'
+import { useDispatch } from 'react-redux'
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -40,7 +41,7 @@ state.push({
       const changedOne = {...itemNeedChange, votes: itemNeedChange.votes + 1}
       return state.map(anecdote=> anecdote.id !== id ? anecdote :  changedOne)
     }
-  }
+ }
 })
 
 export default anecdoteSlice.reducer
