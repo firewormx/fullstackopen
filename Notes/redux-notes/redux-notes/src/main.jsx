@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import noteService from '../services/notes'
+import noteService from './services/notes'
 import noteReducer, {setNotes} from './reducers/noteReducer'
 
 import {Provider} from 'react-redux'
