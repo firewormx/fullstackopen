@@ -8,7 +8,7 @@ const App = () => {
   mutationFn: createNote,
   onSuccess: (newNote) => {
     // queryClient.invalidateQueries({queryKey: ['notes']})
-    const notes = queryClient.getQueryData({queryKey: ['notes']}) // synchronous fuc, get an exxisting query's cached data.
+    const notes = queryClient.getQueryData({queryKey: ['notes']}) // synchronous fuc, get an existing query's cached data.
     queryClient.setQueryData(['notes'], notes.concat(newNote)) // syc fuc, update a query's cached data.
 }
 })
@@ -16,10 +16,8 @@ const updateNoteMutation = useMutation({
   mutationFn: updateNote,
   onSuccess: (updatedNote) => {
     queryClient.invalidateQueries({queryKey: ['notes']})
-    // const notes = queryClient.getQueryData(['notes'])
-    // const changedOne = notes.find(n => n.id === updatedNote.id)
-    // queryClient.setQueryData(['notes'], changedOne)
-
+    const notes = queryClient.getQueryData({queryKey: ['notes']})
+    queryClient.setQueryData(['notes'], notes.map(note => note.id !== updatedNote.id ? note :updatedNote))
   }
 })
  
