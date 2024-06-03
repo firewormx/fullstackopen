@@ -9,5 +9,5 @@ export const createNew = (newAnecdote) => {
 }
 
 export const updateOne =(updatedAnecdote) => {
-axios.put(`${baseUrl}/${updatedAnecdote.id}`).then(res => res.data)
+axios.put(`${baseUrl}/${updatedAnecdote.id}`, updatedAnecdote).then(res => res.data)
 }
