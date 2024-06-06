@@ -1,28 +1,16 @@
+import  Display from "./Display";
+import Button  from "./Button";
 
-import { createStore } from 'redux'
+const App = () => {
 
-
-function App() {
-
-const counterReducer = (state = 0, action) => {
-  switch(action.type){
-    case 'INCREMENT': return state + 1;
-    case 'DECREMENT' : return state -1;
-    case 'ZERO' : return  0;
-    default: return state
-    }
+  return (<div>
+          <Display />
+    <div>
+    <Button type ='INC' label='+' />
+    <Button type='DEC' label='-' />
+    <Button type='ZERO' label='0' />
+    </div>
+    </div>
+  )
 }
-
-const store = createStore(counterReducer)
-
-store.subscribe(() => {
-  const storeNow = store.getState()
-  console.log(storeNow)
-})
-
-store.dispatch({type: 'INCREMENT'})
-store.dispatch({type: 'INCREMENT'})
-store.dispatch({type: 'INCREMENT'})
-store.dispatch({type: 'ZERO'})
-store.dispatch({type: 'DECREMENT'})
-}
+export default App
