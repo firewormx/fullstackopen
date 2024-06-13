@@ -1,15 +1,21 @@
  import { Link } from "react-router-dom"
- 
+ import Table from 'react-bootstrap/Table'
+
  const Notes = ({notes}) => (
 <div>
     <h2>Notes</h2>
-    <ul>
+    <Table striped hover>
+        <tbody>
       {notes.map(note =>
-        <li key={note.id}>
+        <tr key={note.id}>
+            <td>
           <Link to={`/notes/${note.id}`}>{note.content}</Link>
-        </li>
+          </td>
+          <td>{note.user}</td>
+        </tr>
       )}
-    </ul>
+    </tbody>
+    </Table>
   </div>
   )
   export default Notes

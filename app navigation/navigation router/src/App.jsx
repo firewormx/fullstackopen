@@ -9,9 +9,14 @@ import Notes from './Components/Notes'
 import Users from './Components/Users'
 import Note from './Components/Note'
 import Login from './Components/Login'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Alert from 'react-bootstrap/Alert';
+import Navbar from 'react-bootstrap/Navbar'
+import { Nav } from 'react-bootstrap'
+import { Container } from '@mui/material';
 
 const App = () => {
-
+{/* <Container> */}
   const [notes, setNotes] = useState([
     {
       id: 1,
@@ -34,6 +39,7 @@ const App = () => {
   ])
 
 const [user, setUser] = useState(null)
+const [message, setMessage] = useState(null)
 
 //Returns (browser)match data obj about a route at the given path relative to the current location.
 const match = useMatch('/notes/:id')
@@ -43,7 +49,14 @@ const note =  match
            : null
 
 const login =(user) =>{
- setUser(user)
+  if(user){
+    setUser(user)
+    setMessage(`welcome ${user}`)
+    setTimeout(()=>{
+     setMessage(null)
+    },5000)
+  }
+return null
 }
 
   const padding = {
@@ -51,17 +64,38 @@ const login =(user) =>{
   }
 
   return (
-    <div>
-    {/* <Router> */}
-      <div>
-        <Link style={padding} to="/">home</Link>
-        <Link style={padding} to="/notes">notes</Link>
-        <Link style={padding} to="/users">users</Link>
-        {user
+    <div className='container'>
+      {(message && 
+        <Alert variant='success'>{message}</Alert>
+      )}
+    <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
+      <Navbar.Toggle aria-controls='responsive-navbar-nav'/>
+      <Navbar.Collapse id='responsive-navbar-nav'>
+
+        <Nav className='me-auto'>
+     <Nav.Link href="#" as="span">
+     <Link style={padding} to="/">home</Link>
+     </Nav.Link>
+    
+     <Nav.Link href="#" as="span">
+     <Link style={padding} to="/notes">notes</Link>
+     </Nav.Link>
+
+     <Nav.Link href="#" as="span">
+     <Link style={padding} to="/users">users</Link>
+      </Nav.Link>
+   
+      <Nav.Link href="#" as="span">
+      {user
             ? <em>{user} logged in</em>
             : <Link style={padding} to="/login">login</Link>
           }
-      </div>
+        </Nav.Link>
+        </Nav>
+        </Navbar.Collapse>
+ 
+        </Navbar>
+
       <Routes>
           <Route path="/notes/:id" element={<Note note={note} />} />
           <Route path="/notes" element={<Notes notes={notes} />} />
@@ -69,7 +103,6 @@ const login =(user) =>{
           <Route path="/login" element={<Login onLogin={login} />} />
           <Route path="/" element={<Home />} />
         </Routes>
-        {/* </Router> */}
 
       <footer>
         <br />
@@ -77,6 +110,7 @@ const login =(user) =>{
       </footer>
       </div>
   )
+  // </Container>
 }
 
 export default App
