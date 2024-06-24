@@ -1,68 +1,63 @@
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import Blog from './Blog'
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import Blog from "./Blog";
 
-describe('<Blog />', () => {
-    let container
+describe("<Blog />", () => {
+  let container;
 
-    const blog ={
-        author: 'Nina',
-        title: 'Today is Apr 17',
-        url: 'http://www.testing.com',
-        likes: 10
-      }
+  const blog = {
+    author: "Nina",
+    title: "Today is Apr 17",
+    url: "http://www.testing.com",
+    likes: 10,
+  };
 
-    beforeEach(() => {
-      container = render(
-        <Blog blog={blog}/>
-      ).container
-    })
+  beforeEach(() => {
+    container = render(<Blog blog={blog} />).container;
+  });
 
-    test('render author and blog title', () => {
-      
-        const testAuthor = screen.findAllByText('Nina', {exact : false})
-        const testTitle = screen.findAllByText('Today is Apr 17', {exact : false})
-      
-        expect(testAuthor).toBeDefined()
-        expect(testTitle).toBeDefined()
-      
-      })
+  test("render author and blog title", () => {
+    const testAuthor = screen.findAllByText("Nina", { exact: false });
+    const testTitle = screen.findAllByText("Today is Apr 17", { exact: false });
 
-  test('at start the url and likes info are not displayed', () => {
-    const div = container.querySelector('.togglableContent')
-    expect(div).toHaveStyle('display: none')
-  })
+    expect(testAuthor).toBeDefined();
+    expect(testTitle).toBeDefined();
+  });
 
-  test('after clicking the button, the url and likes info are displayed', async () => {
-    const user = userEvent.setup()
-    const button = screen.getByText('view')
-    await user.click(button)
+  test("at start the url and likes info are not displayed", () => {
+    const div = container.querySelector(".togglableContent");
+    expect(div).toHaveStyle("display: none");
+  });
 
-    const div = container.querySelector('.togglableContent')
-    expect(div).not.toHaveStyle('display: none')
+  test("after clicking the button, the url and likes info are displayed", async () => {
+    const user = userEvent.setup();
+    const button = screen.getByText("view");
+    await user.click(button);
 
-    screen.debug()
-  })
+    const div = container.querySelector(".togglableContent");
+    expect(div).not.toHaveStyle("display: none");
 
-  test('the event handler is called twice when like button is clicked twice', async() => {
-    const mockHandler = vi.fn()
+    screen.debug();
+  });
+
+  test("the event handler is called twice when like button is clicked twice", async () => {
+    const mockHandler = vi.fn();
 
     const togglableLikes = () => {
-     toggleLikesOf(blog.id)
-    }
+      toggleLikesOf(blog.id);
+    };
 
-    render(<Blog toggleLikes={mockHandler(togglableLikes)} blog={blog}/>)
+    render(<Blog toggleLikes={mockHandler(togglableLikes)} blog={blog} />);
 
-    const user = userEvent.setup()
-    const button = container.querySelector('#like')
-    await user.click(button)
+    const user = userEvent.setup();
+    const button = container.querySelector("#like");
+    await user.click(button);
 
-    expect(mockHandler.mock.calls).toHaveLength(1)
+    expect(mockHandler.mock.calls).toHaveLength(1);
 
-    await user.click(button)
-    render(<Blog toggleLikes={mockHandler(togglableLikes)} blog={blog}/>)
-    expect(mockHandler.mock.calls).toHaveLength(2)
-    console.log(mockHandler.mock.calls)
-  })
-})
-
+    await user.click(button);
+    render(<Blog toggleLikes={mockHandler(togglableLikes)} blog={blog} />);
+    expect(mockHandler.mock.calls).toHaveLength(2);
+    console.log(mockHandler.mock.calls);
+  });
+});
