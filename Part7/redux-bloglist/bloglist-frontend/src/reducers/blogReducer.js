@@ -1,20 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit'
 import blogService from '../services/blogs'
 
-const initialState = [
-{
-    title: 'China News',
-    author: 'Lili Wang',
-    url: 'http://newsChina.com',
-    likes: 210
-},
-{
-    title: 'Japan News',
-    author: 'Akimoto',
-    url: 'http://newsJapan.co.jp',
-    likes: 200
-}
-]
+const initialState = []
 
 const blogSlice = createSlice({
     name: 'blogs',
@@ -24,7 +11,7 @@ const blogSlice = createSlice({
         return action.payload
         },
         appendBlog(state, action){
-            state.concat(action.payload)
+            state.push(action.payload)
         },
         updateBlog(state, action){
             const updatedBlog = action.payload
@@ -33,7 +20,7 @@ const blogSlice = createSlice({
         },
         removeBlog(state, action){
            const deleteBlog = action.payload
-           setBlogs(state.filter(blog => blog.id !== deleteBlog.id))
+          return  state.filter(blog => blog.id !== deleteBlog.id)
         }
     }
 })
@@ -53,16 +40,16 @@ dispatch(appendBlog(newBlog))
 }
 }
 
-export const deleteBlog = (object) => {
+export const deleteBlog = (id) => {
 return async(dispatch) => {
-const blogToDelete = await blogService.remove(object)
+const blogToDelete = await blogService.remove(id)
 dispatch(removeBlog(blogToDelete))
 }
 }
 
-export const likeBlog = (id, object) => {
- return async() => {
-    const updatedBlog = await blogService.update(id, object)
+export const likeBlog = (blogToLike) => {
+ return async(dispatch) => {
+    const updatedBlog = await blogService.update({...blogToLike, likes: blogToLike.likes+ 1})
     dispatch(updateBlog(updatedBlog))
  }
 }

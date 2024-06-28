@@ -14,23 +14,23 @@ const successStyle = {
 const errorStyle = {
   color: 'red',
   fontSize: 20,
-  background: 'lightgrey',
+  background: 'white',
   border: '1px solid red',
   borderRadius: 10,
   padding: 10,
   marginBottom: 10
 }
 
-const notification = useSelector((notification) => {
+const notification = useSelector(({notification}) => {
  return notification
 })
 
-  if (notification === null) {
-    return null;
+  if(notification ===(null || '')) {
+    return null
   }else if(notification.toLowerCase().includes('fail')){
-return <div style={errorStyle}>{notification}</div>
+    return <div style={errorStyle}>{notification}</div>
   }else{
-return <div style={successStyle}>{notification}</div>
+    return <div style={successStyle}>{notification}</div>
   }
 };
 

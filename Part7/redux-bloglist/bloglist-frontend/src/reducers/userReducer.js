@@ -3,7 +3,8 @@ import blogService from '../services/blogs'
 import loginService from '../services/login'
 import { setNotifications } from './notificationReducer'
 
-const initialState = null
+
+const initialState = []
 
 const userSlice = createSlice({
     name:'user',
@@ -22,12 +23,11 @@ const userSlice = createSlice({
         }
     }
 })
-export const {setUser, logOutUser, setLogin} = usersSlice.actions
+export const {setUser, logOutUser, setLogin} = userSlice.actions
 
 export const initializeUser = () => {
     return async (dispatch) => {
-      const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
-  
+      const loggedUserJSON = window.localStorage.getItem("loggedInUser");
       if (loggedUserJSON) {
         const user = JSON.parse(loggedUserJSON);
         dispatch(setUser(user));
@@ -44,11 +44,14 @@ export const initializeUser = () => {
           password,
         });
         blogService.setToken(user.token);
-        window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+        window.localStorage.setItem("loggedInUser", JSON.stringify(user));
+
         dispatch(setLogin(user)); 
+        dispatch(setNotifications(`${user.username} logged in successfully!`, 5))
+
       } catch (exception) {
         console.log(exception);
-        dispatch(setNotification("failed: wrong username or password", 5));
+        dispatch(setNotifications("failed: wrong username or password", 5));
       }
     };
   };
@@ -56,7 +59,8 @@ export const initializeUser = () => {
   export const logout = () => {
     return async (dispatch) => {
       window.localStorage.clear();
-      dispatch(logoutUser());
+      dispatch(logOutUser());
+      dispatch(setNotifications("Successfully logged out", 2))
     };
   };
   
