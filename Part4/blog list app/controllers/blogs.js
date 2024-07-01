@@ -40,34 +40,34 @@ blogsRouter.post('/', async(request, response) => {
 })
 
 blogsRouter.delete('/:id', async(request, response) => {
-    const id = request.params.id
-    const user = request.user
-    const blog = await Blog.findById(id)
+    const loggedInUser = request.user
 
-    if(!blog) return response.status(400).json({ error: `Blog by Id ${id} does not exist` })
-    if(!request.token) return response.status(401).json({ error: 'token is needed for deleting entries' })
+    const blogtoDelete = await Blog.findById(request.params.id)
 
-    if(blog.user.toString() !== user._id.toString()){
-        return response.status(401).json({ error: 'the blogs can only be deleted by the creator' })
-    }else{
-        await Blog.findByIdAndDelete(id)
+    if (blogtoDelete.user.toString() === loggedInUser.id.toString()){
+        await Blog.findByIdAndDelete(request.params.id)
         response.status(204).end()
+    }
+    else{
+        return response.status(401).json({
+            error: 'wrong account'
+        })
     }
 })
 
 blogsRouter.put('/:id', async(request, response) => {
-    const id = request.params.id
-    const { title, author, url, likes } = request.body
-    if(!title|| !author || !url || !likes ) return response.status(400).end()
+    const body = request.body
 
-    const newObj = {
-        title,
-        author,
-        url,
-        likes : likes || 0
+    const blog = {
+        user:body.user.id,
+        likes: body.likes,
+        author: body.author,
+        title: body.title,
+        url: body.url
     }
-    const updatedObj = await Blog.findByIdAndUpdate(id, newObj, { new: true, runValidators: true, context: 'query' })
-    response.json(updatedObj)
+
+    const updatedBlog= await Blog.findByIdAndUpdate(request.params.id,blog, { new: true })
+    response.status(200).json(updatedBlog)
 })
 
 module.exports = blogsRouter

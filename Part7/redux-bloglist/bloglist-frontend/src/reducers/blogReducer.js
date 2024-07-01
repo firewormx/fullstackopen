@@ -47,9 +47,9 @@ dispatch(removeBlog(blogToDelete))
 }
 }
 
-export const likeBlog = (blogToLike) => {
+export const likeBlog = (id, blogToLike) => {
  return async(dispatch) => {
-    const updatedBlog = await blogService.update({...blogToLike, likes: blogToLike.likes+ 1})
+    const updatedBlog = await blogService.update(id, blogToLike)
     dispatch(updateBlog(updatedBlog))
  }
 }

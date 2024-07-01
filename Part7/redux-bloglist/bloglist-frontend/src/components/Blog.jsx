@@ -16,7 +16,11 @@ const blog = match ? blogs.find(blog => blog.id === String(match.params.id)) : n
 if(!blog) return null
 
 const updateLikes =() => {
-  dispatch(likeBlog(blog))
+  const updatedBlog = {
+    ...blog,
+    likes: blog.likes + 1
+  }
+  dispatch(likeBlog(blog.id, updatedBlog))
   dispatch(setNotifications(`${blog.title} liked`, 2))
 }
 
