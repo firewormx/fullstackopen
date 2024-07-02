@@ -43,11 +43,8 @@ const handleDeleteButton = () => {
         {blog.title} {blog.author}
       </div>
       <Togglable buttonLabel="view blog" ref={blogFormRef}>
-  
       <div className="togglableContent">
-        <div data-testid="title">{blog.title}</div>
-        <div data-testid="author">{blog.author}</div>
-        <br />
+        <h2 data-testid="title">{blog.title} {blog.author}</h2>
         <a href={blog.url}>{blog.url}</a>
         <div id="likes">
           {blog.likes}
@@ -55,7 +52,7 @@ const handleDeleteButton = () => {
             like
           </button>
         </div>
-        <div data-testid="blog-author">{blog.author}</div>
+        <div data-testid="blog-author">added by {blog.author}</div>
       </div>
 
       {user.username === blog.author && (

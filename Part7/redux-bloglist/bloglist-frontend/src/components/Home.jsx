@@ -14,7 +14,6 @@ const Home = () => {
 
   return (
     <div>
-      <h2>create new</h2>
       {blogForm()}
       <BlogList />
     </div>

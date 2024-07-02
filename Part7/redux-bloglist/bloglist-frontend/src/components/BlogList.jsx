@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Table } from "react-bootstrap";
+import  Table  from 'react-bootstrap/Table';
 
 const BlogList = () => {
   const blogs = useSelector(({ blogs }) => {
@@ -12,7 +12,7 @@ const BlogList = () => {
 
   return (
     <div>
-      <Table striped>
+      <Table striped bordered hover>
         <tbody>
           {sortedBlogs.map((blog) => (
             <tr key={blog.id}>

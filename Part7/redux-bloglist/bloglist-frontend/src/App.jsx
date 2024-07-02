@@ -1,4 +1,4 @@
-import { useEffect} from "react";
+import {useEffect} from "react";
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
@@ -12,6 +12,13 @@ import { initializeUsers } from "./reducers/usersReducer";
 import { initialBlogs } from "./reducers/blogReducer";
 import { Button, Navbar, Nav } from "react-bootstrap";
 import { Routes, Route, Link } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+  crossorigin="anonymous"
+/>
 
 const App = () => {
 const dispatch = useDispatch()
@@ -66,15 +73,14 @@ const padding = {
           </Navbar.Collapse>
         </Navbar>
         <Notification  notification= {notification}/>
-        {!user && ( //if user is not logged in
+        {!user && ( 
           <div>
             <h2>Log in to application</h2>
-  
             <LoginForm />
           </div>
         )}
   
-        {user && ( //if user logged in
+        {user && (
           <div>
             <h2>blogs app</h2>
             <Routes>
