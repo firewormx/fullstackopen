@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import {useMatch} from 'react-router-dom'
-import Table from 'react-bootstrap/Table'
 
 const User = () => {
 
@@ -16,13 +15,10 @@ return (
     <div>
         <h1>{user.name}</h1>
    <h3>added blogs</h3>
-   <Table>
-    <tr>
-   <ul>
+
+            <ul>
     {user.blogs.map(blog => <li key={blog.id}>{blog.title}</li>)}
-   </ul>
-   </tr>
-   </Table>
+    </ul>
     </div>
 )
 }

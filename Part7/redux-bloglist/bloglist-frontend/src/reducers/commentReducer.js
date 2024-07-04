@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import blogService from '../services/blogs'
 
 const commentSlice = createSlice({
-    name:'comment',
+    name:'comments',
     initialState: [
-    {id: 1, cotent:'greate!'},
+    {id: 1, content:'hey June!'},
     {id: 2, content: 'test again!'}
 ],
 reducers: {
@@ -12,22 +12,22 @@ reducers: {
         return action.payload
     },
     appendComment(state, action){
-        return state.push(action.payload)
+        state.push(action.payload)
     }
 }
 })
 export const {setComment, appendComment} = commentSlice.actions
 
 export const initializeComments = (id) => {
-    return dispatch => {
-        const comments = blogService.getComment(id)
+    return async (dispatch)=> {
+        const comments = await blogService.getComment(id)
         dispatch(setComment(comments))
     }
 }
 
 export const createComment =(id, content) =>{
-return dispatch => {
-    const newComment = blogService.postComment()
+return async (dispatch) => {
+    const newComment = await blogService.postComment(id, content)
     dispatch(appendComment(newComment))
 }
 }

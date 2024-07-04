@@ -4,6 +4,7 @@ import { likeBlog, deleteBlog } from "../reducers/blogReducer";
 import { useMatch } from "react-router-dom";
 import Togglable from "./Togglable";
 import { useRef } from "react";
+import Comment from "./Comment";
 
 const Blog = () => {
 const dispatch = useDispatch()
@@ -47,18 +48,19 @@ const handleDeleteButton = () => {
         <h2 data-testid="title">{blog.title} {blog.author}</h2>
         <a href={blog.url}>{blog.url}</a>
         <div id="likes">
-          {blog.likes}
+          {blog.likes} likes
           <button onClick={updateLikes} data-testid="like">
             like
           </button>
         </div>
-        <div data-testid="blog-author">added by {blog.author}</div>
+        <div data-testid="blog-author">added by {blog.user.name}</div>
       </div>
 
       {user.username === blog.author && (
         <button onClick={handleDeleteButton}>remove</button>
       )}
       </Togglable>
+      <Comment id={blog.id}/>
     </div>
   );
 };

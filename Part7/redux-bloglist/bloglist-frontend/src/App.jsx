@@ -5,12 +5,13 @@ import LoginForm from "./components/LoginForm";
 import UserList from "./components/UserList";
 import User from "./components/User";
 import Home from "./components/Home";
+import EachBlog from "./components/EachComment";
 
 import { useDispatch, useSelector } from "react-redux";
 import { initializeUser,logout } from "./reducers/userReducer";
 import { initializeUsers } from "./reducers/usersReducer";
 import { initialBlogs } from "./reducers/blogReducer";
-import { Button, Navbar, Nav } from "react-bootstrap";
+import { Button, Navbar, Nav, Container } from "react-bootstrap";
 import { Routes, Route, Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 <link
@@ -37,11 +38,14 @@ const handleLogOut = () => dispatch(logout())
 const padding = {
   padding: 5
 }
+const margin = {
+  margin: 5
+}
 
   return (
       <div className="container">
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-          {/* <Navbar.Toggle aria-controls="responsive-navbar-nav" /> */}
+        <Navbar expand="lg" bg="dark" variant="dark">
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link href="#" as="span">
@@ -59,9 +63,8 @@ const padding = {
                  (
                   <em style={padding}>
                     {user.username} logged in
-                     <div></div>
-                     <br />
-  {<Button onClick={handleLogOut}>logout</Button>}
+                     
+  {<Button onClick={handleLogOut}style={margin} >logout</Button>}
                   </em>
                 ) : (
                   <Link style={padding} to="/login">

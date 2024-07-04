@@ -37,12 +37,10 @@ const getComment = async (id) => {
   return response.data
 }
 
-const getId = () => (100000 * Math.random()).toFixed(0)
-
 const postComment = async (id, content) => {
-  const object = { content, id: getId() }
+  const object = { content }
   const response = await axios.post(`${baseUrl}/${id}/comments`, object)
   return response.data
 }
 
-export default { getAll, getId, create, update, setToken, remove, getComment, postComment };
+export default { getAll, create, update, setToken, remove, getComment, postComment };

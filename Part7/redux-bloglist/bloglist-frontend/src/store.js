@@ -11,7 +11,7 @@ const store = configureStore({
         blogs: blogReducer,
         user: userReducer,
         users: usersReducer,
-        comment: commentReducer
+        comments: commentReducer
     }
    
 })
