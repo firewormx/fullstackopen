@@ -1,5 +1,8 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
+const {v1: uuid} = require('uuid')
+const {GraphQLError} = require('graphql')
+
 //from Parameters of a resolver...
 let persons = [
   {
@@ -25,19 +28,32 @@ let persons = [
 ]
 //graphQL schema, type definations
 const typeDefs = `
-  type Person {
+type Address {
+  street: String!
+  city: String! 
+}
+
+type Person {
+  name: String!
+  phone: String
+  address: Address!
+  id: ID!
+}
+
+type Query {
+  personCount: Int!
+  allPersons: [Person!]!
+  findPerson(name: String!): Person
+}
+
+type Mutation {
+  addPerson(
     name: String!
     phone: String
     street: String!
-    city: String! 
-    id: ID!
-  }
-
-  type Query {
-    personCount: Int!
-    allPersons: [Person!]!
-    findPerson(name: String!): Person
-  }
+    city: String!
+  ): Person
+}
 `
 
 const resolvers = {
@@ -45,7 +61,31 @@ const resolvers = {
     personCount: () => persons.length,
     allPersons: () => persons,
     findPerson: (root, args) =>
-      persons.find(p => p.name === args.name)
+      persons.find(p => p.name === args.name),
+  },
+  Person: {//self-defined resolver for address field
+    address: (root) =>{
+      return {
+        street: root.street,
+        city: root.city
+      }
+    }
+  },
+  Mutation: {
+  addPerson: (root, args) => {
+    if(persons.find(p => p.name === args.name)){
+      throw new GraphQLError('Name must be unique', {
+        extensions: {
+          code:`BAD_USER_INPUT`,
+          invalidArgs: args.name
+        }
+      })
+    }
+    
+    const person = {...args, id: uuid()}
+    persons = persons.concat(person)
+    return person
+  }
   }
 }
 
