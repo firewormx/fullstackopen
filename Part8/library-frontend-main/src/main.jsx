@@ -24,7 +24,8 @@ query {
     born
     bookCount
   }
-}`
+}
+`
 
 client.query({query})
 .then(response => console.log(response.data))
