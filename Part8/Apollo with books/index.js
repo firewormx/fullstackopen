@@ -131,6 +131,8 @@ const resolvers = {
     allBooks: (root, args) => {
       if(args.genre && args.author){
     return books.filter(book => book.genres.includes(args.genre))
+      }else if (!args.genre && !args.author){
+    return books
       }
       return null
     },
