@@ -116,6 +116,8 @@ type Query {
   genres:[String]!
   ): Book!
 
+  addAuthor(name: String!, born:Int, bookCount: Int): Author!
+  
   editAuthor(
   name: String!
   setBornTo: Int!
@@ -159,6 +161,12 @@ const resolvers = {
       authors = authors.map(author => author.name === args.name ? updatedAuthor : author)
        return updatedAuthor
     }
+    },
+
+    addAuthor: (root, args) => {
+const newAuthor ={...args, id: uuid()}
+authors = authors.concat(newAuthor)
+return newAuthor
     }
   }
 }
