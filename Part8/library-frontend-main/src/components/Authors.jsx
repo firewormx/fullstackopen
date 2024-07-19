@@ -1,8 +1,8 @@
 import { ALL_AUTHORS } from "../queries"
 import {useQuery} from '@apollo/client'
+import BirthYear from "./BirthYear"
 
-const Authors = () => {
- 
+const Authors = ({setError}) => {
   const result = useQuery(ALL_AUTHORS)
   if(result.loading){
     return <div>loading...</div>
@@ -26,6 +26,7 @@ const Authors = () => {
           ))}
         </tbody>
       </table>
+      <BirthYear setError={setError}/>
     </div>
   )
 }

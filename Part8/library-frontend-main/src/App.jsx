@@ -24,14 +24,15 @@ const padding = {padding: 5}
         <Link style={padding} to='/books'>books</Link>
         <Link style={padding} to='/add'>add book</Link>
       </div>
-      <Notify errorMessage={errors}/>
 
 <Routes>
-  <Route path='/authors' element={<Authors/>} />
-<Route path='/books' element={<Books />} setError ={notify}/>
-<Route path='/add' element={<NewBook />}/>
+  <Route path='/authors' element={<Authors setError={notify}/>} />
+<Route path='/books' element={<Books setError ={notify}/>} />
+<Route path='/add' element={<NewBook setError={notify}/>} />
 </Routes>
+<Notify errorMessage={errors}/>
     </Router>
+
   );
 };
 
