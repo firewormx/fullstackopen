@@ -11,7 +11,7 @@ const NewBook = ({setError}) => {
   const [genres, setGenres] = useState([])
 
   const [addBooks]= useMutation(ADD_BOOK, {
-    refetchQueries:[{query: ALL_BOOKS},{query: ALL_AUTHORS}],
+    refetchQueries:[{query: ALL_BOOKS}],
     onError: (error)=>{
     const messages = error.graphQLErrors.map(e => e.message).join('\n')
     console.log(messages)
