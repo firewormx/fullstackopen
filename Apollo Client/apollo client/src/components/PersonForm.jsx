@@ -42,7 +42,7 @@ setCity('')
     <div>city
         <input value ={city} onChange = {({target})=> setCity(target.value)} />
     </div>
-    <button type='submit'>add!</button>
+    <button type='submit'>add</button>
 </form>
         </div>
     )
