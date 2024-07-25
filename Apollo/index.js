@@ -2,14 +2,12 @@ const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 const {v1: uuid} = require('uuid')
 const {GraphQLError} = require('graphql')
+const jwt = require('jsonwebtoken')
 
 const mongoose =require('mongoose')
 mongoose.set('strictQuery', false)
-
 const Person = require('./models/person')
 const User = require('./models/user')
-const jwt = require('jsonwebtoken')
-
 require('dotenv').config()
 
 const MONGODB_URI = process.env.MONGODB_URI
@@ -101,6 +99,8 @@ type Mutation {
   username: String!
   password: String!
   ): Token
+
+  addAsFriend(name: String!): User
 }
 `
 
@@ -113,9 +113,10 @@ const resolvers = {
       }
 return Person.find({phone: {$exists: args.phone === 'YES'}})
     },
-    findPerson: async(root, args) =>
-      //filter missing
-      Person.findOne({name: args.name})
+    findPerson: async(root, args) => Person.findOne({name: args.name}),
+    me: (root, args, context) =>{
+        return context.currentUser
+          }
   },
   Person: {//self-defined resolver for address field.root is the person-object
     address: (root) =>{
@@ -126,10 +127,20 @@ return Person.find({phone: {$exists: args.phone === 'YES'}})
     }
   },
   Mutation: {
-  addPerson: async(root, args) => {
+  addPerson: async(root, args, context) => {
     const person = new Person({...args})
+    const currentUser = context.currentUser
+    if(!currentUser){
+      throw new GraphQLError('not authenticated', {
+        extensions:{
+          code:'BAD_USER_INPUT'
+        }
+      })
+    }
     try{
       await person.save()
+      currentUser.friends = currentUser.friends.concat(person)
+      await currentUser.save()
     }catch(error){
       throw new GraphQLError('Saving person failed', {
         extensions:{
@@ -183,7 +194,25 @@ return Person.find({phone: {$exists: args.phone === 'YES'}})
   }
   return {value: jwt.sign(userForToken, process.env.JWT_SECRET)}
   },
-  
+
+  addAsFriend: async(root, args, {currentUser}) => {
+  const isFriend = (person) => {
+  currentUser.friends.map(f => f._id.toString().includes(person._id.toString()))
+  }
+  if(!currentUser){
+    throw new GraphQLError('wrong credentials', {
+      extensions: {
+        code:"BAD_USER_INPUT"
+      }
+    })
+  }
+  const person = await Person.findOne({name: args.name})
+  if(!isFriend(person)){
+    currentUser.friends = currentUser.friends.concat(person)
+  }
+  await currentUser.save()
+  return currentUser
+  }
   }
 }
 
