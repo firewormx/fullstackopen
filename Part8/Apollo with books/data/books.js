@@ -50,3 +50,9 @@ let books = [
     },
 ];
 module.exports = { books }
+
+// 66a1c5515453576f68d5fa1e
+// title: "Clean Code",
+// published: 2008,
+// author: ObjectId('66a1c5515453576f68d5fa1e'),
+// genres: ["refactoring"],

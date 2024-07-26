@@ -7,6 +7,8 @@ const jwt = require('jsonwebtoken')
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
 const User = require('./models/User')
+const Author = require('./models/Author')
+const Book = require('./models/Book')
 
 mongoose.set('strictQuery', false)
 
@@ -14,7 +16,25 @@ const MONGODB_URI = process.env.MONGODB_URI;
 console.log('connecting to ', MONGODB_URI)
 
 mongoose.connect(MONGODB_URI)
-.then(() => console.log('connecting to MongoDB'))
+.then(() => {
+  console.log('connecting to MongoDB')
+
+  const book = new Book({
+    title: "Clean Code",
+        published: 2008,
+        author: "Robert Martin",
+        genres: ["refactoring"],
+  })
+  book.save().then(() => {
+    console.log('book saved!', `${book}`)
+  })
+    Book.find({}).then(result => {
+      result.forEach(book => {
+          console.log(book)
+      })
+      mongoose.connection.close()
+})
+})
 .catch(error => { console.log('error connection to MongoDB:', error.message)})
 
 const server = new ApolloServer({

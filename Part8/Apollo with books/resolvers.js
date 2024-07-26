@@ -11,15 +11,34 @@ const resolvers = {
       bookCount: async() =>  Book.collection.countDocuments(),
       authorCount: async() =>  Author.collection.countDocuments(),
       allBooks: async(root, args) => {
-        if(args.genre && args.author){
-       return Book.find({ genres:{$in: [args.genre]} }).populate('author')
-        }else if (args.author){
-          return Book.find({author: args.author}).populate('author')
-        }else if (args.genre){
-      return Book.find({genres: {$in: [args.genre]}}).populate('author')
-        }else {
-          return Book.find({}).populate('author')
-        }
+      let query = {}
+      if(args.author){
+        const foundAuthor = await Author.findOne({name: args.author})
+        if(!foundAuthor) return null
+       const id = foundAuthor._id
+      return Book.findById(id).populate('author')
+      }
+       if(args.genre){
+        query.genres = {$in: [args.genre]}
+      }
+      if(!args.author && !args.genre){
+      return  Book.find({}).populate('author')
+      }
+    
+      const books = await Book.find(query).populate('author')
+      return books
+
+      //   if(args.genre && args.author){
+      //   const foundAuthor =  await Author.findOne({name: args.author})
+      // if(!foundAuthor) return []
+      //  return Book.find({ author: foundAuthor._id, genres:{$in: [args.genre]} }).populate('author')
+      //   }else if (args.author){
+      //     return Book.find({author: foundAuthor._id}).populate('author')
+      //   }else if (args.genre){
+      // return Book.find({genres: {$in: [args.genre]}}).populate('author')
+      //   }else {
+      //     return Book.find({}).populate('author')
+      //   }
       },
     allAuthors: async() =>  Author.find({}).populate('books'),
     me: (root, args, context)=> context.currentUser
@@ -60,7 +79,7 @@ const resolvers = {
       },
   
       editAuthor: async (root, args) => {
-        const existAuthor = await Author.findOne({name: args.name})
+        const existAuthor = Author.findOne({name: args.name})
       if(!existAuthor) return null
       else{
         existAuthor.born = args.setBornTo
@@ -78,13 +97,13 @@ const resolvers = {
       }
       },
   
-      addAuthor: (root, args) => {
+      addAuthor: async(root, args) => {
   const newAuthor ={...args, id: uuid()}
-  authors = authors.concat(newAuthor)
+  newAuthor.save()
   return newAuthor
       },
   
-      createUser: (root, args) => {
+      createUser: async(root, args) => {
   const user = new User({
     username: args.username,
     favoriteGenre: args.favoriteGenre,
