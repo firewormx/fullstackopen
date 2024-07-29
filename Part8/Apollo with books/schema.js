@@ -42,8 +42,8 @@ type Mutation {
   title: String!
   author: String!
   published: Int!
-  genres:[String]!
-  ): Book
+  genres:[String!]!
+  ): Book!
 
   addAuthor(name: String!, born:Int, bookCount: Int): Author!
   
@@ -55,6 +55,7 @@ type Mutation {
   createUser(
   username: String!
   favoriteGenre: String!): User
+  
   }
 
 type Subscription {

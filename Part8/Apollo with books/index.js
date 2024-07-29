@@ -19,20 +19,10 @@ mongoose.connect(MONGODB_URI)
 .then(() => {
   console.log('connecting to MongoDB')
 
-  const book = new Book({
-    title: "Clean Code",
-        published: 2008,
-        author: "Robert Martin",
-        genres: ["refactoring"],
-  })
-  book.save().then(() => {
-    console.log('book saved!', `${book}`)
-  })
     Book.find({}).then(result => {
       result.forEach(book => {
           console.log(book)
       })
-      mongoose.connection.close()
 })
 })
 .catch(error => { console.log('error connection to MongoDB:', error.message)})
@@ -50,7 +40,7 @@ startStandaloneServer(server, {
       const decodedToken = jwt.verify(
         auth.substring(7), process.env.SECRET
       )
-      const currentUser = await User.findById(decodedToken.id).populate('author')
+      const currentUser = await User.findById(decodedToken.id)
       return {currentUser}
     }
       }

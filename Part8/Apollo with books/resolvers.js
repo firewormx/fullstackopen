@@ -11,40 +11,36 @@ const resolvers = {
       bookCount: async() =>  Book.collection.countDocuments(),
       authorCount: async() =>  Author.collection.countDocuments(),
       allBooks: async(root, args) => {
-      let query = {}
-      if(args.author){
-        const foundAuthor = await Author.findOne({name: args.author})
-        if(!foundAuthor) return null
-       const id = foundAuthor._id
-      return Book.findById(id).populate('author')
-      }
-       if(args.genre){
-        query.genres = {$in: [args.genre]}
-      }
-      if(!args.author && !args.genre){
-      return  Book.find({}).populate('author')
-      }
-    
-      const books = await Book.find(query).populate('author')
-      return books
+      // let query = {}
 
-      //   if(args.genre && args.author){
-      //   const foundAuthor =  await Author.findOne({name: args.author})
-      // if(!foundAuthor) return []
-      //  return Book.find({ author: foundAuthor._id, genres:{$in: [args.genre]} }).populate('author')
-      //   }else if (args.author){
-      //     return Book.find({author: foundAuthor._id}).populate('author')
-      //   }else if (args.genre){
-      // return Book.find({genres: {$in: [args.genre]}}).populate('author')
-      //   }else {
-      //     return Book.find({}).populate('author')
-      //   }
+      // if(args.author){
+      //   const foundAuthor = await Author.findOne({name: args.author})
+      //   if(!foundAuthor) return []
+      // query.author = foundAuthor._id
+      // }
+      //  if(args.genre){
+      //   query.genres = {$in: [args.genre]}
+      // }
+
+      // const books = await Book.find(query).populate('author')
+      // return books
+
+        if(args.genre && args.author){
+          const foundAuthor =  await Author.find({name: args.author})
+       return Book.find({ author: foundAuthor._id, genres:{$in: [args.genre]} }).populate('author')
+        }else if (args.author){
+          return Book.find({author: foundAuthor._id}).populate('author')
+        }else if (args.genre){
+      return Book.find({genres: {$in: [args.genre]}}).populate('author')
+        }else {
+          return Book.find({}).populate('author')
+        }
       },
     allAuthors: async() =>  Author.find({}).populate('books'),
     me: (root, args, context)=> context.currentUser
    },
    Author: {
-    bookCount:async(root) => {
+    bookCount: async(root) => {
         // const count = books.filter(book => book.author === root.name).length
         const count = await Book.find({author: root.name})
         return count.length
@@ -52,7 +48,15 @@ const resolvers = {
   },
     Mutation: {
       addBook:async(root, args, context) => {
-     const newBook = {...args, id: uuid()}
+     const newBook = new Book({...args, id: uuid()})
+     if(args.title.length < 5){
+      throw new GraphQLError('invalid argument length', {
+        extentions:{
+          code:'BAD_USER_INPUT',
+          invalidArgs: args.title, error
+        }
+      })
+     }
     //  const currentBook = context.currentBook
     //  if(!currentBook){
     //   throw new GraphQLError('not authenticated', {
@@ -62,16 +66,16 @@ const resolvers = {
     //   })
     //  }
      try{
-    await newBook.save()
+     newBook.save()
     //  currentBook.author = currentBook.author.concat(newBook)
-    Book.concat(newBook)
+    await Book.concat(newBook)
     await Book.save()
     
      }catch(error){
       throw new GraphQLError('Adding book failed', {
         extensions:{
           code: 'BAD_USER_INPUT',
-          invalidaArgs: args.name, error
+          invalidaArgs: args.title, error
         }
       })
      }
@@ -79,12 +83,12 @@ const resolvers = {
       },
   
       editAuthor: async (root, args) => {
-        const existAuthor = Author.findOne({name: args.name})
+        const existAuthor = await Author.findOne({name: args.name})
       if(!existAuthor) return null
       else{
         existAuthor.born = args.setBornTo
         try{
-          existAuthor.save()
+        existAuthor.save()
         }catch(error){
           throw new GraphQLError('Saving number failed', {
             extensions: {
@@ -93,13 +97,23 @@ const resolvers = {
             }
           })
         }
-         return existAuthor
+        return existAuthor
       }
       },
   
       addAuthor: async(root, args) => {
-  const newAuthor ={...args, id: uuid()}
-  newAuthor.save()
+  const newAuthor = new Author({...args, id: uuid()})
+if(args.name.length < 4) {
+  throw new GraphQLError('invalid argument length', {
+    extensions: {
+      code:'BAD_USER_INPUT',
+      invalidArgs: args.name, error
+    }
+  })
+}
+  await newAuthor.save()
+  await Author.concat(newAuthor)
+  await Author.save()
   return newAuthor
       },
   
@@ -109,7 +123,7 @@ const resolvers = {
     favoriteGenre: args.favoriteGenre,
   })
   try{
-    user.save()
+  await user.save()
   }catch(error){
     throw new GraphQLError('Creating the user failed', {
       extensions:{
@@ -118,6 +132,7 @@ const resolvers = {
       }
     })
   }
+ return user
       },
       login: async(root, args)=>{
   const user = await User.findOne({username: args.username})
