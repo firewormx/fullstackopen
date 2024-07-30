@@ -21,7 +21,7 @@ type Author{
     name: String!
     id: ID!
     born: Int
-    bookCount: Int!
+    bookCount: Int
 }
 
 type Query {
