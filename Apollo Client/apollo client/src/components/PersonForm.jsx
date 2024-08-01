@@ -9,16 +9,25 @@ const PersonForm = ({setError}) => {
     const [phone, setPhone] = useState('')
 
     const [createPerson] = useMutation(CREATE_PERSON, {
-        refetchQueries: [{query: ALL_PERSONS}],// keep the cache in sync by using refetchQueries params of useMutation hook
+        // refetchQueries: [{query: ALL_PERSONS}],// keep the cache in sync by using refetchQueries params of useMutation hook
         onError: (error) => { //error obj contains networkError and graphQLErrors
         const messages = error.graphQLErrors.map(e => e.message).join('\n')
         setError(messages)
+        },
+        update:(cache, response) => {
+       cache.updateQuery({query: ALL_PERSONS}, ({allPersons}) => {
+       return {
+        allPersons: allPersons.concat(response.data.addPerson)
+       }
+       })
         }
     })
 
     const submit = (event) => {
 event.preventDefault()
-createPerson( {variables: {name, phone, city, street}} )
+createPerson( {variables: {name, city, street,
+    phone: phone.length > 0 ? phone : undefined
+}} )
 
 setName('')
 setPhone('')
