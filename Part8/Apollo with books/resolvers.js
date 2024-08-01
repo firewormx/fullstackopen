@@ -18,9 +18,9 @@ const resolvers = {
       return await Book.find({genres: {$in: [args.genre]}}).populate('author')
         }else if(args.genre && args.author){
          return await Book.find({ author: foundAuthor.id, genres:{$in: [args.genre]} }).populate('author')
-          }else {
-          return await Book.find({}).populate('author')
-        }
+          }else{
+            return await Book.find({}).populate('author')
+          }
       },
     allAuthors: async() =>  Author.find({}).populate('books'),
     me: (root, args, context)=> context.currentUser
@@ -48,6 +48,11 @@ const resolvers = {
       try{
         const newAuthor = new Author({name: args.author})
         await  newAuthor.save()
+        const newBook = new Book({...args, author: newAuthor.id})
+        await newBook.save()
+        newAuthor.books = newAuthor.books.concat(newBook.id)
+        await newAuthor.save()
+        return newBook
       }catch(error){
       throw new GraphQLError('creating new author failed', {
         extensions: {
@@ -122,7 +127,7 @@ try{
   await Author.concat(newAuthor)
   await Author.save()
 }catch(error){
-
+console.log(error)
 }
  
   return newAuthor

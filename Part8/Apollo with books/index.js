@@ -18,12 +18,6 @@ console.log('connecting to ', MONGODB_URI)
 mongoose.connect(MONGODB_URI)
 .then(() => {
   console.log('connecting to MongoDB')
-
-    Book.find({}).then(result => {
-      result.forEach(book => {
-          console.log(book)
-      })
-})
 })
 .catch(error => { console.log('error connection to MongoDB:', error.message)})
 
