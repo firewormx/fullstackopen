@@ -11,6 +11,7 @@ const resolvers = {
       bookCount: async() =>  Book.collection.countDocuments(),
       authorCount: async() =>  Author.collection.countDocuments(),
       allBooks: async(root, args) => {
+        try{
       const foundAuthor =  await Author.findOne({name: args.author})
       if (args.author){
           return await Book.find({author: foundAuthor.id}).populate('author')
@@ -21,6 +22,9 @@ const resolvers = {
           }else{
             return await Book.find({}).populate('author')
           }
+        }catch(error){
+          console.log(error)
+        }
       },
     allAuthors: async() =>  Author.find({}).populate('books'),
     me: (root, args, context)=> context.currentUser
