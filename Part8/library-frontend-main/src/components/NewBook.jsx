@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 import { ADD_BOOK } from '../queries'
 import {useMutation} from '@apollo/client'
-import { ALL_BOOKS, ALL_AUTHORS, ADD_AUTHOR } from '../queries'
+import { ALL_BOOKS, ALL_AUTHORS, EDIT_AUTHOR } from '../queries'
 
 const NewBook = ({setError}) => {
   const [title, setTitle] = useState('')
@@ -12,26 +12,38 @@ const NewBook = ({setError}) => {
 
   const [addBooks]= useMutation(ADD_BOOK, {
     refetchQueries:[{query: ALL_BOOKS}],
-    onError: (error)=>{
-    const messages = error.graphQLErrors.map(e => e.message).join('\n')
-    console.log(messages)
-    setError(messages)
+    onError: (error) => {
+      setError(error.graphQLErrors[0].message)
+    },
+    update: (cache, response) => {
+   cache.updateQuery({query: ALL_BOOKS}, ({allBooks})=> {
+return {
+  allBooks: allBooks.concat(response.data.addBooks)
+}
+   })
     }
   })
-  const [addAuthor] = useMutation(ADD_AUTHOR,{
+  const [editAuthor] = useMutation(EDIT_AUTHOR,{
 refetchQueries: [{query: ALL_AUTHORS}],
 onError: (error)=>{
   const messages = error.graphQLErrors.map(e => e.message).join('\n')
   console.log(messages)
   setError(messages)
-  }
+  },
+//   update: (cache, response) => {
+//    cache.updateQuery({query: ALL_AUTHORS}, ({allAuthors}) => {
+// return {
+//   allAuthors: allAuthors.concat(response.data.editAuthor)
+// }
+//    })
+//   }
   })
 
   const submit = async (event) => {
     event.preventDefault()
     let name = author
-   addBooks({variables: {title, author, published, genres}})
-   addAuthor({variables: {name}})
+   await addBooks({variables: {title, author, published, genres}})
+   await editAuthor({variables: {name}})
     console.log('add book...')
 
     setTitle('')

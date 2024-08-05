@@ -56,7 +56,6 @@ const resolvers = {
         await newBook.save()
         newAuthor.books = newAuthor.books.concat(newBook.id)
         await newAuthor.save()
-        return newBook
       }catch(error){
       throw new GraphQLError('creating new author failed', {
         extensions: {
@@ -65,7 +64,7 @@ const resolvers = {
         }
       })
       }
-     }
+     }else {
      const newBook = new Book({...args, author: existAuthor.id})
      try{
      await newBook.save()
@@ -80,7 +79,8 @@ const resolvers = {
       })
      }
      return newBook
-      },
+      }
+    },
   
       editAuthor: async (root, args, {currentUser}) => {
         const existAuthor = await Author.findOne({name: args.name})
@@ -108,34 +108,34 @@ const resolvers = {
       }
       },
   
-      addAuthor: async(root, args) => {
-  const exsitingAuthor = await Author.findOne({name: args.name})
-  if(exsitingAuthor){
-    throw new GraphQLError('exsiting author', {
-      extensions:{
-        code:'BAD_USER_INPUT'
-      }
-    })
-  }
-  const newAuthor = new Author({...args, id: uuid()})
-if(args.name.length < 4) {
-  throw new GraphQLError('invalid argument length', {
-    extensions: {
-      code:'BAD_USER_INPUT',
-      invalidArgs: args.name, error
-    }
-  })
-}
-try{
-  await newAuthor.save()
-  await Author.concat(newAuthor)
-  await Author.save()
-}catch(error){
-console.log(error)
-}
+//       addAuthor: async(root, args) => {
+//   const exsitingAuthor = await Author.findOne({name: args.name})
+//   if(exsitingAuthor){
+//     throw new GraphQLError('exsiting author', {
+//       extensions:{
+//         code:'BAD_USER_INPUT'
+//       }
+//     })
+//   }
+//   const newAuthor = new Author({...args, id: uuid()})
+// if(args.name.length < 4) {
+//   throw new GraphQLError('invalid argument length', {
+//     extensions: {
+//       code:'BAD_USER_INPUT',
+//       invalidArgs: args.name, error
+//     }
+//   })
+// }
+// try{
+//   await newAuthor.save()
+//   // await Author.concat(newAuthor)
+//   // await Author.save()
+// }catch(error){
+// console.log(error)
+// }
  
-  return newAuthor
-      },
+//   return newAuthor
+//       },
   
       createUser: async(root, args) => {
   const user = new User({

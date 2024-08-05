@@ -44,12 +44,10 @@ type Mutation {
   published: Int!
   genres:[String!]!
   ): Book!
-
-  addAuthor(name: String!, born:Int, bookCount: Int): Author!
   
   editAuthor(
   name: String!
-  setBornTo: Int!
+  setBornTo: Int
   ): Author
 
   createUser(
@@ -63,3 +61,5 @@ bookAdded: Book!
 }
 `
 module.exports = typeDefs
+
+// addAuthor(name: String!, born:Int, bookCount: Int): Author!
