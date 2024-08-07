@@ -1,7 +1,6 @@
 const {v1: uuid} = require('uuid')
 const {GraphQLError} = require('graphql')
 const jwt = require('jsonwebtoken')
-
 const Author = require('./models/Author');
 const Book = require('./models/Book')
 const User = require('./models/User')
@@ -11,20 +10,16 @@ const resolvers = {
       bookCount: async() =>  Book.collection.countDocuments(),
       authorCount: async() =>  Author.collection.countDocuments(),
       allBooks: async(root, args) => {
-        try{
       const foundAuthor =  await Author.findOne({name: args.author})
-      if (args.author){
+      if(args.genre && args.author){
+        return await Book.find({ author: foundAuthor.id, genres:{$in: [args.genre]} }).populate('author')
+         }else if (args.author){
           return await Book.find({author: foundAuthor.id}).populate('author')
         }else if (args.genre){
       return await Book.find({genres: {$in: [args.genre]}}).populate('author')
-        }else if(args.genre && args.author){
-         return await Book.find({ author: foundAuthor.id, genres:{$in: [args.genre]} }).populate('author')
-          }else{
+        }else{
             return await Book.find({}).populate('author')
           }
-        }catch(error){
-          console.log(error)
-        }
       },
     allAuthors: async() =>  Author.find({}).populate('books'),
     me: (root, args, context)=> context.currentUser
@@ -38,9 +33,8 @@ const resolvers = {
   },
     Mutation: {
       addBook:async(root, args, context) => {
-     const currentUser= context.currentUser
-     const existAuthor = await Author.findOne({name: args.author})
-
+        const currentUser= context.currentUser
+   
      if(!currentUser){
       throw new GraphQLError('not authenticated', {
         extensions:{
@@ -48,42 +42,42 @@ const resolvers = {
         }
       })
      }
-     if(!existAuthor){
-      try{
-        const newAuthor = new Author({name: args.author})
-        await  newAuthor.save()
-        const newBook = new Book({...args, author: newAuthor.id})
-        await newBook.save()
-        newAuthor.books = newAuthor.books.concat(newBook.id)
-        await newAuthor.save()
+     let author = await Author.findOne({name: args.author})
+     if(!author){
+        try{
+        author = new Author({name: args.author})
+        await author.save()
       }catch(error){
-      throw new GraphQLError('creating new author failed', {
+      throw new GraphQLError('Creating new author failed', {
         extensions: {
           code: "BAD_USER_INPUT",
           invalidArgs: args.author, error
         }
       })
       }
-     }else {
-     const newBook = new Book({...args, author: existAuthor.id})
-     try{
-     await newBook.save()
-    existAuthor.books = existAuthor.books.concat(newBook.id)
-    await existAuthor.save()
+     }
+     const book = new Book({
+      author,
+      title: args.title,
+      published: args.published,
+       genres: args.genres})
+   try{
+     await book.save()
+    //  author.books = author.books.concat(book.id)
+    // await author.save()
+    // return savedBook
      }catch(error){
       throw new GraphQLError('Adding book failed', {
         extensions:{
           code: 'BAD_USER_INPUT',
-          invalidaArgs: args, error
+          invalidaArgs: args.name, error
         }
       })
-     }
-     return newBook
-      }
+    }
+    return book
     },
   
       editAuthor: async (root, args, {currentUser}) => {
-        const existAuthor = await Author.findOne({name: args.name})
      if(!currentUser){
     throw new GraphQLError('not authenticated', {
       extensions: {
@@ -91,13 +85,15 @@ const resolvers = {
       }
     })
      }
-      if(!existAuthor) return null
-      else{
+     const existAuthor = await Author.findOne({name: args.name})
+      if(!existAuthor){
+       return null
+      }
         existAuthor.born = args.setBornTo
         try{
         await existAuthor.save()
         }catch(error){
-          throw new GraphQLError('Saving number failed', {
+          throw new GraphQLError('Editing birth year failed', {
             extensions: {
               code: 'BAD_USER_INPUT',
               invalidArgs: args.name, error
@@ -105,7 +101,6 @@ const resolvers = {
           })
         }
         return existAuthor
-      }
       },
   
 //       addAuthor: async(root, args) => {

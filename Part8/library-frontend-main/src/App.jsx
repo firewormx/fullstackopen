@@ -70,7 +70,7 @@ if(!token){
 <Routes>
 <Route path='/authors' element={<Authors setError={notify}/>} />
 <Route path='/books' element={<Books setError ={notify}/>} />
-<Route path='/addbooks' element={<NewBook />} />
+<Route path='/addbooks' element={<NewBook setError = {notify}/>} />
 <Route path='/login' element={<Books />}/>
 <Route path='/recommend' element={<Recommendations result={books}  user={user.data.me}/>} />
 </Routes>

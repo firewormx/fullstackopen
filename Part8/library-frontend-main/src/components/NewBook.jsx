@@ -1,7 +1,6 @@
-import { useState, useEffect} from 'react'
-import { ADD_BOOK } from '../queries'
+import { useState} from 'react'
 import {useMutation} from '@apollo/client'
-import { ALL_BOOKS, ALL_AUTHORS, EDIT_AUTHOR } from '../queries'
+import { ALL_BOOKS, ALL_AUTHORS, ADD_BOOK } from '../queries'
 
 const NewBook = ({setError}) => {
   const [title, setTitle] = useState('')
@@ -10,26 +9,26 @@ const NewBook = ({setError}) => {
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
 
-  const [addBooks]= useMutation(ADD_BOOK, {
-    refetchQueries:[{query: ALL_BOOKS}],
+  const [addBook]= useMutation(ADD_BOOK, {
+    refetchQueries:[{query:ALL_AUTHORS},{query: ALL_BOOKS}], 
     onError: (error) => {
-      setError(error.graphQLErrors[0].message)
+      const messages = error.graphQLErrors.map(error => error.message).join('\n')
+      setError(messages)
     },
     update: (cache, response) => {
    cache.updateQuery({query: ALL_BOOKS}, ({allBooks})=> {
 return {
-  allBooks: allBooks.concat(response.data.addBooks)
+  allBooks: allBooks.concat(response.data.addBook)
 }
    })
     }
   })
-  const [editAuthor] = useMutation(EDIT_AUTHOR,{
-refetchQueries: [{query: ALL_AUTHORS}],
-onError: (error)=>{
-  const messages = error.graphQLErrors.map(e => e.message).join('\n')
-  console.log(messages)
-  setError(messages)
-  },
+//   const [editAuthor] = useMutation(EDIT_AUTHOR,{
+// // refetchQueries: [{query: ALL_AUTHORS}],
+// onError: (error)=>{
+//   const messages = error.graphQLErrors.map(e => e.message).join('\n')
+//   console.log(messages)
+//   },
 //   update: (cache, response) => {
 //    cache.updateQuery({query: ALL_AUTHORS}, ({allAuthors}) => {
 // return {
@@ -37,13 +36,13 @@ onError: (error)=>{
 // }
 //    })
 //   }
-  })
+//   })
 
   const submit = async (event) => {
     event.preventDefault()
-    let name = author
-   await addBooks({variables: {title, author, published, genres}})
-   await editAuthor({variables: {name}})
+    // let name = author
+   await addBook({variables: {title, author, published, genres}})
+  //  await editAuthor({variables: {name}})
     console.log('add book...')
 
     setTitle('')
