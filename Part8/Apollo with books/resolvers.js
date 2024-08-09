@@ -60,20 +60,21 @@ const resolvers = {
       author,
       title: args.title,
       published: args.published,
-       genres: args.genres})
+       genres: args.genres
+      })
    try{
-     await book.save()
-    //  author.books = author.books.concat(book.id)
-    // await author.save()
-    // return savedBook
+      await book.save()
      }catch(error){
       throw new GraphQLError('Adding book failed', {
         extensions:{
           code: 'BAD_USER_INPUT',
-          invalidaArgs: args.name, error
+          invalidaArgs: args.author, error
         }
       })
     }
+        const foundAuthor = await Author.findOne({name: args.author}) 
+        foundAuthor.books = foundAuthor.books.concat(book.id)
+        await foundAuthor.save()
     return book
     },
   

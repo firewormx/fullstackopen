@@ -40,11 +40,8 @@ return {
 
   const submit = async (event) => {
     event.preventDefault()
-    // let name = author
-   await addBook({variables: {title, author, published, genres}})
-  //  await editAuthor({variables: {name}})
     console.log('add book...')
-
+  await addBook({variables: {title, author, published, genres}})
     setTitle('')
     setPublished('')
     setAuthor('')
