@@ -2,12 +2,14 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 
-import { ApolloClient, ApolloProvider, InMemoryCache, gql, createHttpLink } from '@apollo/client'
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client'
 import {setContext} from '@apollo/client/link/context'
 
-const authLink = setContext((previousContext, {headers}) => {//request.headers(the GraphQL request being executed)
+// setContext func returns an obj to set the new context of a request,the 2nd argument is  GraphQL req being excutes.
+//request.headers(the GraphQL request being executed)
+const authLink = setContext((previousContext, {headers}) => {
 const token = localStorage.getItem('phonenumbers-user-token')
-return {
+return {// return an obj or promise
   headers:{
     ...headers,
     authorization: token ? `Bearer ${token}` : null
