@@ -1,3 +1,6 @@
+const {PubSub} = require('graphql-subscriptions')
+const pubsub = new PubSub()
+
 const { GraphQLError } = require('graphql')
 const jwt = require('jsonwebtoken')
 const Person = require('./models/person')
@@ -48,7 +51,12 @@ const resolvers = {
           }
         })
       }
-      return person
+      //publishing an event. pubsub.publish('eventLabelName', payload associated with the event)
+      //Adding a new person publishes a notification about the operation to all subscribers with PubSub's method publish
+      //Execution of this line sends a WebSocket message about the added person to all the clients registered in the iterator PERSON_ADDED.
+     pubsub.publish('PERSON_ADDED', {personAdded: person})
+    
+     return person
     },
     editNumber: async(root, args) =>{
     const person = await Person.findOne({name: args.name})
@@ -112,6 +120,14 @@ const resolvers = {
     await currentUser.save()
     return currentUser
     }
+    },
+    Subscription: {
+      personAdded: {
+        // subcribe func must return an AsyncIterator obj
+        //AsyncIterator obj listen for events that are associated with a paticular label(or sets of labels)
+        // and adds them to a queue for processing. pubsub.asyncIterator(['event label name'])
+        subscribe: () => pubsub.asyncIterator('PERSON_ADDED')
+      }
     }
   }
 
