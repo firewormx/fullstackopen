@@ -7,8 +7,24 @@ import Notify from './components/Notify';
 import {useState} from 'react'
 import LoginForm from './components/Login';
 import Recommendations from './components/Recommendations';
-import { useQuery, useApolloClient } from '@apollo/client';
-import { ALL_BOOKS,GET_USER } from './queries';
+import { useQuery, useApolloClient, useSubscription} from '@apollo/client';
+import { ALL_BOOKS,GET_USER, BOOK_ADDED } from './queries';
+
+export const updateCache = (cache, query, addedBook) => {
+const uniqByName = (a) => {
+let seen = new Set()
+return  a.filter(item => {
+    let name = item.name 
+   return  seen.has(name) ? false : seen.add(name)
+  })
+}
+
+cache.updateQuery(query, ({allBooks}) => {
+return {
+  allBooks: uniqByName(allBooks.concat(addedBook))
+}
+})
+}
 
 const App = () => {
 const [errors, setErrors] = useState(null)
@@ -16,6 +32,20 @@ const [token, setToken] = useState(null)
 const books = useQuery(ALL_BOOKS)
 const user = useQuery(GET_USER)
 const client = useApolloClient()
+
+useSubscription(BOOK_ADDED, {
+  onData: ({data, client}) => {
+    const addedBook = data.data.bookAdded
+    console.log(addedBook)
+    window.alert(`${addedBook.title} added`)
+    updateCache(client.cache, {query: ALL_BOOKS}, addedBook)
+//     client.cache.updateQuery({query: ALL_BOOKS}, ({allBooks})=> {
+// return {
+//   allBooks: allBooks.concat(addedBook)
+// }
+//     })
+  }
+})
 
   const notify = (message) => {
 setErrors(message)
@@ -29,6 +59,7 @@ const padding = {padding: 5}
 if(books.loading){
   return <div>loading...</div>
 }
+
 const logout = () => {
 setToken(null)
 localStorage.clear()
@@ -57,6 +88,7 @@ if(!token){
     </div>
   )
 }
+
   return (
     <Router>
       <div>

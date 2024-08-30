@@ -1,14 +1,16 @@
 const {v1: uuid} = require('uuid')
 const {GraphQLError} = require('graphql')
 const jwt = require('jsonwebtoken')
+const {PubSub} = require('graphql-subscriptions')
+const pubsub = new PubSub()
 const Author = require('./models/Author');
 const Book = require('./models/Book')
 const User = require('./models/User')
 
 const resolvers = {
     Query: {
-      bookCount: async() =>  Book.collection.countDocuments(),
-      authorCount: async() =>  Author.collection.countDocuments(),
+      bookCount: async() =>  await Book.collection.countDocuments(),
+      authorCount: async() =>  await Author.collection.countDocuments(),
       allBooks: async(root, args) => {
       const foundAuthor =  await Author.findOne({name: args.author})
       if(args.genre && args.author){
@@ -21,16 +23,31 @@ const resolvers = {
             return await Book.find({}).populate('author')
           }
       },
-    allAuthors: async() =>  Author.find({}).populate('books'),
+    allAuthors: async() =>  {
+      const authors = await Author.find({}).populate('books')
+      const bookCountAuthors = authors.map(author => {
+        return {
+          name: author.name,
+          born: author.born,
+          bookCount: author.books.length,
+          id: author._id,
+          books: author.books
+        }
+      })
+      return bookCountAuthors
+    },
     me: (root, args, context)=> context.currentUser
    },
-   Author: {
-    bookCount: async(root) => {
-        const foundAuthor = await Author.findOne({name: root.name})
-        const foundBooks = await Book.find({author: foundAuthor.id})
-        return foundBooks.length
-    }
+   Book: {
+    author: async(root) => await Author.findById(root.author).populate('books')
   },
+  //  Author: {
+  //   bookCount: async(root) => {
+  //       const foundAuthor = await Author.findOne({name: root.name})
+  //       const foundBooks = await Book.find({author: foundAuthor.id})
+  //       return foundBooks.length
+  //   }
+  // },
     Mutation: {
       addBook:async(root, args, context) => {
         const currentUser= context.currentUser
@@ -72,6 +89,9 @@ const resolvers = {
         }
       })
     }
+    
+    pubsub.publish('BOOK_ADDED', {bookAdded: book})
+
         const foundAuthor = await Author.findOne({name: args.author}) 
         foundAuthor.books = foundAuthor.books.concat(book.id)
         await foundAuthor.save()
@@ -164,6 +184,11 @@ const resolvers = {
     id: user._id
   }
   return {value: jwt.sign(userForToken, process.env.SECRET)}
+      }
+    },
+    Subscription: {
+      bookAdded: {
+        subscribe: () => pubsub.asyncIterator('BOOK_ADDED')
       }
     }
   }

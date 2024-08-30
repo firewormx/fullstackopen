@@ -7,7 +7,9 @@ username:{
     minlength: 3
 },
 favoriteGenre:{
-    type: String
+    type: String,
+    required: true,
+    minlength: 2
 }
 })
 
