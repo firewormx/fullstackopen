@@ -30,6 +30,8 @@ mongoose.connect(MONGODB_URI)
   .catch((error) => {
     console.log('error connection to MongoDB:', error.message)
   })
+//enable debugging option via mongoose
+mongoose.set('debug', true)
 
 //setup is now within an async func
 const start = async() => {

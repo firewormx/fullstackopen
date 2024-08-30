@@ -70,6 +70,7 @@ mutation login($username: String!, $password: String!){
     value
   }
 }`
+
 export const PERSON_ADDED = gql`
 subscription {
   personAdded {
