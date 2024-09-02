@@ -4,7 +4,7 @@ import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Notify from './components/Notify';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import LoginForm from './components/Login';
 import Recommendations from './components/Recommendations';
 import { useQuery, useApolloClient, useSubscription} from '@apollo/client';
@@ -14,8 +14,8 @@ export const updateCache = (cache, query, addedBook) => {
 const uniqByName = (a) => {
 let seen = new Set()
 return  a.filter(item => {
-    let name = item.name 
-   return  seen.has(name) ? false : seen.add(name)
+    let k = item.title
+   return  seen.has(k) ? false : seen.add(k)
   })
 }
 
@@ -37,28 +37,30 @@ useSubscription(BOOK_ADDED, {
   onData: ({data, client}) => {
     const addedBook = data.data.bookAdded
     console.log(addedBook)
-    window.alert(`${addedBook.title} added`)
+    window.alert(`${addedBook.title} added by ${addedBook.author.name}`)
     updateCache(client.cache, {query: ALL_BOOKS}, addedBook)
-//     client.cache.updateQuery({query: ALL_BOOKS}, ({allBooks})=> {
-// return {
-//   allBooks: allBooks.concat(addedBook)
-// }
-//     })
   }
 })
 
-  const notify = (message) => {
-setErrors(message)
-setTimeout(() => {
-setErrors(null)
-},5000)
+useEffect(() => {
+  const tokenFromStorage = localStorage.getItem('addbooks-user-token')
+  if(tokenFromStorage){
+    setToken(tokenFromStorage)
   }
+}, [])
 
 const padding = {padding: 5}
 
 if(books.loading){
   return <div>loading...</div>
 }
+
+const notify = (message) => {
+  setErrors(message)
+  setTimeout(() => {
+  setErrors(null)
+  },5000)
+    }
 
 const logout = () => {
 setToken(null)
@@ -78,11 +80,10 @@ if(!token){
         <Link style={padding} to='/'></Link>
       </div>
 <Routes>
-  <Route path='/authors' element={<Authors setError={notify}/>} />
+<Route path='/authors' element={<Authors setError={notify}/>} />
 <Route path='/books' element={<Books setError ={notify}/>} />
 <Route path='/login' element={<LoginForm setToken={setToken} setError={notify}/>}/>
-<Route path='/' element={<Books />}/>
-
+<Route path='/' element={<Books/>}/>
 </Routes>
 </Router>
     </div>
@@ -103,7 +104,6 @@ if(!token){
 <Route path='/authors' element={<Authors setError={notify}/>} />
 <Route path='/books' element={<Books setError ={notify}/>} />
 <Route path='/addbooks' element={<NewBook setError = {notify}/>} />
-<Route path='/login' element={<Books />}/>
 <Route path='/recommend' element={<Recommendations result={books}  user={user.data.me}/>} />
 </Routes>
 <Notify errorMessage={errors}/>

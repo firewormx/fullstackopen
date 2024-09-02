@@ -12,35 +12,45 @@ const resolvers = {
       bookCount: async() =>  await Book.collection.countDocuments(),
       authorCount: async() =>  await Author.collection.countDocuments(),
       allBooks: async(root, args) => {
-      const foundAuthor =  await Author.findOne({name: args.author})
+        const books = await Book.find({}).populate('author')
       if(args.genre && args.author){
-        return await Book.find({ author: foundAuthor.id, genres:{$in: [args.genre]} }).populate('author')
+        const author = await Author.findOne({name: args.author})
+        const booksByAuthorAndGenre = await Book.find({
+          author: author._id,
+          genres:{$in: [args.genre]}
+        }).populate('author')
+        return booksByAuthorAndGenre
          }else if (args.author){
-          return await Book.find({author: foundAuthor.id}).populate('author')
+          const author = await Author.findOne({name: args.author})
+          const booksByAuthor = await Book.find({
+            author: author._id
+          }).populate('author')
+          return booksByAuthor
         }else if (args.genre){
-      return await Book.find({genres: {$in: [args.genre]}}).populate('author')
-        }else{
-            return await Book.find({}).populate('author')
-          }
-      },
+          const booksByGenre = await Book.find({genres: {$in: [args.genre]}}).populate('author')
+      return booksByGenre
+        }
+            return books
+          },
+
     allAuthors: async() =>  {
-      const authors = await Author.find({}).populate('books')
+      const authors = await Author.find({})
       const bookCountAuthors = authors.map(author => {
         return {
           name: author.name,
           born: author.born,
           bookCount: author.books.length,
-          id: author._id,
-          books: author.books
+          id: author._id
         }
       })
       return bookCountAuthors
     },
     me: (root, args, context)=> context.currentUser
    },
-   Book: {
-    author: async(root) => await Author.findById(root.author).populate('books')
-  },
+
+  //  Book: {
+  //   author: async(root) => await Author.findById(root.author)
+  // },
   //  Author: {
   //   bookCount: async(root) => {
   //       const foundAuthor = await Author.findOne({name: root.name})
@@ -93,7 +103,7 @@ const resolvers = {
     pubsub.publish('BOOK_ADDED', {bookAdded: book})
 
         const foundAuthor = await Author.findOne({name: args.author}) 
-        foundAuthor.books = foundAuthor.books.concat(book.id)
+        foundAuthor.books = foundAuthor.books.concat(book._id)
         await foundAuthor.save()
     return book
     },
