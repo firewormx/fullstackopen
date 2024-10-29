@@ -20,13 +20,14 @@ if(!isNaN(Number(args[2])) && !isNaN(Number(args[3]))){
 }
 
 function calculateBmi (height: number, weight:number) : PrintText{
+if(height === 0 || weight === 0) throw new Error('the value of weight or height cannot be zero.')
 const heightM = height / 100
 const bmi = weight / (heightM * heightM)
-if(bmi <=18.5){
+if(bmi < 18.5){
 return 'Underweight'
-}else if (bmi > 18.5 && bmi <=24.9){
+}else if (bmi >= 18.5 && bmi <=24.9){
     return 'Normal range'
-}else if (bmi > 25 && bmi <=29.9){
+}else if (bmi >=25 && bmi <=29.9){
 return 'Over range'
 }else if (bmi>= 30){
     return 'Obese'
@@ -38,7 +39,7 @@ try{
 }catch(error: unknown){
     let errorMessage = 'Something error happened.'
     if(error instanceof Error){
-    errorMessage +=` Error: ` + errorMessage
+    errorMessage +=` Error: ` + error.message
 }
 console.log(errorMessage)
 }

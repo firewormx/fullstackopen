@@ -10,67 +10,60 @@ interface ResultObj{
         average: number
       }
 
-type DailyHours = number[]
-
-type MultipleValues = {
-    value1: number,
-    value2: number,
-    value3: number,
-    value4: number,
-    value5: number,
-    value6: number,
-    value7: number,
-    value8: number,
-    value9: number,
-    value10: number
+interface Calculate{
+    target: number,
+    time: number[]
 }
 
-const parseArgs = (args: string[]): MultipleValues  => {
-if(args.length < 11) throw new Error('not enough arguments')
-if(args.length > 11) throw new Error('too many arguments')
-if(
-!isNaN(Number(args[2])) && 
-!isNaN(Number(args[3])) && 
-!isNaN(Number(args[4])) &&
-!isNaN(Number(args[5])) &&
-!isNaN(Number(args[6])) &&
-!isNaN(Number(args[7])) &&
-!isNaN(Number(args[8])) &&
-!isNaN(Number(args[9])) &&
-!isNaN(Number(args[10])) &&
-!isNaN(Number(args[11]))
-){
-return {
-    value1: Number(args[2]),
-    value2: Number(args[3]),
-    value3: Number(args[4]), 
-    value4: Number(args[5]), 
-    value5: Number(args[6]), 
-    value6: Number(args[7]), 
-    value7: Number(args[8]), 
-    value8: Number(args[9]), 
-    value9: Number(args[10]),
-    value10: Number(args[11])
-}
+const parseArgs = (args: string[]): Calculate => {
+if(args.length < 4) throw new Error('not enough arguments')
+
+const times: number[] = []
+//i for times
+for(let i = 3; i < args.length; i++){
+if(isNaN(Number(args[2])) && isNaN((Number(args[3])))){
+    throw new Error('provided values are not numbers!')
 }else{
-    throw new Error('Provided values are not numbers!')
+    times.push(Number(args[i]))
 }
 }
+return {
+    target: Number(args[2]),
+    time: times
+}
+}
+type DailyHours = number[]
 
 const calculateExercises = (target: number, dailyHrs: DailyHours): ResultObj => {
     const periodLength = dailyHrs.length;
     const trainingDays = dailyHrs.filter(hr => hr !== 0).length
     const average = dailyHrs.reduce((current, total)=>  current + total, 0) / dailyHrs.length
     let success =  average >= target ? true : false 
-    let rating 
-    let ratingDescription
-if(success){
-  rating = 3
-  ratingDescription = 'very good! You did it!'
+
+const rates = (average: number, target: number): number => {
+const myRating = average / target
+if(myRating >=1){
+    return 3
+}else if(myRating >= 0.8){
+    return 2
 }else{
-    rating = 2
-    ratingDescription = 'not too bad but could be better'
+    return 1
 }
+    }
+
+    const descreptions = (rating: number) : string=> {
+  if(rating === 1){
+    return 'Need to take more exercises!'
+  }else if(rating === 2){
+    return 'Not too bad but could be better.'
+  }else{
+    return 'Very excellent!'
+  }
+    }
+
+    const rating = rates(average, target)
+    const ratingDescription = descreptions(rating)
+
 return {
     periodLength,
     trainingDays,
@@ -83,36 +76,16 @@ return {
     }
 
 try{
-console.log(parseArgs(process.argv))
-const {value1, value2, value3, value4, value5, value6,
-    value7, value8, value9, value10 }= parseArgs(process.argv)
-
-// const arrayValues = [value2, value3, value4, value5, value6, value7, value8, value9, value10]
-calculateExercises(value1, [value2, value3, value4, value5, value6, value7, value8, value9, value10])
-
+const {target, time} = parseArgs(process.argv)
+const result = calculateExercises(target, time)
+console.log(result)
 }catch(error:unknown){
 let errorMessage = 'something went wrong.'
 if(error instanceof Error){
-errorMessage += ' Error: ' + errorMessage
+errorMessage += ' Error: ' + error.message
 }
 console.log(errorMessage)
 }
 
-const target: number = Number(process.env[2])
-
-const value2: number = Number(process.argv[3])
-const value3 : number = Number(process.argv[4])
-const value4 : number = Number(process.argv[5])
-const value5 : number = Number(process.argv[6])
-const value6 : number = Number(process.argv[7])
-const value7 : number = Number(process.argv[8])
-const value8 : number = Number(process.argv[9])
-const value9 : number = Number(process.argv[10])
-const value10 : number = Number(process.argv[11])
-
-const dailyHrs = [value2, value3, value4, value5, value6, value7, value8, value9, value10]
-
-console.log(calculateExercises(target, dailyHrs))
-
-console.log(calculateExercises(2, [3, 0, 2, 4.5, 0, 3, 1]))
-console.log(calculateExercises(2, [1, 0, 2, 4.5, 0, 3, 1, 0, 4]))
+// console.log(calculateExercises(2, [3, 0, 2, 4.5, 0, 3, 1]))
+// console.log(calculateExercises(2, [1, 0, 2, 4.5, 0, 3, 1, 0, 4]))
