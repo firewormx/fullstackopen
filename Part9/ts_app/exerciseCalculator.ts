@@ -34,7 +34,7 @@ return {
 }
 type DailyHours = number[]
 
-const calculateExercises = (target: number, dailyHrs: DailyHours): ResultObj => {
+export const calculateExercises = (target: number, dailyHrs: DailyHours): ResultObj => {
     const periodLength = dailyHrs.length;
     const trainingDays = dailyHrs.filter(hr => hr !== 0).length
     const average = dailyHrs.reduce((current, total)=>  current + total, 0) / dailyHrs.length
