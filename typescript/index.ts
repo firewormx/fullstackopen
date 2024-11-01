@@ -1,12 +1,21 @@
 // npm install --save-dev @types/express
 // npm install --save-dev ts-node-dev (for recompilation on every change)
 import express from 'express'
+import { calculator } from './calculator';
 // const express = require('express')
 const app = express()
+app.use(express.json())
+
 //prefix unused params with underscore
 app.get('/ping', (_req, res) => {
 res.send('pong')
 });
+
+app.post('/calculate', (req, res) => {
+const {value1, value2, op} = req.body
+const result = calculator(value1, value2, op)
+res.send({result})
+})
 
 const PORT = 3003
 

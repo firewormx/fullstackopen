@@ -4,7 +4,7 @@
 // npm install --save-dev @types/react @types/express @types/lodash @types/jest @types/mongoose
 // The @types/ are maintained by Definitely typed, a community project to maintain types of everything in one place.
 
-type Operation = 'multiply' |'add'|'divide';　// string literal types
+type Operation = 'multiply' |'add'|'divide';// string literal types
 type Result = number | string 
 
 // const calculator = (a:number, b: number, op:Operation): Result => {
@@ -18,7 +18,7 @@ type Result = number | string
 // }
 // }
 
-const calculator = (a: number, b: number, op: Operation): number => {
+export const calculator = (a: number, b: number, op: Operation): number => {
 switch(op){
 case 'multiply': return a * b;
 case 'divide': 
