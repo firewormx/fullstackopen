@@ -1,24 +1,32 @@
 // npm install --save-dev @types/express
 // npm install --save-dev ts-node-dev (for recompilation on every change)
-import express from 'express'
-import { calculator } from './calculator';
+import express from 'express';
+import { calculator, Operation } from './calculator';
 // const express = require('express')
-const app = express()
-app.use(express.json())
+const app = express();
+app.use(express.json());
 
 //prefix unused params with underscore
 app.get('/ping', (_req, res) => {
-res.send('pong')
+res.send('pong');
 });
 
 app.post('/calculate', (req, res) => {
-const {value1, value2, op} = req.body
-const result = calculator(value1, value2, op)
-res.send({result})
-})
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { value1, value2, op } = req.body;
 
-const PORT = 3003
+  if ( !value1 || isNaN(Number(value1)) ) {
+    return res.status(400).send({ error: '...'});
+  }
+
+  // more validations here...
+
+  const result = calculator(Number(value1), Number(value2), op as Operation);
+  return res.send({ result });
+});
+
+const PORT = 3003;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+  console.log(`Server running on port ${PORT}`);
+});
