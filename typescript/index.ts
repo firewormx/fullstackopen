@@ -1,17 +1,16 @@
 // npm install --save-dev @types/express
 // npm install --save-dev ts-node-dev (for recompilation on every change)
 import express from 'express';
-import { calculator, Operation } from './calculator';
-// const express = require('express')
 const app = express();
 app.use(express.json());
+import { calculator, Operation } from './calculator';
 
 //prefix unused params with underscore
 app.get('/ping', (_req, res) => {
 res.send('pong');
 });
 
-app.post('/calculate', (req, res) => {
+app.post('/calculate', (req, res)=> {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { value1, value2, op } = req.body;
 
@@ -19,10 +18,9 @@ app.post('/calculate', (req, res) => {
     return res.status(400).send({ error: '...'});
   }
 
-  // more validations here...
-
+ // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const result = calculator(Number(value1), Number(value2), op as Operation);
-  return res.send({ result });
+return  res.send({ result });
 });
 
 const PORT = 3003;
