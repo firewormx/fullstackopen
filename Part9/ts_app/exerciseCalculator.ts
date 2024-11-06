@@ -37,6 +37,7 @@ export const calculateExercises = (target: number, dailyHrs: DailyHours): Result
     const trainingDays = dailyHrs.filter(hr => hr !== 0).length;
     const average = dailyHrs.reduce((current, total)=>  current + total, 0) / dailyHrs.length;
     const  success =  average >= target ;
+
 const rates = (average: number, target: number): number => {
 const myRating = average / target;
 if(myRating >=1){
