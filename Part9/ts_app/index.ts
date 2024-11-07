@@ -37,7 +37,7 @@ app.get('/bmi', (req, res)=> {
     }
 
     const result = calculateExercises(Number(target), daily_exercises as number[]);
-    res.json({result});
+    res.send({result});
    });
 
     const PORT = 3003;

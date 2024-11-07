@@ -34,7 +34,7 @@ type DailyHours = number[];
 
 export const calculateExercises = (target: number, dailyHrs: DailyHours): ResultObj => {
     const periodLength = dailyHrs.length;
-    const trainingDays = dailyHrs.filter(hr => hr !== 0).length;
+    const trainingDays = dailyHrs.filter(hr => hr > 0).length;
     const average = dailyHrs.reduce((current, total)=>  current + total, 0) / dailyHrs.length;
     const  success =  average >= target ;
 
@@ -51,7 +51,7 @@ if(myRating >=1){
 
     const descreptions = (rating: number) : string=> {
   if(rating === 1){
-    return 'Need to take more exercises!';
+    return 'bad';
   }else if(rating === 2){
     return 'Not too bad but could be better.';
   }else{
