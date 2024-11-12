@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const diagnoseRoutes_1 = __importDefault(require("./routes/diagnoseRoutes"));
+const patientsRoutes_1 = __importDefault(require("./routes/patientsRoutes"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.static('dist'));
@@ -15,11 +16,8 @@ app.get('/api/ping', (_req, res) => {
     console.log('someone pinged here');
     res.send('pong');
 });
-app.get('/api/patients', (_req, res) => {
-    console.log('check patients info here');
-    res.send('patients info');
-});
 app.use('/api/diagnose', diagnoseRoutes_1.default);
+app.use('/api/patients', patientsRoutes_1.default);
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
