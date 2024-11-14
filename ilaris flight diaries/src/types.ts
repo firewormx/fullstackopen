@@ -1,6 +1,18 @@
-export type Weather = 'sunny'|'rainy'|'cloudy'|'windy'|'stormy';
+//enums type
+export enum Weather{
+    Sunny = 'sunny',
+    Rainy = 'rainy',
+    Cloudy = 'cloudy',
+    Stormy = 'stormy',
+    Windy = 'windy'
+}
 
-export type Visibility = 'great' | 'good' | 'ok' |'poor';
+export enum Visibility {
+Great = 'great',
+Good = 'good',
+OK = 'ok',
+Poor = 'poor'
+} 
 
 export interface DiaryEntry {
     id: number,
@@ -9,11 +21,6 @@ export interface DiaryEntry {
     visibility: Visibility,
     comment?: string
 }
-
-// const getNonSensitiveEntries = ():Pick<DiaryEntry, 'id'| 'date'| 'weather'|'visibility'>[] => {
-// }
-// const getNonSensitiveEntries = (): Omit<DiaryEntry, 'comment'>[] => {
-// }
 
 export type NonSensitiveDairyEntry = Omit<DiaryEntry, 'comment'>
 

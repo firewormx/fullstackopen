@@ -3,7 +3,6 @@ import { Response } from 'express';
 import diaryService from '../services/diaryService';
 import { DiaryEntry } from '../types';
 import toNewDiaryEntry from '../utils';
-import diaryEntries from '../../data/diaryEntries';
 
 const router = express.Router();
 
@@ -32,9 +31,6 @@ router.post('/', (req, res) => {
     }
    res.status(400).send(errorMessage)
   }
-// const { date, weather, visibility, comment}= req.body;
-// const newDiaryEntry = diaryService.addDiary({date, weather, visibility, comment})
-//  res.json(newDiaryEntry);
 });
 
 export default router;
