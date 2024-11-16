@@ -1,3 +1,6 @@
+import { z } from 'zod';
+import { newEntrySchema } from './utils'
+
 //enums type
 export enum Weather{
     Sunny = 'sunny',
@@ -24,4 +27,12 @@ export interface DiaryEntry {
 
 export type NonSensitiveDairyEntry = Omit<DiaryEntry, 'comment'>
 
-export type NewDiaryEntry = Omit<DiaryEntry, 'id'>
+// export type NewDiaryEntry = Omit<DiaryEntry, 'id'>
+
+// infer the type from schema
+export type NewDiaryEntry = z.infer<typeof newEntrySchema>; 
+
+
+// export interface DiaryEntry extends NewDiaryEntry {
+//     id: number
+// }
