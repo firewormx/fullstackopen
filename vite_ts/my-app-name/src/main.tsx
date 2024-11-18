@@ -11,12 +11,12 @@ const Welcome = (props: WelcomeProps) => {
 return<h1>Hello, {props.name}</h1>
 }
 
-// createRoot(document.getElementById('root')!).render(
-//   <StrictMode>
-//     <App />
-//   </StrictMode>,
-// )
-
 createRoot(document.getElementById('root')!).render(
-  <Welcome  name='Sarah'/>
+  <StrictMode>
+    <App />
+  </StrictMode>,
 )
+
+// createRoot(document.getElementById('root')!).render(
+//   <Welcome  name='Sarah'/>
+// )
