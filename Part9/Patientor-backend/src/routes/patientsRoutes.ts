@@ -8,7 +8,7 @@ import {z} from 'zod'
 const router = express.Router()
 
 router.get('/', (_req, res: Response<Patients[]>) => {
-res.send(patientsService.getNonSensitiveInfo())
+res.send(patientsService.getPatientsData())
 })
 
 router.get('/:id', (_req, res: Response<Patients>) => {
