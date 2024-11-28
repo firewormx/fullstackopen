@@ -12,7 +12,7 @@ return patientsData.map(({id,name,dateOfBirth, gender, occupation}) => ({
     name,
     dateOfBirth,
     gender,
-    occupation
+    occupation,
 }))
 }
 
@@ -26,5 +26,10 @@ patientsData.push(newPatient)
 return newPatient
 }
 
-export default {getPatientsData, getNonSensitiveInfo, postPatient}
+const getSpecialPatient = (id: string): Patients | undefined => {
+const specailPatient = patientsData.find(p => p.id === id)
+return specailPatient 
+}
+
+export default {getPatientsData, getNonSensitiveInfo, postPatient, getSpecialPatient}
 
