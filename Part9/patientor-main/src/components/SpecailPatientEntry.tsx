@@ -28,6 +28,13 @@ return (
 
 <p>ssn:&nbsp; {specailPatient?.ssn}</p>
 <p>occupation:&nbsp; {specailPatient?.occupation}</p>
+<h3>entries</h3>
+{specailPatient?.entries?.map(entry => <div key={entry.id}>
+<p> {entry.date} {entry.description}</p>
+{entry.diagnosisCodes?.map(diagnosisCode => <ul key={diagnosisCode}>
+  <li>{diagnosisCode}</li>
+</ul>)}
+</div>)}
 </div>
 )
 }

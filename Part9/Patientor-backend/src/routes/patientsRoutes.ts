@@ -1,18 +1,18 @@
 import express from 'express'
 import { Response, Request, NextFunction } from 'express'
-import { NewPatient, Patients } from '../types'
+import { NewPatient, Patient } from '../types'
 import patientsService from '../services/patientsService'
 import { NewPatientSchema } from '../utils'
 import {z} from 'zod'
 
 const router = express.Router()
 
-router.get('/', (_req, res: Response<Patients[]>) => {
+router.get('/', (_req, res: Response<Patient[]>) => {
 res.send(patientsService.getPatientsData())
 })
 
-router.get('/:id', (_req, res: Response<Patients>) => {
-    const id = _req.params.id
+router.get('/:id', (req, res: Response<Patient>) => {
+    const id = req.params.id
 res.send(patientsService.getSpecialPatient(id))
 })
 
@@ -34,7 +34,7 @@ res.status(400).send({error: error.issues})
 }
 }
 
-router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatient>, res: Response<Patients>) => {
+router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatient>, res: Response<Patient>) => {
 // const newPatientEntry = NewPatientSchema.parse(req.body)
 const addedPatient = patientsService.postPatient(req.body)
 res.json(addedPatient)
