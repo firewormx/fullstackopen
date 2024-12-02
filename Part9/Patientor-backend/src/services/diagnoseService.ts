@@ -6,8 +6,9 @@ const getData = (): Diagnose[] => {
     return diagnoseData;
 }
 
-const addData = () => {
-    return null
+const addData = ({name, code, latin}: Diagnose) => {
+diagnoseData.concat({name, code, latin})
+
 }
 
 export default {

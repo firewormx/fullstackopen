@@ -1,13 +1,15 @@
-import { Patient } from "../types"
+import { Patient, Diagnose } from "../types"
 import { useParams } from "react-router-dom"
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import Man3Icon from '@mui/icons-material/Man3';
+
 interface Props{
     patients:Patient[],
+    diagnoses: Diagnose[]
 }
 
-const SpecialEntry= ({patients}: Props) => {
+const SpecialEntry= ({patients, diagnoses}: Props) => {
   const id = useParams().id
   const specailPatient = patients.find(p => p.id === id)
 
@@ -21,6 +23,14 @@ const SpecialEntry= ({patients}: Props) => {
  return <Man3Icon />
     }
   }
+  
+// ["a", "b", "c"].findIndex()
+ const codeArrayStr = specailPatient?.entries?.map(entry => entry.diagnosisCodes?.join(""))!
+
+    const diagnosisArray = () => {
+    return   diagnoses.filter(d => codeArrayStr.includes(d.code)).map(d => d)
+    } 
+
 
 return (
   <div key={specailPatient?.id}>
@@ -32,7 +42,7 @@ return (
 {specailPatient?.entries?.map(entry => <div key={entry.id}>
 <p> {entry.date} {entry.description}</p>
 {entry.diagnosisCodes?.map(diagnosisCode => <ul key={diagnosisCode}>
-  <li>{diagnosisCode}</li>
+  <li>{diagnosisCode}  {diagnosisArray?.name}</li>
 </ul>)}
 </div>)}
 </div>
