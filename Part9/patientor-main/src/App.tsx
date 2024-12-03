@@ -28,7 +28,8 @@ const App = () => {
       const diagnoses = await diagnoseService.getAll();
       setDiagnoses(diagnoses);
     };
-    void fetchDiagnoseList();
+    void fetchDiagnoseList()
+
   }, []);
 
   return (

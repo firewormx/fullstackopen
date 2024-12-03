@@ -11,7 +11,7 @@ interface Props{
 
 const SpecialEntry= ({patients, diagnoses}: Props) => {
   const id = useParams().id
-  const specailPatient = patients.find(p => p.id === id)
+  const specailPatient = patients.find(p => p.id === id);
 
   const genderPart = () => {
     if(specailPatient?.gender === 'female'){
@@ -24,12 +24,10 @@ const SpecialEntry= ({patients, diagnoses}: Props) => {
     }
   }
   
-// ["a", "b", "c"].findIndex()
- const codeArrayStr = specailPatient?.entries?.map(entry => entry.diagnosisCodes?.join(""))!
-
-    const diagnosisArray = () => {
-    return   diagnoses.filter(d => codeArrayStr.includes(d.code)).map(d => d)
-    } 
+  const findDescription = ( code: string ) => {
+    const desc: Diagnose | undefined = diagnoses.find( d => d.code === code);
+    return (desc === undefined) ? null : desc?.name;
+  };
 
 
 return (
@@ -39,10 +37,10 @@ return (
 <p>ssn:&nbsp; {specailPatient?.ssn}</p>
 <p>occupation:&nbsp; {specailPatient?.occupation}</p>
 <h3>entries</h3>
-{specailPatient?.entries?.map(entry => <div key={entry.id}>
+{specailPatient?.entries?.map((entry, index) => <div key={index}>
 <p> {entry.date} {entry.description}</p>
 {entry.diagnosisCodes?.map(diagnosisCode => <ul key={diagnosisCode}>
-  <li>{diagnosisCode}  {diagnosisArray?.name}</li>
+  <li>{diagnosisCode} {findDescription(diagnosisCode)} </li>
 </ul>)}
 </div>)}
 </div>
