@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom"
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import Man3Icon from '@mui/icons-material/Man3';
+import EntryDetails from "./EntryDetails/EntryDetails";
+import '../index.css'
 
 interface Props{
     patients:Patient[],
@@ -36,10 +38,19 @@ return (
 
 <p>ssn:&nbsp; {specailPatient?.ssn}</p>
 <p>occupation:&nbsp; {specailPatient?.occupation}</p>
+
 <h3>entries</h3>
-{specailPatient?.entries?.map((entry, index) => <div key={index}>
-<p> {entry.date} {entry.description}</p>
-{entry.diagnosisCodes?.map(diagnosisCode => <ul key={diagnosisCode}>
+
+{specailPatient?.entries
+            ? specailPatient?.entries.map( e => <EntryDetails entry={e} key={e.id} /> )
+            : <p >This patient has no entries.</p>
+      }
+
+{specailPatient?.entries?.map((entry, index) => 
+<div key={index}>
+{/* <p> {entry.date} {entry.description}</p> */}
+{entry.diagnosisCodes?.map((diagnosisCode, index) => 
+<ul key={index}>
   <li>{diagnosisCode} {findDescription(diagnosisCode)} </li>
 </ul>)}
 </div>)}
