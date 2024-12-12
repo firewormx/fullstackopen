@@ -19,7 +19,6 @@ return (
       <Typography variant='body2'>
         <b>discharge:</b> ({ entry.discharge.date }) { entry.discharge.criteria }
       </Typography>
-
       <Typography variant='body2' align='right' fontSize={'0.75em'} color={'blue'}>
         { entry.type }
       </Typography>

@@ -3,11 +3,11 @@ import HospitalInfo from "./HospitalInfo";
 import HealthCheckInfo from "./HealthCheckInfo";
 import OccupationalInfo from "./OccupationalInfo";
 
-// function assertNever(_entry: never) {
-//     throw new Error("Function not implemented.");
-// }
+function assertNever(_entry: never) {
+    throw new Error("Function not implemented.");
+}
 
-const EntryDetails = ({entry}: {entry: Entry}): JSX.Element => {
+const EntryDetails = ({entry}: {entry: Entry}): JSX.Element | undefined => {
     switch(entry.type){
         case "Hospital":
             return <HospitalInfo entry = {entry} />;
@@ -15,7 +15,7 @@ const EntryDetails = ({entry}: {entry: Entry}): JSX.Element => {
         return <HealthCheckInfo entry={entry}/>;
         case "OccupationalHealthcare": 
         return <OccupationalInfo entry={entry}/>;
-        // default: return assertNever(entry);
+        default:  assertNever(entry);
     }
 }
 export default EntryDetails
