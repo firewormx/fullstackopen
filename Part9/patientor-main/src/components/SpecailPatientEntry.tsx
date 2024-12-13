@@ -9,7 +9,7 @@ import {Button} from '@mui/material'
 import { useState } from "react";
 import patientService from '../services/patients'
 import axios from "axios";
-import AddNewEntry from "./AddNewEntry";
+import AddEntryModal from "./AddEntryModal";
 
 interface Props{
     patients:Patient[],
@@ -18,17 +18,23 @@ interface Props{
 
 const SpecialEntry= ({patients, diagnoses}: Props) => {
   const [patient, setPatient] = useState<Patient>()
-  const [modalOpen, setModalOpen] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
+  // const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const openModal = (): void => setModalOpen(true);
+  const [error, setError] = useState<string>();
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
 
   const id = useParams().id
   const specailPatient = patients.find(p => p.id === id);
 
-  const showError = (text: string) => {
-setErrorMessage(text)
+const showError = (text: string) => {
+setError(text)
 setTimeout(() => {
-  setErrorMessage(null)
+  setError('')
 }, 5000)
   }
 
@@ -72,7 +78,6 @@ try{
   //   return (desc === undefined) ? null : desc?.name;
   // };
 
-
 return (
   <div key={specailPatient?.id}>
   <h2>{specailPatient?.name} {genderPart()}</h2>
@@ -80,11 +85,14 @@ return (
 <p>ssn:&nbsp; {specailPatient?.ssn}</p>
 <p>occupation:&nbsp; {specailPatient?.occupation}</p>
 
-<AddNewEntry onSubmit={submitNewEntry} onCancel={()=> setModalOpen(false)}/>
-<br />
+<AddEntryModal 
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeModal}
+ />
 
 <h3>entries</h3>
-
 {specailPatient?.entries
             ? specailPatient?.entries.map( e => <EntryDetails entry={e} key={e.id} /> )
             : <p>This patient has no entries.</p>
