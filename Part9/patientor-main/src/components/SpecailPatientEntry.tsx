@@ -93,7 +93,7 @@ return (
  />
 
 <h3>entries</h3>
-{specailPatient?.entries
+{(specailPatient?.entries && specailPatient.entries.length > 0)
             ? specailPatient?.entries.map( e => <EntryDetails entry={e} key={e.id} /> )
             : <p>This patient has no entries.</p>
       }
