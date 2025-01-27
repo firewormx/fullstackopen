@@ -6,7 +6,7 @@ import { PatientFormValues, Gender } from "../../types";
 
 interface Props {
   onCancel: () => void;
-  onSubmit: (values: PatientFormValues) => void;
+  onSubmit: (values: PatientFormValues) => Promise<void>;
 }
 
 interface GenderOption{

@@ -25,11 +25,12 @@ const {data}= await axios.get<Patient>(`${apiBaseUrl}/patients/${id}`);
 return data
 } 
 
-const postNewEntry = async(id: string, object: EntryWithoutId) => {
-const {data} = await axios.post<Patient>(`${apiBaseUrl}/patients/${id}/entries`, object)
+const postNewEntry = async(id: string, entry: EntryWithoutId) => {
+  const newEntry = {id, ... entry}
+const {data} = await axios.post<Patient>(`${apiBaseUrl}/patients/${id}/entries`, newEntry)
 return data
 }
 export default {
-  getAll, create, getSpecialPatient, postNewEntry
+  getAll, create, getSpecialPatient, postNewEntry,
 };
 

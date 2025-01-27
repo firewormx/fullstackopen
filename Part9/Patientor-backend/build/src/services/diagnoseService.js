@@ -7,8 +7,8 @@ const diagnoses_1 = __importDefault(require("../../data/diagnoses"));
 const getData = () => {
     return diagnoses_1.default;
 };
-const addData = () => {
-    return null;
+const addData = ({ name, code, latin }) => {
+    diagnoses_1.default.concat({ name, code, latin });
 };
 exports.default = {
     getData,

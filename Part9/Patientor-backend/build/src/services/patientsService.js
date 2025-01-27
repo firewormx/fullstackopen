@@ -17,10 +17,32 @@ const getNonSensitiveInfo = () => {
         occupation
     }));
 };
+// const getNoSsnPatient = (): NoSsnPatient[] => {
+//     return patientsData.map(({ id, name, dateOfBirth, gender, occupation, entries }) => 
+//     ({
+//         id,
+//         name,
+//         dateOfBirth,
+//         gender,
+//         occupation,
+//         entries
+//     }));
+// };
 const postPatient = (entry) => {
     const id = (0, uuid_1.v1)();
     const newPatient = Object.assign({ id }, entry);
     patients_1.default.push(newPatient);
     return newPatient;
 };
-exports.default = { getPatientsData, getNonSensitiveInfo, postPatient };
+const postNewEntry = (entry, patient) => {
+    var _a;
+    const id = (0, uuid_1.v1)();
+    const newEntry = Object.assign({ id }, entry);
+    (_a = patient === null || patient === void 0 ? void 0 : patient.entries) === null || _a === void 0 ? void 0 : _a.push(newEntry);
+    return newEntry;
+};
+const getSpecialPatient = (id) => {
+    const specailPatient = patients_1.default.find(p => p.id === id);
+    return specailPatient;
+};
+exports.default = { getPatientsData, getNonSensitiveInfo, postPatient, getSpecialPatient, postNewEntry };

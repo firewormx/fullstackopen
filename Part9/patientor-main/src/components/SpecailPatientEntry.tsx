@@ -72,11 +72,6 @@ try{
  return <Man3Icon />
     }
   }
-  
-  // const findDescription = ( code: string ) => {
-  //   const desc: Diagnose | undefined = diagnoses.find( d => d.code === code);
-  //   return (desc === undefined) ? null : desc?.name;
-  // };
 
 return (
   <div key={specailPatient?.id}>

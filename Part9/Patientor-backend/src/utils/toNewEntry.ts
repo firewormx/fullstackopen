@@ -41,7 +41,7 @@ const isNumber = (text: unknown): text is number => {
 return typeof text === 'number'|| text instanceof Number
 }
 
-const isHealthCheckRating = (param: number): param is HealthCheckRating => {
+const isHealthCheckRating = (param: number) => {
     return Object.values(HealthCheckRating).includes(param);
     }
     
@@ -128,6 +128,7 @@ const toNewEntry = (object: unknown): EntryWithoutId => {
                   return healthCheckEntry;
                     }
                     throw new Error('Incorrect data: health check rating missing');
+
                 case 'Hospital':
                     if('discharge' in object){
                         const disChargeEntry: EntryWithoutId = {
@@ -138,6 +139,7 @@ const toNewEntry = (object: unknown): EntryWithoutId => {
                         return disChargeEntry;
                     }
                     throw new Error('Incorrect data: discharge data missing');
+                    
                 case 'OccupationalHealthcare':
                   if('employerName' in object){
                     const occupationalHealthcareEntry : EntryWithoutId = 'sickLeave' in object

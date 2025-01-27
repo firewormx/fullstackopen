@@ -44,7 +44,7 @@ const newEntry = {
     id,
     ...entry
 }
- patient.entries.push(newEntry)
+ patient?.entries?.push(newEntry)
  return newEntry
 }
 
