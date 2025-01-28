@@ -1,11 +1,11 @@
-import { useState, SyntheticEvent, useContext, useEffect } from "react";
+import { useState, SyntheticEvent, useContext} from "react";
 import DiagnosesContext from '../../context/Context'
 import {  TextField, InputLabel,Grid, Button, SelectChangeEvent, Select,OutlinedInput, MenuItem, Typography} from '@mui/material';
 import { EntryWithoutId, HealthCheckRating, Diagnose} from "../../types";
 
 interface Props {
   onCancel: () => void;
-  onSubmit: (values:EntryWithoutId) => void;
+  onSubmit: (values:EntryWithoutId) => Promise<boolean>;
 }
 
 interface HealthCheckRatingOption{
@@ -33,10 +33,6 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   const [entryOptions, setEntryOptions] = useState('')
 
   const diagnoses = useContext(DiagnosesContext)
-
-  useEffect(() => {
-
-  }, [])
 
 const handleHealthCheckRating = (event:SelectChangeEvent<string>) => {
   event.preventDefault()

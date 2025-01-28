@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Routes} from "react-router-dom";
 import { Button, Divider, Container, Typography } from '@mui/material';
 
 import { apiBaseUrl } from "./constants";
@@ -9,7 +9,7 @@ import { Patient, Diagnose } from "./types";
 import patientService from "./services/patients";
 import diagnoseService from './services/diagnose';
 import PatientListPage from "./components/PatientListPage";
-import SpecialEntry from "./components/SpecailPatientEntry";
+import SpecialPatientEntry from "./components/SpecailPatientEntry";
 import DiagnosesContext from './context/Context';
 
 const App = () => {
@@ -33,6 +33,10 @@ const App = () => {
 
   }, []);
 
+  // const id = useParams().id
+  // // const match = useMatch(`${apiBaseUrl}/patients/:id`)
+  // const patient = patients.find(p => p.id === id)
+
   return (
     <div className="App">
       <Router>
@@ -47,7 +51,7 @@ const App = () => {
           <DiagnosesContext.Provider value={diagnoses}>
           <Routes>
             <Route path="/" element={<PatientListPage patients={patients} setPatients={setPatients} />} />
-            <Route path="/api/patients/:id" element={<SpecialEntry patients={patients}  diagnoses={diagnoses}/>} />
+            <Route path="/api/patients/:id" element={<SpecialPatientEntry  patients={patients}  diagnoses={diagnoses}/>} />
           </Routes>
           </DiagnosesContext.Provider>
         </Container>

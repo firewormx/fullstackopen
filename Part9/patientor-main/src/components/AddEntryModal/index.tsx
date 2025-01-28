@@ -5,7 +5,7 @@ import { EntryWithoutId } from "../../types";
 
 interface Props {
   modalOpen: boolean;
-  onSubmit: (values: EntryWithoutId) => void;
+  onSubmit: (values: EntryWithoutId) => Promise<boolean>;
   onClose: () => void;
   error?: string;
 }

@@ -49,7 +49,7 @@ router.post('/:id/entries',(req: Request, res: Response<Entry>) => {
         const foudSpecialPatient = patientsService.getSpecialPatient(req.params.id)
         if(foudSpecialPatient){
             const newEntry = toNewEntry(req.body)
-            const addedEntry = patientsService.postNewEntry(newEntry, foudSpecialPatient)
+            const addedEntry = patientsService.postNewEntry(foudSpecialPatient, newEntry)
             res.json(addedEntry)
         }
     }catch(error: unknown){
