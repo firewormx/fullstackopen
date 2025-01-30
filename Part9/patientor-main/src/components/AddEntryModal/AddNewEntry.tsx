@@ -24,7 +24,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   const [date, setDate] = useState('');
   const [specialist, setSpecialist] = useState('');
   const [healthCheckRating, setHealthCheckRating] = useState(HealthCheckRating.Healthy);
-  const [diagnosisCodes, setDiagnosisCodes] = useState<Array<Diagnose['code']>>([]);
+  const [diagnosisCodes, setDiagnosisCodes] = useState<Array<Diagnose["code"]>>([]);
   const [dischargeDate, setDischargeDate] = useState('')
   const [dischargeCriteria, setDischargeCriteria] = useState('')
   const [employerName, setEmployerName] = useState('')
@@ -38,12 +38,13 @@ const handleHealthCheckRating = (event:SelectChangeEvent<string>) => {
   event.preventDefault()
   const value = Number(event.target.value)
 
-  const healthCheckRate = Object.values(HealthCheckRating)
-  console.log(healthCheckRate);
+  const healthCheckRating = Object.values(HealthCheckRating)
+  console.log(healthCheckRating);
 
-  if(value && healthCheckRate.includes(value)){
+  if((value && healthCheckRating.includes(value))){
     setHealthCheckRating(value)
   }
+  if(value === 0)     setHealthCheckRating(value)
   }
 
   const handleDiagnosisCodes = (event: SelectChangeEvent<string[]>) => {
