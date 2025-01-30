@@ -23,7 +23,7 @@ if(!date ||!isString(date) || !isDate(date)){
 return date
 }
 
-const parseSpecilist = (specialist: unknown): string => {
+const parseSpecialist = (specialist: unknown): string => {
     if(!specialist || !isString(specialist)){
         throw new Error('Incorrect or missing specialist!')
     }
@@ -41,13 +41,14 @@ const isNumber = (text: unknown): text is number => {
 return typeof text === 'number'|| text instanceof Number
 }
 
-const isHealthCheckRating = (param: number) => {
+const isHealthCheckRating = (param: number): param is HealthCheckRating => {
     return Object.values(HealthCheckRating).includes(param);
     }
     
     const parseHealthCheckRating = (healthCheckRating: unknown): HealthCheckRating => {
-    if(!healthCheckRating || !isNumber(healthCheckRating) || !isHealthCheckRating(healthCheckRating)){
-        throw new Error('Incorrect or missing healthcheck rating: '+ healthCheckRating)
+    if(!isNumber(healthCheckRating) || !isHealthCheckRating(healthCheckRating)){
+        throw new Error('Incorrect or missing healthcheck rating: '+ healthCheckRating + 'this one!'
+        )
     }
     return healthCheckRating
     }
@@ -105,17 +106,15 @@ const toNewEntry = (object: unknown): EntryWithoutId => {
         if('description' in object && 
             'date'  in object && 
             'specialist' in object ){
-            const newBaseEntry: NewBaseEntry = 'diagnosisCodes' in object
-            ? {
+            const newBaseEntry: NewBaseEntry ={
                 description: parseDescription(object.description),
                 date: parseDate(object.date),
-                specialist: parseSpecilist(object.specialist),
-                diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes)
-        }:  {
-            description: parseDescription(object.description),
-            date: parseDate(object.date),
-            specialist: parseSpecilist(object.specialist)
+                specialist: parseSpecialist(object.specialist),
         }
+        if('diagnosisCodes' in object){
+           newBaseEntry.diagnosisCodes = parseDiagnosisCodes(object)
+        }
+
         if('type' in object){
             switch(object.type){
                 case 'HealthCheck':
@@ -156,7 +155,9 @@ const toNewEntry = (object: unknown): EntryWithoutId => {
                             }
                     return occupationalHealthcareEntry;
                         }
-             throw new Error('Incorrect data: employerName missing')
+             throw new Error('Incorrect data: employerName missing');
+             default:
+                throw new Error('Incorrect data: some fields are missing');
             }
         }
     }

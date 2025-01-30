@@ -1,4 +1,4 @@
-import { NewPatient, Gender} from '../types'
+import { NewPatient, Gender, Entry} from '../types'
 // import {z} from 'zod'
 
 // export const NewPatientSchema = z.object({
@@ -88,7 +88,7 @@ if('name' in object &&
         gender: parseGender(object.gender),
         occupation: parseOccupation(object.occupation),
         ssn: parseSsn(object.ssn),
-        entries:[]
+        entries:[] as Entry[]
     }
     return newPatient;
 }
