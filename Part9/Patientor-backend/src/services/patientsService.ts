@@ -38,14 +38,16 @@ patientsData.push(newPatient)
 return newPatient
 }
 
-const postNewEntry = (patient: Patient, entry:EntryWithoutId) => {
-const id = uuid();
+const postNewEntry = (entry:EntryWithoutId, id: string) => {
 const newEntry = {
-    id,
+    id: uuid(),
     ...entry
 }
- patient?.entries?.push(newEntry)
- return newEntry
+const updatedPatient = patientsData.find(p => p.id === id)
+if(!updatedPatient) throw new Error('Patient does not exist!')
+
+updatedPatient.entries?.push(newEntry)
+ return updatedPatient;
 }
 
 const getSpecialPatient = (id: string): Patient | undefined => {

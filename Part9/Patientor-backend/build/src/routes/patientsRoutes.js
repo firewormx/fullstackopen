@@ -48,7 +48,7 @@ router.post('/:id/entries', (req, res) => {
         const foudSpecialPatient = patientsService_1.default.getSpecialPatient(req.params.id);
         if (foudSpecialPatient) {
             const newEntry = (0, toNewEntry_1.default)(req.body);
-            const addedEntry = patientsService_1.default.postNewEntry(newEntry, foudSpecialPatient);
+            const addedEntry = patientsService_1.default.postNewEntry(foudSpecialPatient, newEntry);
             res.json(addedEntry);
         }
     }

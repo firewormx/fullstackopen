@@ -34,7 +34,7 @@ const postPatient = (entry) => {
     patients_1.default.push(newPatient);
     return newPatient;
 };
-const postNewEntry = (entry, patient) => {
+const postNewEntry = (patient, entry) => {
     var _a;
     const id = (0, uuid_1.v1)();
     const newEntry = Object.assign({ id }, entry);

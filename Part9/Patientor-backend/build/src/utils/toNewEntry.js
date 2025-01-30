@@ -19,7 +19,7 @@ const parseDate = (date) => {
     }
     return date;
 };
-const parseSpecilist = (specialist) => {
+const parseSpecialist = (specialist) => {
     if (!specialist || !isString(specialist)) {
         throw new Error('Incorrect or missing specialist!');
     }
@@ -38,8 +38,8 @@ const isHealthCheckRating = (param) => {
     return Object.values(types_1.HealthCheckRating).includes(param);
 };
 const parseHealthCheckRating = (healthCheckRating) => {
-    if (!healthCheckRating || !isNumber(healthCheckRating) || !isHealthCheckRating(healthCheckRating)) {
-        throw new Error('Incorrect or missing healthcheck rating: ' + healthCheckRating);
+    if (!isNumber(healthCheckRating) || !isHealthCheckRating(healthCheckRating)) {
+        throw new Error('Incorrect or missing healthcheck rating: ' + healthCheckRating + 'this one!');
     }
     return healthCheckRating;
 };
@@ -90,17 +90,14 @@ const toNewEntry = (object) => {
     if ('description' in object &&
         'date' in object &&
         'specialist' in object) {
-        const newBaseEntry = 'diagnosisCodes' in object
-            ? {
-                description: parseDescription(object.description),
-                date: parseDate(object.date),
-                specialist: parseSpecilist(object.specialist),
-                diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes)
-            } : {
+        const newBaseEntry = {
             description: parseDescription(object.description),
             date: parseDate(object.date),
-            specialist: parseSpecilist(object.specialist)
+            specialist: parseSpecialist(object.specialist),
         };
+        if ('diagnosisCodes' in object) {
+            newBaseEntry.diagnosisCodes = parseDiagnosisCodes(object);
+        }
         if ('type' in object) {
             switch (object.type) {
                 case 'HealthCheck':
@@ -122,6 +119,8 @@ const toNewEntry = (object) => {
                         return occupationalHealthcareEntry;
                     }
                     throw new Error('Incorrect data: employerName missing');
+                default:
+                    throw new Error('Incorrect data: some fields are missing');
             }
         }
     }

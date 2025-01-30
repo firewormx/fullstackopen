@@ -1,6 +1,6 @@
 import express from 'express'
 import { Response, Request, NextFunction } from 'express'
-import { NewPatient, Patient, Entry} from '../types'
+import { NewPatient, Patient} from '../types'
 // import { Entry } from '../types'
 // import { toParseHealthCheckEntry, toParseHospitalEntry, toParseOccupationalEntr } from '../utils'
 import patientsService from '../services/patientsService'
@@ -44,21 +44,19 @@ try{
 }
 })
 
-router.post('/:id/entries',(req: Request, res: Response<Entry>) => {
+router.post('/:id/entries',(req: Request, res: Response<Patient>) => {
+  const {id} = req.params;
     try{
-        const foudSpecialPatient = patientsService.getSpecialPatient(req.params.id)
-        if(foudSpecialPatient){
             const newEntry = toNewEntry(req.body)
-            const addedEntry = patientsService.postNewEntry(foudSpecialPatient, newEntry)
-            res.json(addedEntry)
-        }
+            const updatedPatient = patientsService.postNewEntry(newEntry, id)
+            res.json(updatedPatient);
     }catch(error: unknown){
  let errorMessage = 'something went wrong.'
  if(error instanceof Error){
     errorMessage += ' Error: '+ error.message;
  }
  res.status(400);
- console.log(errorMessage)
+ console.error(errorMessage)
     }
 })
 
