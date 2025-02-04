@@ -4,10 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-// import { Entry } from '../types'
-// import { toParseHealthCheckEntry, toParseHospitalEntry, toParseOccupationalEntr } from '../utils'
 const patientsService_1 = __importDefault(require("../services/patientsService"));
-// import { NewPatientSchema} from '../utils/toNewEntry'
 const toNewEntry_1 = __importDefault(require("../utils/toNewEntry"));
 const toNewPatient_1 = __importDefault(require("../utils/toNewPatient"));
 const zod_1 = require("zod");
@@ -16,7 +13,7 @@ router.get('/', (_req, res) => {
     res.send(patientsService_1.default.getPatientsData());
 });
 router.get('/:id', (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params;
     res.send(patientsService_1.default.getSpecialPatient(id));
 });
 const errorMiddleware = (error, _req, res, next) => {
@@ -39,26 +36,24 @@ router.post('/', (req, res) => {
         if (error instanceof Error) {
             errorMessage += 'Error: ' + error.message;
         }
-        res.status(400);
+        res.status(400).send(errorMessage);
         console.log(errorMessage);
     }
 });
 router.post('/:id/entries', (req, res) => {
+    const { id } = req.params;
     try {
-        const foudSpecialPatient = patientsService_1.default.getSpecialPatient(req.params.id);
-        if (foudSpecialPatient) {
-            const newEntry = (0, toNewEntry_1.default)(req.body);
-            const addedEntry = patientsService_1.default.postNewEntry(foudSpecialPatient, newEntry);
-            res.json(addedEntry);
-        }
+        const newEntry = (0, toNewEntry_1.default)(req.body);
+        const updatedPatient = patientsService_1.default.postNewEntry(newEntry, id);
+        res.json(updatedPatient);
     }
     catch (error) {
         let errorMessage = 'something went wrong.';
         if (error instanceof Error) {
             errorMessage += ' Error: ' + error.message;
         }
-        res.status(400);
-        console.log(errorMessage);
+        res.status(400).send(errorMessage);
+        console.error(errorMessage);
     }
 });
 router.use(errorMiddleware);

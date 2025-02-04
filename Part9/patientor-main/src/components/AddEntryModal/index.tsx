@@ -7,7 +7,7 @@ interface Props {
   modalOpen: boolean;
   onSubmit: (values: EntryWithoutId) => Promise<boolean>;
   onClose: () => void;
-  error?: string;
+  error?: string | null;
 }
 
 const AddEntryModal = ({ modalOpen, onSubmit, error, onClose }: Props) => (

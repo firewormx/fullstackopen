@@ -33,10 +33,6 @@ const App = () => {
 
   }, []);
 
-  // const id = useParams().id
-  // // const match = useMatch(`${apiBaseUrl}/patients/:id`)
-  // const patient = patients.find(p => p.id === id)
-
   return (
     <div className="App">
       <Router>

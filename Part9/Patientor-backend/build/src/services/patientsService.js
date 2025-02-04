@@ -9,37 +9,29 @@ const getPatientsData = () => {
     return patients_1.default;
 };
 const getNonSensitiveInfo = () => {
-    return patients_1.default.map(({ id, name, dateOfBirth, gender, occupation }) => ({
+    return patients_1.default.map(({ id, name, dateOfBirth, gender, occupation, entries }) => ({
         id,
         name,
         dateOfBirth,
         gender,
-        occupation
+        occupation,
+        entries
     }));
 };
-// const getNoSsnPatient = (): NoSsnPatient[] => {
-//     return patientsData.map(({ id, name, dateOfBirth, gender, occupation, entries }) => 
-//     ({
-//         id,
-//         name,
-//         dateOfBirth,
-//         gender,
-//         occupation,
-//         entries
-//     }));
-// };
 const postPatient = (entry) => {
     const id = (0, uuid_1.v1)();
     const newPatient = Object.assign({ id }, entry);
     patients_1.default.push(newPatient);
     return newPatient;
 };
-const postNewEntry = (patient, entry) => {
+const postNewEntry = (entry, id) => {
     var _a;
-    const id = (0, uuid_1.v1)();
-    const newEntry = Object.assign({ id }, entry);
-    (_a = patient === null || patient === void 0 ? void 0 : patient.entries) === null || _a === void 0 ? void 0 : _a.push(newEntry);
-    return newEntry;
+    const newEntry = Object.assign({ id: (0, uuid_1.v1)() }, entry);
+    const updatedPatient = patients_1.default.find(p => p.id === id);
+    if (!updatedPatient)
+        throw new Error('Patient does not exist!');
+    (_a = updatedPatient.entries) === null || _a === void 0 ? void 0 : _a.push(newEntry);
+    return updatedPatient;
 };
 const getSpecialPatient = (id) => {
     const specailPatient = patients_1.default.find(p => p.id === id);

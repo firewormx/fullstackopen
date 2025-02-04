@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 import { MedicalServices } from '@mui/icons-material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-const HealthCheckInfo = ({ entry }: { entry: HealthCheckEntry }) => {
+const HealthCheckInfo = ({entry} : {entry: HealthCheckEntry} ) => {
   return(
     <div className='healthcheck entry'>
       <Typography variant='body2'>

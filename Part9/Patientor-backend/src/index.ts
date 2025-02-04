@@ -4,10 +4,9 @@ import diagnoseRouter from './routes/diagnoseRoutes'
 import patientsRouter from './routes/patientsRoutes'
 
 const app = express();
-app.use(cors())
-app.use(express.static('dist'))
 app.use(express.json());
-
+app.use(express.static('dist'))
+app.use(cors())
 
 const PORT = 3001;
 
