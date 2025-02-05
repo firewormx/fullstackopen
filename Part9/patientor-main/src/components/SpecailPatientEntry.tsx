@@ -85,7 +85,7 @@ return (
 <p>ssn:&nbsp; {patient?.ssn}</p>
 <p>occupation:&nbsp; {patient?.occupation}</p>
 
-{error &&  <Alert severity="error">This is an error Alert:{error}.</Alert>}
+{error &&  <Alert severity="error">This is an error Alert: {error}.</Alert>}
 
 <AddEntryModal 
         modalOpen={modalOpen}
