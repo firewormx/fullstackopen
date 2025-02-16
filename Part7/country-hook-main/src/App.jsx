@@ -58,6 +58,7 @@ const App = () => {
 
   return (
     <div>
+      <p>Please input a country name, get more details.</p>
       <form onSubmit={fetch}>
         <input {...nameInput} />
         <button>find</button>
