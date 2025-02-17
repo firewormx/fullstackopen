@@ -1,3 +1,4 @@
+require('dotenv').config()
 import express from 'express';
 import cors from 'cors';
 import diagnoseRouter from './routes/diagnoseRoutes'
@@ -20,7 +21,7 @@ app.use('/api/diagnose', diagnoseRouter)
 
 app.use('/api/patients', patientsRouter)
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT} from .env ${process.env.PORT}`);
 });
