@@ -7,7 +7,9 @@
     "dev": "ts-node-dev src/index.ts",
     "lint": "eslint .",
     "start": "node build/src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ui": "rm -rf dist && cd ../patientor-main && npm run build && cp -r dist ../Patientor-backend",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "author": "",
   "license": "ISC",
