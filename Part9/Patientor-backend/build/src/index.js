@@ -12,10 +12,7 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.static('dist'));
 app.use((0, cors_1.default)());
-// Root route
-app.get('/api', (_req, res) => {
-    res.send('Welcome to the Patientor API');
-});
+// const PORT = 3001;
 app.get('/api/ping', (_req, res) => {
     console.log('someone pinged here');
     res.send('pong');
