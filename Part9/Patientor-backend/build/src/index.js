@@ -19,7 +19,7 @@ app.get('/api/ping', (_req, res) => {
 });
 app.use('/api/diagnose', diagnoseRoutes_1.default);
 app.use('/api/patients', patientsRoutes_1.default);
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT} from .env ${process.env.PORT}`);
 });
