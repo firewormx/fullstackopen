@@ -4,7 +4,6 @@ import diagnoseRouter from './routes/diagnoseRoutes'
 import patientsRouter from './routes/patientsRoutes'
 
 const app = express();
-const port = process.env.PORT || 3001;
 
 app.use(express.json());
 app.use(express.static('dist'))
@@ -21,6 +20,7 @@ app.use('/api/diagnose', diagnoseRouter)
 
 app.use('/api/patients', patientsRouter)
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
