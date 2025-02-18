@@ -8,12 +8,21 @@ const loginRouter = require('express').Router();
 loginRouter.post('/', async (request, response) => {
     const { username, password } = request.body;
 
-    const user = await User.findOne({ username });
-    const passwordCorrect = user === null
-        ? false
-        : await bcrypt.compare(password, user.passwordHash);
+    console.log('Login attempt:', { username, password });
 
-    if (!(user && passwordCorrect)) {
+    const user = await User.findOne({ username });
+
+    if (!user) {
+        return response.status(401).json({
+            error: 'invalid username or password'
+        });
+    }
+
+    console.log('User found:', user);
+
+    const passwordCorrect = await bcrypt.compare(password, user.passwordHash);
+
+    if (!passwordCorrect) {
         return response.status(401).json({
             error: 'invalid username or password'
         });
@@ -24,7 +33,7 @@ loginRouter.post('/', async (request, response) => {
         id: user._id,
     };
 
-    const token = jwt.sign(userForToken, config.JWT_SECRET);
+    const token = jwt.sign(userForToken, config.JWT_SECRET, { expiresIn: '1h' });
 
     response
         .status(200)
