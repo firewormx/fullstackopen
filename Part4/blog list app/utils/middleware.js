@@ -45,11 +45,18 @@ const tokenExtractor = (request, response, next) => {
 
 const userExtractor = async (request, response, next) => {
     if (request.token) {
-        const decodedToken = jwt.verify(request.token, config.JWT_SECRET)
-        if (!decodedToken.id) {
+        try {
+            const decodedToken = jwt.verify(request.token, config.JWT_SECRET)
+            if (!decodedToken.id) {
+                return response.status(401).json({ error: 'token invalid' })
+            }
+            request.user = await User.findById(decodedToken.id)
+        } catch (error) {
+            if (error.name === 'TokenExpiredError') {
+                return response.status(401).json({ error: 'token expired' })
+            }
             return response.status(401).json({ error: 'token invalid' })
         }
-        request.user = await User.findById(decodedToken.id)
     }
     next()
 }
