@@ -9,7 +9,9 @@
     "start": "node dist/assets/index.js",
     "server": "json-server -p 3002 --watch db.json",
     "dev": "vite",
-    "preview": "vite preview"
+    "build": "npm run copy-db && vite build",
+    "preview": "vite preview",
+    "copy-db": "cp db.json /tmp/db.json"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
