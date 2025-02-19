@@ -6,7 +6,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node dist/assets/index.js && npm run copy-db && npm run server",
+    "start": "vite && npm run copy-db && npm run server",
     "server": "json-server -p 3002 --watch /tmp/db.json",
     "dev": "vite",
     "build": "vite build",
