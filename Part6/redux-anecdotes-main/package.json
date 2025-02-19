@@ -6,10 +6,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node dist/assets/index.js && npm run server",
+    "start": "node dist/assets/index.js && npm run copy-db && npm run server",
     "server": "json-server -p 3002 --watch /tmp/db.json",
     "dev": "vite",
-    "build": "npm run copy-db && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "copy-db": "cp db.json /tmp/db.json"
   },
