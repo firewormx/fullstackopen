@@ -6,8 +6,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node dist/assets/index.js",
-    "server": "json-server -p 3002 --watch db.json",
+    "start": "node dist/assets/index.js && npm run server",
+    "server": "json-server -p 3002 --watch /tmp/db.json",
     "dev": "vite",
     "build": "npm run copy-db && vite build",
     "preview": "vite preview",
