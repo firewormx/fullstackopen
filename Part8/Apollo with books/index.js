@@ -1,17 +1,18 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
-const express = require('express');
-const { ApolloServer } = require('@apollo/server');
-const { expressMiddleware } = require('@apollo/server/express4');
-const { makeExecutableSchema } = require('@graphql-tools/schema');
-const { WebSocketServer } = require('ws');
-const { useServer } = require('graphql-ws/lib/use/ws');
-const jwt = require('jsonwebtoken');
-const cors = require('cors');
+const { ApolloServer } = require('@apollo/server')
+const {WebSocketServer} = require('ws')
+const {useServer} = require('graphql-ws/lib/use/ws')
 
+const {expressMiddleware} = require('@apollo/server/express4')
 const {ApolloServerPluginDrainHttpServer} = require('@apollo/server/plugin/drainHttpServer')
+const { makeExecutableSchema } = require('@graphql-tools/schema')
+const express = require('express')
+const cors = require('cors')
 const http = require('http')
 
+const mongoose = require('mongoose')
+require('dotenv').config()
+
+const jwt = require('jsonwebtoken')
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
 const User = require('./models/User')
@@ -25,9 +26,9 @@ console.log('connecting to ', MONGODB_URI)
 
 mongoose.connect(MONGODB_URI)
 .then(() => {
-  console.log('connected to MongoDB')
+  console.log('connecting to MongoDB')
 })
-.catch(error => { console.log('error connecting to MongoDB:', error.message)})
+.catch(error => { console.log('error connection to MongoDB:', error.message)})
 
 mongoose.set('debug', true)
 
