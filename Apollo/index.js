@@ -79,7 +79,7 @@ const start = async() => {
 
 //expressMiddleware func attach Apollo Server to Express app
   app.use(
-    '/',
+    '/graphql',
     cors(),
     express.json(),//req body parsing to JS
     expressMiddleware(server, {// obj configuring ApolloServer
