@@ -1,0 +1,40 @@
+{
+  "name": "blog-list-app",
+  "version": "1.0.0",
+  "description": "bloglist",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development vite",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "test": "cross-env NODE_ENV=test node --test",
+    "start:test": "NODE_ENV=test node index.js",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "blog"
+  ],
+  "author": "hotaru",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.2.0",
+    "supertest": "^6.3.4"
+  },
+  "devDependencies": {
+    "@stylistic/eslint-plugin-js": "^1.6.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.57.0",
+    "nodemon": "^3.0.1"
+  }
+}

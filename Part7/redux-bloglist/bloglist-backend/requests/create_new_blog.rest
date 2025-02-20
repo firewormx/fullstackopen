@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkZlbGl4IiwiaWQiOiI2NjBiNWYzOTJkZjI2OTI2ODE1NzcwZTMiLCJpYXQiOjE3MTIwMjE5NjQsImV4cCI6MTcxMjAyNTU2NH0.b0npNAR8Ojb2Sii5uwO6IcjRUJdE0Mw0CurSCa2mGUk
+   
+   {
+    "author":"Sofie",
+    "title" :"Welcome!",
+    "url": "https://yuqiao.com",
+    "likes" : 219
+}
