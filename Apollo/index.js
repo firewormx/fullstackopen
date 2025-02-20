@@ -4,6 +4,7 @@ const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/dra
 const { makeExecutableSchema } = require('@graphql-tools/schema')
 const {WebSocketServer} = require('ws')
 const {useServer} = require('graphql-ws/lib/use/ws')
+require('dotenv').config();
 
 const express = require('express')
 const cors = require('cors')
@@ -56,14 +57,17 @@ const start = async() => {
   const server = new ApolloServer({
     schema,
     plugins: [
-      //Proper shutdown for the HTTP server
-      ApolloServerPluginDrainHttpServer({httpServer}),
-      //Proper shutdown for the WebSocket server
-    {
-      async serverWillStart(){
-        return {
-          async drainServer() {
-            await serverCleanup.dispose()
+//Proper shutdown for the HTTP server
+//Proper shutdown for the HTTP server
+//Proper shutdown for the WebSocket server
+      ApolloServerPluginDrainHttpServer({httpServer
+}),
+//Proper shutdown for the WebSocket server
+      {
+        async serverWillStart(){
+          return {
+            async drainServer() {
+              await serverCleanup.dispose()
           }
         }
       }
@@ -77,7 +81,7 @@ const start = async() => {
   app.use(
     '/',
     cors(),
-    express.json(),//req body parsing to JS 
+    express.json(),//req body parsing to JS
     expressMiddleware(server, {// obj configuring ApolloServer
       context: async({req, res}) => {
         const auth = req ? req.headers.authorization : null
@@ -88,13 +92,13 @@ const start = async() => {
           const currentUser = await User.findById(decodedToken.id).populate('friends')
           return {currentUser}
         }
-          },
+      },
     })
   )
 
   const PORT = 4000
-  
-  // the server starts listening on the HTTP and WebSocket transports simultaneously
+
+// the server starts listening on the HTTP and WebSocket transports simultaneously
   httpServer.listen(PORT, () => 
     console.log(`Server is now running on http://localhost:${PORT}`)
   )
