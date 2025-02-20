@@ -100,7 +100,7 @@ const start = async() => {
 
 // the server starts listening on the HTTP and WebSocket transports simultaneously
   httpServer.listen(PORT, () => 
-    console.log(`Server is now running on http://localhost:${PORT}`)
+    console.log(`Server is now running on http://localhost:${PORT}/graphql`)
   )
 }
 

@@ -22,12 +22,12 @@ return {// return an obj or promise
 })
 
 const httpLink = createHttpLink({
-  uri:'http://localhost:4000'
+  uri:'http://localhost:4000/graphql'
 })
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'ws://localhost:4000'
+    url: 'ws://localhost:4000/graphql',
   }),
 );
 
