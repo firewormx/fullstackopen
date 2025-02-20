@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   proxy: {
-    '/graphql': {
+    '/': {
       target: 'http://localhost:4000/graphql',
       changeOrigin: true,
       secure: false,
