@@ -1,8 +1,5 @@
-# React + Vite
+# Bloglist with Redux
+The project URL in included in below path
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- The backend path is [here](https://github.com/firewormx/fullstackopen/tree/main/Part4/blog%20list%20app)
+  
