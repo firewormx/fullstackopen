@@ -11,47 +11,45 @@ import { createClient } from 'graphql-ws';
 
 // setContext func returns an obj to set the new context of a request,the 2nd argument is  GraphQL req being excutes.
 //request.headers(the GraphQL request being executed)
-const authLink = setContext((previousContext, {headers}) => {
-const token = localStorage.getItem('phonenumbers-user-token')
-return {// return an obj or promise
-  headers:{
-    ...headers,
-    authorization: token ? `Bearer ${token}` : null
+const authLink = setContext((_, {headers}) => {
+  const token = localStorage.getItem('phonenumbers-user-token')
+  return {// return an obj or promise
+    headers:{
+      ...headers,
+      authorization: token ? `Bearer ${token}` : null,
+    },
   }
-}
 })
 
 const httpLink = createHttpLink({
-  uri:'http://localhost:4000/graphql'
+  uri: '/graphql', // Use relative URI to leverage the same server
 })
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'ws://localhost:4000/graphql',
-  }),
-);
-
-//split func: use one of two differentt Links, accoring to the result of a boolean c/k
-// the 1st param is a func that's called for each operation to execute
-const splitLink = split( 
-  ({query}) => {
-  const definition = getMainDefinition(query)
-  return (
-    definition.kind === 'OperationDefinition' &&
-    definition.operation === 'subscription'
-  )
-  },
-  wsLink, // the link to use if the func returns a 'truthy' value
-  authLink.concat(httpLink), // ...falsy value
+    url: 'ws://localhost:4000/graphql', // Use the same server for WebSocket
+  })
 )
 
-//provide the link chain to Apollo Client
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query)
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    )
+  },
+  wsLink,
+  authLink.concat(httpLink)
+)
+
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: splitLink
+  link: splitLink,
 })
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-<ApolloProvider client={client}>
-<App />
-</ApolloProvider>)
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>
+)

@@ -9,6 +9,7 @@ require('dotenv').config();
 const express = require('express')
 const cors = require('cors')
 const http = require('http')
+const path = require('path')
 
 const jwt = require('jsonwebtoken')
 const mongoose =require('mongoose')
@@ -47,7 +48,7 @@ const start = async() => {
   //create WebSocketServer using HTTP server to use as subscription server
   const wsServer = new WebSocketServer({
     server: httpServer,
-    path: '/'
+    path: '/graphql',
   })
 //save the returned server's info so we can shutdown this server later
 //WebSocketServer start listening the WebSocket connections(for subscriptions)
@@ -58,10 +59,7 @@ const start = async() => {
     schema,
     plugins: [
 //Proper shutdown for the HTTP server
-//Proper shutdown for the HTTP server
-//Proper shutdown for the WebSocket server
-      ApolloServerPluginDrainHttpServer({httpServer
-}),
+      ApolloServerPluginDrainHttpServer({httpServer}),
 //Proper shutdown for the WebSocket server
       {
         async serverWillStart(){
@@ -96,6 +94,14 @@ const start = async() => {
     })
   )
 
+  // Serve static files from the dist directory
+  app.use(express.static(path.join(__dirname, 'dist')));
+
+    // Serve the frontend application
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+    });
+  
   const PORT = 4000
 
 // the server starts listening on the HTTP and WebSocket transports simultaneously
