@@ -2,4 +2,4 @@
 Here is the URL for below project:
 
 - Anecdotes App [https://anecdotes-nrvw.onrender.com](https://anecdotes-nrvw.onrender.com)
-- The backend path is Part6/rudex-anecdotes-backend
+- The backend path is [here](https://github.com/firewormx/fullstackopen/tree/main/Part6/rudex-anecdotes-backend)
