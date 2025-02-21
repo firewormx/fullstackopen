@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "build": "vite build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "hotaru",
@@ -19,10 +20,11 @@
     "graphql-subscriptions": "^2.0.0",
     "graphql-ws": "^5.16.0",
     "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.8.0",
+    "mongodb": "^6.13.1",
     "mongoose": "^8.5.1",
     "mongoose-unique-validator": "^5.0.1",
     "uuid": "^10.0.0",
+    "vite": "^6.1.1",
     "ws": "^8.18.0"
   }
 }

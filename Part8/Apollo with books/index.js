@@ -8,6 +8,7 @@ const { makeExecutableSchema } = require('@graphql-tools/schema')
 const express = require('express')
 const cors = require('cors')
 const http = require('http')
+const path = require('path')
 
 const mongoose = require('mongoose')
 require('dotenv').config()
@@ -38,7 +39,7 @@ const httpServer = http.createServer(app)
 
 const wsServer = new WebSocketServer({
 server: httpServer,
-path:'/'
+path:'/graphql'
 })
 
 const schema = makeExecutableSchema({typeDefs, resolvers})
@@ -63,7 +64,7 @@ const server = new ApolloServer({
 await server.start()
 
 app.use(
-  '/',
+  '/graphql',
   cors(),
   express.json(),
   expressMiddleware(server, {
@@ -79,11 +80,17 @@ app.use(
     }
   })
 )
+  // Serve static files from the dist directory
+  app.use(express.static(path.join(__dirname, 'dist')));
 
+    // Serve the frontend application
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+    });
 const PORT = 4000 
 
 httpServer.listen(PORT, () => 
-  console.log(`Server is now running on http://localhost:${PORT}`)
+  console.log(`Server is now running on http://localhost:${PORT}/graphql`)
 )
 }
 

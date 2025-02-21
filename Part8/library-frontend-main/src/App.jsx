@@ -91,6 +91,8 @@ if(!token){
 }
 
   return (
+    <div>
+      <Notify errorMessage={errors}/>
     <Router>
       <div>
         <Link style={padding} to='/authors'>authors</Link>
@@ -108,7 +110,7 @@ if(!token){
 </Routes>
 <Notify errorMessage={errors}/>
     </Router>
-
+</div>
   );
 };
 
