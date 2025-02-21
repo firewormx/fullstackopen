@@ -1,3 +1,3 @@
 # Bloglist
 The project URL is included in below path:
-- The backend path is [https://github.com/firewormx/fullstackopen/tree/main/Part5/bloglist-frontend](https://github.com/firewormx/fullstackopen/tree/main/Part5/bloglist-frontend)
+- The backend path is [here](https://github.com/firewormx/fullstackopen/tree/main/Part4/blog%20list%20app)
