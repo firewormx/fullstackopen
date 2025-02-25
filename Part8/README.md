@@ -4,3 +4,5 @@ Here is the URL for below project
 - Please use below password and username login
 - username: hotaru
 - password: secret
+
+![Certificate](./certificate-graphql.png)
